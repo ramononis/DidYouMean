@@ -1,5 +1,6 @@
 package autoComplete;
 
+import autoComplete.tree.Root;
 import util.TupleStringInt;
 
 import java.util.List;
@@ -8,7 +9,7 @@ import java.util.List;
  * Created by Tim on 23-2-2016.
  */
 public class TreeControl {
-    Node tree = null;
+    Root tree = null;
 
     public TreeControl() {
 
