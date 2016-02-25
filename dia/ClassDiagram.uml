@@ -1,13 +1,61 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Diagram>
   <ID>JAVA</ID>
-  <OriginalElement>Node</OriginalElement>
+  <OriginalElement />
   <nodes>
-    <node x="-404.0" y="-212.0">Node</node>
+    <node x="25.5" y="403.0">autoComplete.tree.Root</node>
+    <node x="642.5" y="163.0">autoComplete.tree.Leaf</node>
+    <node x="965.5" y="-1.5">main.AutoCompleter</node>
+    <node x="223.0" y="358.5">autoComplete.tree.Node</node>
+    <node x="1243.5" y="43.5">database.IDBControl</node>
+    <node x="577.0" y="314.5">autoComplete.tree.Element</node>
+    <node x="-10.5" y="9.5">autoComplete.TreeControl</node>
+    <node x="1290.5" y="163.0">database.DBControl</node>
+    <node x="993.0" y="243.0">gui.GUI</node>
   </nodes>
   <notes />
-  <edges />
-  <settings layout="Hierarchic Group" zoom="1.0" x="30.5" y="14.5" />
+  <edges>
+    <edge source="autoComplete.tree.Node" target="autoComplete.tree.Element">
+      <point x="0.0" y="-81.5" />
+      <point x="360.0" y="120.0" />
+      <point x="920.0" y="120.0" />
+      <point x="920.0" y="440.0" />
+      <point x="143.0" y="-0.0" />
+    </edge>
+    <edge source="main.AutoCompleter" target="database.IDBControl">
+      <point x="114.5" y="-0.0" />
+      <point x="-116.5" y="-0.0" />
+    </edge>
+    <edge source="autoComplete.TreeControl" target="autoComplete.tree.Root">
+      <point x="0.0" y="70.5" />
+      <point x="0.0" y="-37.0" />
+    </edge>
+    <edge source="database.DBControl" target="database.IDBControl">
+      <point x="0.0" y="-37.0" />
+      <point x="0.0" y="36.5" />
+    </edge>
+    <edge source="main.AutoCompleter" target="autoComplete.TreeControl">
+      <point x="-114.5" y="-0.0" />
+      <point x="90.5" y="-0.0" />
+    </edge>
+    <edge source="autoComplete.tree.Element" target="autoComplete.tree.Node">
+      <point x="-143.0" y="-0.0" />
+      <point x="137.0" y="-0.0" />
+    </edge>
+    <edge source="gui.GUI" target="main.AutoCompleter">
+      <point x="0.0" y="-37.0" />
+      <point x="0.0" y="81.5" />
+    </edge>
+    <edge source="autoComplete.tree.Root" target="autoComplete.tree.Node">
+      <point x="54.5" y="-0.0" />
+      <point x="-137.0" y="-0.0" />
+    </edge>
+    <edge source="autoComplete.tree.Leaf" target="autoComplete.tree.Element">
+      <point x="0.0" y="37.0" />
+      <point x="0.0" y="-125.5" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="0.6578249336870027" x="733.0" y="319.0" />
   <SelectedNodes />
   <Categories>
     <Category>Fields</Category>
