@@ -1,19 +1,26 @@
 package autoComplete.tree;
 
-import java.util.HashSet;
-import java.util.Set;
-
 /**
- * Created by Frans on 2016-02-23.
+ * This class models a leaf in the tree.
+ * @author Frans
  */
 public class Leaf extends Element {
 
-    public Leaf(int weight, Node parent) {
+    /**
+     * Initializes a new Leaf.
+     * @param weight the weight of this Leaf if it is a Leaf
+     * @param parent the parent of this Leaf
+     */
+    public Leaf(float weight, Node parent) {
         super((char)0, weight, parent);
     }
 
+    /**
+     * Indicates that this Element is a Leaf.
+     * @return <code>true</code>
+     */
     @Override
-    public Set<Element> getChildren() {
-        return new HashSet<>();
+    public boolean isLeaf() {
+        return true;
     }
 }
