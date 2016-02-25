@@ -3,15 +3,23 @@ package gui;
 import main.AutoCompleter;
 
 /**
- * Created by Tim on 23-2-2016.
+ * Displays a GUI and requests suggestions from AutoCompleter class. Also contains the main function to start the program.
+ * @author Tim
  */
 public class GUI {
     private AutoCompleter AC;
 
+    /**
+     * Initializes new GUI.
+     */
     public GUI(){
 
     }
 
+    /**
+     * Initializes the program.
+     * @param args should be empty.
+     */
     public static void main(String[] args) {
 
     }

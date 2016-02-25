@@ -6,6 +6,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * This class models a node in the tree.
+ *
  * @author Frans
  */
 public class Node extends Element {
@@ -13,6 +14,7 @@ public class Node extends Element {
 
     /**
      * Initializes a new Node.
+     *
      * @param letter the letter of this Node (or -1 for the Root)
      */
     public Node(char letter) {
@@ -21,7 +23,8 @@ public class Node extends Element {
 
     /**
      * Initializes a new Node.
-     * @param letter the letter of this Node (or -1 for the Root)
+     *
+     * @param letter    the letter of this Node (or -1 for the Root)
      * @param maxWeight the max weight of all sub Nodes
      */
     public Node(char letter, float maxWeight) {
@@ -30,9 +33,10 @@ public class Node extends Element {
 
     /**
      * Initializes a new Node.
-     * @param letter the letter of this Node (or -1 for the Root)
+     *
+     * @param letter    the letter of this Node (or -1 for the Root)
      * @param maxWeight the max weight of all sub Nodes
-     * @param parent the parent of this Node; <code>null</code> if this Node does not have a parent
+     * @param parent    the parent of this Node; <code>null</code> if this Node does not have a parent
      */
     public Node(char letter, float maxWeight, Node parent) throws IllegalArgumentException {
         super(letter, maxWeight, parent);
@@ -57,6 +61,7 @@ public class Node extends Element {
 
     /**
      * Adds a new child to this node if there is not already a child with the same letter.
+     *
      * @param node the Element to add as child
      * @return <code>null</code> if the Element was added;
      * otherwise the Element with the same letter that is already a child of this Node
@@ -67,6 +72,7 @@ public class Node extends Element {
 
     /**
      * Removes the specified child Element from this Node.
+     *
      * @param element the Element to remove
      * @return <code>true</code> if an Element was removed as a result of this call
      */
