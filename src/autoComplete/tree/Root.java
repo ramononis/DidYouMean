@@ -12,7 +12,7 @@ public class Root extends Node {
      * Initializes a new Root.
      */
     public Root() {
-        super((char) -1, 0);
+        super((char) -1);
     }
 
     /**

@@ -15,15 +15,19 @@ public abstract class Element {
 
     /**
      * Initializes a new Element.
+     * The new Element is also directly added as child to the given parent.
      *
      * @param letter the letter of this Element, or 0 for a Leaf (and -1 for the Root)
      * @param weight the weight of this Element if it is a Leaf; the max weight of all sub Elements if this is a Node
-     * @param parent the parent of this Element; <code>null</code> if this Element does not have a parent
+     * @param parent the parent of this Element
      */
     public Element(char letter, float weight, Node parent) {
         this.letter = letter;
         this.weight = weight;
         this.parent = parent;
+        if (parent != null) {
+            parent.addChild(this);
+        }
     }
 
     /**

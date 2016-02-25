@@ -33,10 +33,11 @@ public class Node extends Element {
 
     /**
      * Initializes a new Node.
+     * The new Node is also directly added as child to the given parent.
      *
      * @param letter    the letter of this Node (or -1 for the Root)
      * @param maxWeight the max weight of all sub Nodes
-     * @param parent    the parent of this Node; <code>null</code> if this Node does not have a parent
+     * @param parent    the parent of this Node
      */
     public Node(char letter, float maxWeight, Node parent) throws IllegalArgumentException {
         super(letter, maxWeight, parent);
@@ -61,13 +62,17 @@ public class Node extends Element {
 
     /**
      * Adds a new child to this node if there is not already a child with the same letter.
+     * <<<<<<< HEAD
      *
-     * @param node the Element to add as child
+     * @param node    the Element to add as child
+     *                =======
+     * @param element the Element to add as child
+     *                >>>>>>> New elements are directly added as child to the given parent
      * @return <code>null</code> if the Element was added;
      * otherwise the Element with the same letter that is already a child of this Node
      */
-    public Element addChild(Node node) {
-        return children.putIfAbsent(node.getLetter(), node);
+    public Element addChild(Element element) {
+        return children.putIfAbsent(element.getLetter(), element);
     }
 
     /**
