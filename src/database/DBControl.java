@@ -5,7 +5,7 @@ import util.TupleStringInt;
 import java.util.List;
 
 /**
- * Created by Tim on 23-2-2016.
+ * Controls the database. Uses
  */
 public class DBControl implements IDBControl{
 
@@ -17,4 +17,6 @@ public class DBControl implements IDBControl{
     public List<TupleStringInt> getData() {
         return null;
     }
+
+    public List
 }
