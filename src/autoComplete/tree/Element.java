@@ -15,7 +15,7 @@ public abstract class Element {
 
     /**
      * Initializes a new Element.
-     * The new Element is also directly added as child to the given parent.
+     * The new Element is also directly added as child to the given parent, if possible.
      *
      * @param letter the letter of this Element, or 0 for a Leaf (and -1 for the Root)
      * @param weight the weight of this Element if it is a Leaf; the max weight of all sub Elements if this is a Node

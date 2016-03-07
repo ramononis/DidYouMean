@@ -17,8 +17,19 @@ public class Node extends Element {
      *
      * @param letter the letter of this Node (or -1 for the Root)
      */
-    public Node(char letter) {
+    public Node(char letter) throws IllegalArgumentException {
         this(letter, 0, null);
+    }
+
+    /**
+     * Initializes a new Node.
+     * The new Node is also directly added as child to the given parent, if possible.
+     *
+     * @param letter the letter of this Node (or -1 for the Root)
+     * @param parent    the parent of this Node
+     */
+    public Node(char letter, Node parent) throws IllegalArgumentException {
+        this(letter, 0, parent);
     }
 
     /**
@@ -27,13 +38,13 @@ public class Node extends Element {
      * @param letter    the letter of this Node (or -1 for the Root)
      * @param maxWeight the max weight of all sub Nodes
      */
-    public Node(char letter, float maxWeight) {
+    public Node(char letter, float maxWeight) throws IllegalArgumentException {
         this(letter, maxWeight, null);
     }
 
     /**
      * Initializes a new Node.
-     * The new Node is also directly added as child to the given parent.
+     * The new Node is also directly added as child to the given parent, if possible.
      *
      * @param letter    the letter of this Node (or -1 for the Root)
      * @param maxWeight the max weight of all sub Nodes
@@ -62,17 +73,34 @@ public class Node extends Element {
 
     /**
      * Adds a new child to this node if there is not already a child with the same letter.
-     * <<<<<<< HEAD
-     *
-     * @param node    the Element to add as child
-     *                =======
      * @param element the Element to add as child
-     *                >>>>>>> New elements are directly added as child to the given parent
      * @return <code>null</code> if the Element was added;
      * otherwise the Element with the same letter that is already a child of this Node
      */
     public Element addChild(Element element) {
         return children.putIfAbsent(element.getLetter(), element);
+    }
+
+    /**
+     * Creates and adds a new child to this node if not already a child with the same letter.
+     * @param letter the letter of the new Element, 0 for a Leaf.
+     * @return the new added Element if there was not already a child with the same letter;
+     * otherwise the Element with the same letter that is already a child of this Node
+     */
+    public Element addNewChild(char letter) {
+        Element result = null;
+
+        if (letter == 0) {
+            result = new Leaf(this);
+        } else {
+            if (children.containsKey(letter)) {
+                result = children.get(letter);
+            } else {
+                result = new Node(letter, this);
+            }
+        }
+
+        return result;
     }
 
     /**
