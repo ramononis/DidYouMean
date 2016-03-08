@@ -19,12 +19,13 @@ public class CSVControl implements IDBControl {
     private static final String DATALOCATION = "./csv/";
     private static final String[] FILENAMES = {"Data1.csv", "Data2.csv", "Data3.csv", "Data4.csv"};
 
-    public CSVControl() {
-
-    }
-
+    /**
+     * Provides the data from the CSV files in the correct format.
+     *
+     * @return a hashmap<String, Integer> with the search term as key and its weight as value.
+     */
     @Override
-    public HashMap<String,Integer> getData() {
+    public HashMap<String, Integer> getData() {
         Set<String> rawData = new HashSet<String>();
 
         for (String file : FILENAMES) {
@@ -33,19 +34,25 @@ public class CSVControl implements IDBControl {
 
         Set<String[]> filteredData = filter(rawData);
 
-        HashMap<String,Integer> data = process(filteredData);
+        HashMap<String, Integer> data = process(filteredData);
 
         return data;
     }
 
-    private HashMap<String,Integer> process(Set<String[]> filteredData) {
-        HashMap<String,Integer> data = new HashMap<>();
+    /**
+     * Processes the data provided by filter().
+     *
+     * @param filteredData a set of string arrays which have a length of 3. Of the array the first element is the search term, the second the number of times it was searched and the third the percentage of search refinements.
+     * @return a hashmap<String, Integer> with the search term as key and its weight as value.
+     */
+    private HashMap<String, Integer> process(Set<String[]> filteredData) {
+        HashMap<String, Integer> data = new HashMap<>();
 
         for (String[] dl : filteredData) {
             int n = 0;
             try {
                 n = Integer.parseInt(dl[1].replace("\"", "").replace(",", ""));
-            }catch (NumberFormatException e){
+            } catch (NumberFormatException e) {
                 System.out.println();
             }
             double r = Double.parseDouble(dl[2].replace("%", ""));
@@ -59,8 +66,10 @@ public class CSVControl implements IDBControl {
     }
 
     /**
-     * @param rawData
-     * @return a set of String arrays with a length of 3.
+     * Filters the data provided by readCSV().
+     *
+     * @param rawData a set of strings where each string is one line of the CSV file.
+     * @return a set of string arrays which have a length of 3. Of the array the first element is the search term, the second the number of times it was searched and the third the percentage of search refinements.
      */
     private Set<String[]> filter(Set<String> rawData) {
         final String SPLITTER = ",(?=([^\"]*\"[^\"]*\")*[^\"]*$)"; // CSV = Comma Separated Values
@@ -74,6 +83,12 @@ public class CSVControl implements IDBControl {
         return filteredData;
     }
 
+    /**
+     * Reads a CSV file to a list of strings.
+     *
+     * @param path the path to the CSV file that should be read.
+     * @return a set of strings where each string is one line of the CSV file.
+     */
     private Set<String> readCSV(String path) {
         BufferedReader br = null;
         String line = "";
@@ -83,7 +98,7 @@ public class CSVControl implements IDBControl {
             br = new BufferedReader(new FileReader(path));
 
             while ((line = br.readLine()) != null) {
-                    rawData.add(line);
+                rawData.add(line);
             }
         } catch (IOException e) {
             System.out.println("Error in CSVControl#readCSV");
