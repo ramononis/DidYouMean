@@ -90,11 +90,11 @@ public class Node extends Element {
     public Element addNewChild(char letter) {
         Element result = null;
 
-        if (letter == 0) {
-            result = new Leaf(this);
+        if (children.containsKey(letter)) {
+            result = children.get(letter);
         } else {
-            if (children.containsKey(letter)) {
-                result = children.get(letter);
+            if (letter == 0) {
+                result = new Leaf(this);
             } else {
                 result = new Node(letter, this);
             }
