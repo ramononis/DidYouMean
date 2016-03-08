@@ -1,7 +1,7 @@
 package gui;
 
 import database.CSVControl;
-import main.AutoCompleter;
+import autoComplete.AutoCompleter;
 
 /**
  * Displays a GUI and requests suggestions from AutoCompleter class. Also contains the main function to start the program.

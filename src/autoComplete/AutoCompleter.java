@@ -1,4 +1,4 @@
-package main;
+package autoComplete;
 
 import autoComplete.TreeControl;
 import database.IDBControl;
