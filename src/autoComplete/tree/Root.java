@@ -22,7 +22,7 @@ public class Root extends Node {
      * @throws RuntimeException always throws a RuntimeException because the root had no letter.
      */
     @Override
-    public char getLetter() {
+    public char getLetter() throws RuntimeException {
         // TODO: throw better exception
         throw new RuntimeException("I'm root, I has no letter!");
     }
