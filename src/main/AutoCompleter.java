@@ -2,8 +2,6 @@ package main;
 
 import autoComplete.TreeControl;
 import database.IDBControl;
-import gui.GUI;
-import database.DBControl;
 
 /**
  * The main class for the auto-completer. Suggestions to complete can be requested here.

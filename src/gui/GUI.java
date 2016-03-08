@@ -1,5 +1,6 @@
 package gui;
 
+import database.CSVControl;
 import main.AutoCompleter;
 
 /**
@@ -21,6 +22,7 @@ public class GUI {
      * @param args should be empty.
      */
     public static void main(String[] args) {
-
+        CSVControl x = new CSVControl();
+        System.out.println(x.getData());
     }
 }

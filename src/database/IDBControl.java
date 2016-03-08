@@ -2,7 +2,9 @@ package database;
 
 import util.TupleStringInt;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Interface for database control classes. Interacts with the database.
@@ -10,7 +12,7 @@ import java.util.List;
  * @Author Tim
  */
 public interface IDBControl {
-    List<TupleStringInt> getData();
+    HashMap<String,Integer> getData();
 
     /**
      * Calculates the weight that a search term should have.
