@@ -53,12 +53,12 @@ public class Node extends Element {
     public Node(char letter, int maxWeight, Node parent) throws IllegalArgumentException {
         super(letter, maxWeight, parent);
         if (letter == 0) throw new IllegalArgumentException("letter may not be 0.");
-        children = new ConcurrentHashMap<>();
+        children = new ConcurrentHashMap<Character, Element>();
     }
 
     @Override
     public Set<Element> getChildren() {
-        return new HashSet<>(children.values());
+        return new HashSet<Element>(children.values());
     }
 
     @Override

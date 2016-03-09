@@ -1,6 +1,5 @@
 package autoComplete.tree;
 
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -13,7 +12,6 @@ public abstract class Element {
     private final char letter;
     private int weight;
     private final Node parent;
-    private HashMap<Character, Element> children;
 
     /**
      * Initializes a new Element.
@@ -77,8 +75,8 @@ public abstract class Element {
      *
      * @return a set containing all elements directly under this Element
      */
-    public HashMap<Character, Element> getChildren() {
-        return children;
+    public Set<Element> getChildren() {
+        return new HashSet<Element>();
     }
 
     /**
@@ -88,7 +86,7 @@ public abstract class Element {
      * @return <code>true</code> when this Element has a child with the given letter; otherwise <code>false</code>
      */
     public boolean hasChild(char letter) {
-        return children.get(letter) != null;
+        return false;
     }
 
     /**
@@ -99,7 +97,7 @@ public abstract class Element {
      * or <code>null</code> when this Element has no child with the given letter
      */
     public Element getChild(char letter) {
-        return children.get(letter);
+        return null;
     }
 
     /**
