@@ -1,6 +1,7 @@
 package autoComplete;
 
 import autoComplete.TreeControl;
+import database.CSVControl;
 import database.IDBControl;
 
 /**
@@ -19,6 +20,8 @@ public class AutoCompleter {
      * Initializes a new AutoCompleter.
      */
     public AutoCompleter() {
+        DB = new CSVControl();
+        TC = new TreeControl(DB);
     }
 
     /**
