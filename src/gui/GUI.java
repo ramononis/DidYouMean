@@ -1,5 +1,6 @@
 package gui;
 
+import DidYouMean.DidYouMean;
 import database.CSVControl;
 import autoComplete.AutoCompleter;
 
@@ -9,6 +10,7 @@ import autoComplete.AutoCompleter;
  */
 public class GUI {
     private AutoCompleter AC;
+    private DidYouMean DYM;
 
     /**
      * Initializes new GUI.
