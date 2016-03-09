@@ -15,7 +15,7 @@ public interface IDBControl {
     /**
      * Used to get the data from the database.
      *
-     * @return a HashMap with the search term (String) as key and the weight (int) as the value.
+     * @return a HashMap with the search term (null-terminated String) as key and the weight (int) as the value.
      */
     HashMap<String, Integer> getData();
 

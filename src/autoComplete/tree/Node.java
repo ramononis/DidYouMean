@@ -38,7 +38,7 @@ public class Node extends Element {
      * @param letter    the letter of this Node (or -1 for the Root)
      * @param maxWeight the max weight of all sub Nodes
      */
-    public Node(char letter, float maxWeight) throws IllegalArgumentException {
+    public Node(char letter, int maxWeight) throws IllegalArgumentException {
         this(letter, maxWeight, null);
     }
 
@@ -50,7 +50,7 @@ public class Node extends Element {
      * @param maxWeight the max weight of all sub Nodes
      * @param parent    the parent of this Node
      */
-    public Node(char letter, float maxWeight, Node parent) throws IllegalArgumentException {
+    public Node(char letter, int maxWeight, Node parent) throws IllegalArgumentException {
         super(letter, maxWeight, parent);
         if (letter == 0) throw new IllegalArgumentException("letter may not be 0.");
         children = new ConcurrentHashMap<>();

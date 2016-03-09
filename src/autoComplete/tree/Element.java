@@ -1,5 +1,6 @@
 package autoComplete.tree;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -10,8 +11,9 @@ import java.util.Set;
  */
 public abstract class Element {
     private final char letter;
-    private float weight;
+    private int weight;
     private final Node parent;
+    private HashMap<Character, Element> children;
 
     /**
      * Initializes a new Element.
@@ -21,7 +23,7 @@ public abstract class Element {
      * @param weight the weight of this Element if it is a Leaf; the max weight of all sub Elements if this is a Node
      * @param parent the parent of this Element
      */
-    public Element(char letter, float weight, Node parent) {
+    public Element(char letter, int weight, Node parent) {
         this.letter = letter;
         this.weight = weight;
         this.parent = parent;
@@ -46,7 +48,7 @@ public abstract class Element {
      *
      * @return the weight value
      */
-    public float getWeight() {
+    public int getWeight() {
         return weight;
     }
 
@@ -75,8 +77,8 @@ public abstract class Element {
      *
      * @return a set containing all elements directly under this Element
      */
-    public Set<Element> getChildren() {
-        return new HashSet<>();
+    public HashMap<Character, Element> getChildren() {
+        return children;
     }
 
     /**
@@ -86,7 +88,7 @@ public abstract class Element {
      * @return <code>true</code> when this Element has a child with the given letter; otherwise <code>false</code>
      */
     public boolean hasChild(char letter) {
-        return false;
+        return children.get(letter) != null;
     }
 
     /**
@@ -97,7 +99,7 @@ public abstract class Element {
      * or <code>null</code> when this Element has no child with the given letter
      */
     public Element getChild(char letter) {
-        return null;
+        return children.get(letter);
     }
 
     /**

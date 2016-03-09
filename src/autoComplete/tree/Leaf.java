@@ -24,7 +24,7 @@ public class Leaf extends Element {
      * @param weight the weight of this Leaf if it is a Leaf
      * @param parent the parent of this Leaf
      */
-    public Leaf(float weight, Node parent) {
+    public Leaf(int weight, Node parent) {
         super((char) 0, weight, parent);
     }
 

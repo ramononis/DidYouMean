@@ -14,7 +14,7 @@ public class GUI {
      * Initializes new GUI.
      */
     public GUI(){
-
+        AC = new AutoCompleter();
     }
 
     /**
@@ -22,7 +22,6 @@ public class GUI {
      * @param args should be empty.
      */
     public static void main(String[] args) {
-        CSVControl x = new CSVControl();
-        System.out.println(x.getData());
+        new GUI();
     }
 }

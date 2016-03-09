@@ -43,7 +43,7 @@ public class CSVControl implements IDBControl {
      * Processes the data provided by filter().
      *
      * @param filteredData a set of string arrays which have a length of 3. Of the array the first element is the search term, the second the number of times it was searched and the third the percentage of search refinements.
-     * @return a hashmap<String, Integer> with the search term as key and its weight as value.
+     * @return a hashmap<String, Integer> with the search term (null-terminated string) as key and its weight as value.
      */
     private HashMap<String, Integer> process(Set<String[]> filteredData) {
         HashMap<String, Integer> data = new HashMap<>();
@@ -59,7 +59,7 @@ public class CSVControl implements IDBControl {
             double p = 100 - r;
             int weight = IDBControl.calcWeight(n, p);
 
-            data.put(dl[0].replace("\"", ""), weight);
+            data.put(dl[0].replace("\"", "") + '\0', weight);
         }
 
         return data;
