@@ -53,12 +53,14 @@ public class CSVControl implements IDBControl {
             try {
                 n = Integer.parseInt(dl[1].replace("\"", "").replace(",", ""));
             } catch (NumberFormatException e) {
-                System.out.println();
+                e.printStackTrace();
             }
             double r = Double.parseDouble(dl[2].replace("%", ""));
             double p = 100 - r;
             int weight = IDBControl.calcWeight(n, p);
-
+            if(data.containsKey(dl[0].replace("\"", "") + '\0')) {
+                System.out.println(dl[0].replace("\"", "") + '\0');
+            }
             data.put(dl[0].replace("\"", "") + '\0', weight);
         }
 

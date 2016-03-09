@@ -36,4 +36,8 @@ public class Root extends Node {
     public boolean isRoot() {
         return true;
     }
+
+    public String toString() {
+        return "Root";
+    }
 }

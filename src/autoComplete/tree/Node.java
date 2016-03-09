@@ -112,4 +112,8 @@ public class Node extends Element {
     public boolean removeChild(Element element) {
         return children.values().remove(element);
     }
+
+    public String toString(){
+        return "" + getLetter() + ": " + getWeight();
+    }
 }
