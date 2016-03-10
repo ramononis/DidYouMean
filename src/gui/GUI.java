@@ -24,51 +24,62 @@ public class GUI {
         JFrame frame = new JFrame();
         frame.setSize(400, 300);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        GridBagConstraints c = null;
 
-        JPanel panelMain = new JPanel();
-        JPanel panelOut = new JPanel();
-        JPanel panelTerminal = new JPanel();
-        JPanel panelSearchbar = new JPanel();
-        JPanel panelButtons = new JPanel();
+        JPanel manepane = new JPanel();
+        manepane.setBackground(Color.blue);
+        manepane.setLayout(new GridBagLayout());
+        frame.add(manepane);
 
-        panelMain.setVisible(true);
-        panelOut.setVisible(true);
-        panelTerminal.setVisible(true);
-        panelSearchbar.setVisible(true);
-        panelButtons.setVisible(true);
+        JPanel listpane = new JPanel();
+        listpane.setBackground(Color.red);
 
-        GridBagConstraints c = new GridBagConstraints();
-
-        frame.setLayout(new GridLayout(1, 1));
-        frame.add(panelMain, c);
-
-        panelMain.setLayout(new GridLayout(8, 1));
         c = new GridBagConstraints();
-        c.gridwidth = 1;
+        c.fill = GridBagConstraints.BOTH;
         c.gridheight = 7;
+        c.weightx = 1;
+        c.weighty = 1;
         c.gridx = 0;
         c.gridy = 0;
-        panelMain.add(panelOut, c);
+        manepane.add(listpane, c);
 
-        c.gridy = 3;
-        panelMain.add(panelTerminal, c);
-
-        JTextField textFieldSearch = new JTextField();
-        JButton buttonSearch = new JButton("Search");
-
-        panelTerminal.setLayout(new GridLayout(1, 4));
+        JPanel terminane = new JPanel();
+        terminane.setBackground(Color.BLACK);
         c = new GridBagConstraints();
-        c.gridwidth = 3;
+        c.anchor = GridBagConstraints.SOUTH;
+        c.fill = GridBagConstraints.HORIZONTAL;
         c.gridheight = 1;
         c.gridx = 0;
-        panelTerminal.add(textFieldSearch, c);
+        c.gridy = 7;
+        manepane.add(terminane, c);
 
-        c.gridwidth = 1;
-        c.gridx = 3;
-        panelTerminal.add(buttonSearch, c);
+        String[] temporary = {"asdgasdg", "as;dfhas;dlgk", "a;sdlkfhga"};
+        JList<String> output = new JList<>(temporary);
+        listpane.setLayout(new GridBagLayout());
+        c=new GridBagConstraints();
+        c.weighty=1;
+        c.weightx=1;
+        c.fill=GridBagConstraints.BOTH;
+        listpane.add(output, c);
+
+        terminane.setLayout(new GridBagLayout());
+
+        JTextField searchbar = new JTextField("Search here..");
+        c = new GridBagConstraints();
+        c.anchor=GridBagConstraints.WEST;
+        c.fill=GridBagConstraints.BOTH;
+        c.weightx=1;
+        c.weighty=1;
+        c.gridwidth=3;
+        terminane.add(searchbar, c);
+
+        JButton searchbutton = new JButton("Search");
+        c = new GridBagConstraints();
+        c.anchor = GridBagConstraints.EAST;
+        c.gridx=3;
+        terminane.add(searchbutton, c);
 
         frame.setVisible(true);
-
     }
 
     /**
