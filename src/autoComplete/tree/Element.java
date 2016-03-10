@@ -111,6 +111,14 @@ public abstract class Element {
     }
 
     /**
+     * Returns to word corresponding to the current node.
+     * @return A string corresponding to this node
+     */
+    public String getWord() {
+        return parent.getWord() + getLetter();
+    }
+
+    /**
      * Indicates if this Element is the Root.
      *
      * @return <code>true</code> when this Element is the Root; otherwise <code>false</code>

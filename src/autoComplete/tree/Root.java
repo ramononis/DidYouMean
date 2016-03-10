@@ -40,4 +40,9 @@ public class Root extends Node {
     public String toString() {
         return "Root";
     }
+
+    @Override
+    public String getWord() {
+        return "";
+    }
 }

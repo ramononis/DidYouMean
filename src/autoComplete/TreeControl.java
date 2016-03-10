@@ -28,10 +28,14 @@ public class TreeControl {
         for (String key : data.keySet()) {
             increment(tree, key, data.get(key));
         }
-        System.out.println(getTopKeywords(tree, 7, "12v "));
+        long time = System.currentTimeMillis();
+        //for(int i = 0; i < 100000; i++)
+        //    getTopKeywords(tree, 7, "12v");
+        //System.out.println((System.currentTimeMillis() - time));
+        System.out.println(getTopKeywords(tree, 7, "accu"));
     }
 
-    private String maxNode1(Set<Element> ns, String p) {
+    private String maxNode(Set<Element> ns) {
         int maxWeight = -1;
         Element maxN = null;
         String result = null;
@@ -42,38 +46,20 @@ public class TreeControl {
             }
         }
         if (maxN.getLetter() == TERM) {
-            result = p + TERM;
+            result = maxN.getWord();
         } else {
-            result = maxNode1(maxN.getChildren(), p + maxN.getLetter());
+            result = maxNode(maxN.getChildren());
         }
         return result;
     }
 
-    private String maxNode2(Map<Element, String> ns) {
-        int maxWeight = -1;
-        Element maxN = null;
-        String result = null;
-        for (Element n : ns.keySet()) {
-            if (n.getWeight() > maxWeight) {
-                maxWeight = n.getWeight();
-                maxN = n;
-            }
-        }
-        if (maxN.getLetter() == TERM) {
-            result = ns.get(maxN) + TERM;
-        } else {
-            result = maxNode1(maxN.getChildren(), ns.get(maxN) + maxN.getLetter());
-        }
-        return result;
-    }
-
-    private Map<Element, String> excludeKeyword(Element n, String k, String p) {
-        Map<Element, String> result = new HashMap<Element, String>();
+    private Set<Element> excludeKeyword(Element n, String k) {
+        Set<Element> result = new HashSet<Element>();
         for (Element child : n.getChildren()) {
             if (child.getLetter() == k.charAt(0)) {
-                result.putAll(excludeKeyword(child, k.substring(1), p + child.getLetter()));
+                result.addAll(excludeKeyword(child, k.substring(1)));
             } else {
-                result.put(child, p);
+                result.add(child);
             }
         }
         return result;
@@ -115,31 +101,23 @@ public class TreeControl {
         if (n == null) {
             return result;
         }
-        Map<Element, String> searchNodes = new HashMap<Element, String>();
-        for (Element child : n.getChildren()) {
-            searchNodes.put(child, "");
-        }
+        Set<Element> searchNodes = new HashSet<Element>();
+        searchNodes.addAll(n.getChildren());
         int i = 0;
         while (i++ < c && !searchNodes.isEmpty()) {
-            String keyword = maxNode2(searchNodes);
-            result.add(p + keyword);
-            for (Map.Entry<Element, String> entry : searchNodes.entrySet()) {
-                String pp = entry.getValue() + entry.getKey().getLetter();
-                if (keyword.startsWith(pp)) {
-                    searchNodes.remove(entry.getKey());
-                    searchNodes.putAll(excludeKeyword(entry.getKey(), keyword.replaceFirst(pp, ""), pp));
+            String keyword = maxNode(searchNodes);
+            result.add(keyword);
+            for (Element e : searchNodes) {
+                String word = e.getWord();
+                if (keyword.startsWith(word)) {
+                    searchNodes.remove(e);
+                    searchNodes.addAll(excludeKeyword(e, keyword.replaceFirst(word,"")));
                     break; //i'm sorry, don't kill me for using break...
                 }
             }
         }
         return result;
     }
-
-
-    public void add(HashMap<String, Integer> elements) {
-
-    }
-
     public List<String> find(int k) {
 
         return null;
