@@ -1,11 +1,16 @@
 package gui;
 
 import autoComplete.AutoCompleter;
+import com.sun.xml.internal.fastinfoset.util.StringArray;
 
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.*;
 import java.util.List;
 
@@ -16,7 +21,11 @@ import java.util.List;
  */
 public class GUI {
     private static final int NSUGGESTIONS = 5;
+
     private AutoCompleter AC;
+
+    String[] outputList;
+    JList<String> output;
 
     /**
      * Initializes new GUI.
@@ -57,42 +66,62 @@ public class GUI {
         c.gridy = 7;
         manepane.add(terminane, c);
 
-        String[] temporary = {"asdgasdg", "as;dfhas;dlgk", "a;sdlkfhga"};
-        JList<String> output = new JList<>(temporary);
+        outputList = new String[0];
+        output = new JList<>(outputList);
         listpane.setLayout(new GridBagLayout());
-        c=new GridBagConstraints();
-        c.weighty=1;
-        c.weightx=1;
-        c.fill=GridBagConstraints.BOTH;
+        c = new GridBagConstraints();
+        c.weighty = 1;
+        c.weightx = 1;
+        c.fill = GridBagConstraints.BOTH;
         listpane.add(output, c);
 
         terminane.setLayout(new GridBagLayout());
 
         JTextField searchbar = new JTextField();
         c = new GridBagConstraints();
-        c.anchor=GridBagConstraints.WEST;
-        c.fill=GridBagConstraints.BOTH;
-        c.weightx=1;
-        c.weighty=1;
-        c.gridwidth=3;
+        c.anchor = GridBagConstraints.WEST;
+        c.fill = GridBagConstraints.BOTH;
+        c.weightx = 1;
+        c.weighty = 1;
+        c.gridwidth = 3;
         terminane.add(searchbar, c);
 
         JButton searchbutton = new JButton("Search");
         c = new GridBagConstraints();
         c.anchor = GridBagConstraints.EAST;
-        c.gridx=3;
+        c.gridx = 3;
         terminane.add(searchbutton, c);
 
         // make active part (listeners n stuff)
         searchbutton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String[] completions = AC.getTopN(NSUGGESTIONS,searchbar.getText());
-                output.setListData(completions);
+                String[] completions = AC.getTopN(NSUGGESTIONS, searchbar.getText());
+                updateOutput(completions);
+            }
+        });
+
+        output.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent evt) {
+                JList list = (JList) evt.getSource();
+
+                // Double-click detected
+                int index = list.locationToIndex(evt.getPoint());
+                if(index >= outputList.length || index == -1) return;
+
+                String clicked = outputList[index];
+                if(clicked == null) return;
+
+                System.out.println(clicked);
             }
         });
 
         frame.setVisible(true);
+    }
+
+    private void updateOutput(String[] newoutput) {
+        outputList = newoutput;
+        output.setListData(outputList);
     }
 
     /**
