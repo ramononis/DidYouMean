@@ -3,7 +3,6 @@ package DidYouMean;
 import DidYouMean.levenstheinAutomata.DFA;
 import DidYouMean.levenstheinAutomata.NFA;
 import DidYouMean.levenstheinAutomata.State;
-import autoComplete.TreeControl;
 import database.CSVControl;
 import database.IDBControl;
 

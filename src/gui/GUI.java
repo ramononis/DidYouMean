@@ -1,11 +1,13 @@
 package gui;
 
-import com.sun.deploy.panel.JavaPanel;
-import database.CSVControl;
 import autoComplete.AutoCompleter;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.*;
+import java.util.List;
 
 /**
  * Displays a GUI and requests suggestions from AutoCompleter class. Also contains the main function to start the program.
@@ -13,6 +15,7 @@ import java.awt.*;
  * @author Tim
  */
 public class GUI {
+    private static final int NSUGGESTIONS = 5;
     private AutoCompleter AC;
 
     /**
@@ -21,6 +24,7 @@ public class GUI {
     public GUI() {
         AC = new AutoCompleter();
 
+        // first just make a gui
         JFrame frame = new JFrame();
         frame.setSize(400, 300);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -78,6 +82,15 @@ public class GUI {
         c.anchor = GridBagConstraints.EAST;
         c.gridx=3;
         terminane.add(searchbutton, c);
+
+        // make active part (listeners n stuff)
+        searchbutton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String[] completions = AC.getTopN(NSUGGESTIONS,searchbar.getText());
+                output.setListData(completions);
+            }
+        });
 
         frame.setVisible(true);
     }
