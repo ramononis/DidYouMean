@@ -38,6 +38,6 @@ public class AutoCompleter {
      * Uses the database control to send data to the tree control so the tree control can refresh the tree.
      */
     public void refresh() {
-
+        TC.makeTree();
     }
 }

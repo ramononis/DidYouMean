@@ -125,6 +125,5 @@ public abstract class Element {
      */
     public boolean isRoot() {
         return false;
-        //return letter == -1;
     }
 }
