@@ -68,7 +68,7 @@ public class GUI {
 
         terminane.setLayout(new GridBagLayout());
 
-        JTextField searchbar = new JTextField("Search here..");
+        JTextField searchbar = new JTextField();
         c = new GridBagConstraints();
         c.anchor=GridBagConstraints.WEST;
         c.fill=GridBagConstraints.BOTH;
