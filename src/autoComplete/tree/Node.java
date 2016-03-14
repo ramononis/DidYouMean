@@ -46,7 +46,7 @@ public class Node extends Element {
      * @param k the keyword, must be terminated with a null char.
      * @param w the weight
      */
-    public void addOrIncrementWord(String k, int w) {
+    protected void addOrIncrementWord(String k, int w) {
         Element child = addOrGetChild(k.charAt(0));
         if (child.isLeaf()) {
             child.setWeight(child.getWeight() + w);

@@ -219,6 +219,26 @@ public class TreeTest {
 
 
     //****** More complex tests ******
+    @Test(expected = IllegalArgumentException.class)
+    public void testInvalidAddOrIncrementWord1() throws Exception {
+        root.addOrIncrementWord("Does not contain termination character", 1);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testInvalidAddOrIncrementWord2() throws Exception {
+        root.addOrIncrementWord("Contain termination character" + AutoCompleter.TERM + "somewhere else then the end.", 1);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testInvalidAddOrIncrementWord3() throws Exception {
+        root.addOrIncrementWord("Contain termination character" + AutoCompleter.TERM + "somewhere else then the end." + AutoCompleter.TERM, 1);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testInvalidAddOrIncrementWord4() throws Exception {
+        root.addOrIncrementWord("Weight must be at least 0" + AutoCompleter.TERM, -1);
+    }
+
     @Test
     public void testWithChildren() throws Exception {
         int sum = 0;
