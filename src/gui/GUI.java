@@ -4,6 +4,8 @@ import autoComplete.AutoCompleter;
 import com.sun.xml.internal.fastinfoset.util.StringArray;
 
 import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import java.awt.*;
@@ -93,16 +95,35 @@ public class GUI {
         terminane.add(searchbutton, c);
 
         // make active part (listeners n stuff)
+
+        searchbar.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                changedUpdate(e);
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                changedUpdate(e);
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                String[] completions = AC.getTopN(NSUGGESTIONS, searchbar.getText());
+                updateOutput(completions);
+            }
+        });
+
         searchbutton.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void actionPerformed(ActionEvent e) { // TODO: did you mean should be done here
                 String[] completions = AC.getTopN(NSUGGESTIONS, searchbar.getText());
                 updateOutput(completions);
             }
         });
 
         output.addMouseListener(new MouseAdapter() {
-            public void mouseClicked(MouseEvent evt) {
+            public void mouseClicked(MouseEvent evt) { // TODO: something is clicked, do we do something with this?
                 JList list = (JList) evt.getSource();
 
                 // Double-click detected

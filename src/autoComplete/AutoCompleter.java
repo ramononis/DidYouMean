@@ -30,10 +30,6 @@ public class AutoCompleter {
         for (String key : data.keySet()) {
             increment(tree, key, data.get(key));
         }
-        long time = System.currentTimeMillis();
-        //for(int i = 0; i < 100000; i++)
-        //    getTopKeywords(tree, 7, "12v");
-        //System.out.println((System.currentTimeMillis() - time))
     }
 
     public String[] getTopN(int k, String query) {
