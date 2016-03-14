@@ -46,12 +46,7 @@ public class AutoCompleter {
      * @return a String Array of length k with the best suggestions for the prefix query.
      */
     public String[] getTopN(int k, String query) {
-        String[] r = new String[k];
-        List<String> suggestions = getTopKeywords(tree, k, query);
-        for (int i = 0; i < suggestions.size(); i++) {
-            r[i] = suggestions.get(i);
-        }
-        return r;
+        return getTopKeywords(tree, k, query).toArray(new String[k]);
     }
 
     /**
