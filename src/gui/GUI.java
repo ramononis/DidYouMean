@@ -109,7 +109,7 @@ public class GUI {
 
             @Override
             public void changedUpdate(DocumentEvent e) {
-                String[] completions = AC.getTopN(NSUGGESTIONS, searchbar.getText());
+                String[] completions = AC.getTopN(NSUGGESTIONS, searchbar.getText().toLowerCase());
                 updateOutput(completions);
             }
         });

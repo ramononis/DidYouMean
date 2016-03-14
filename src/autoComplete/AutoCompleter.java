@@ -124,8 +124,4 @@ public class AutoCompleter {
         }
         return result;
     }
-    public List<String> find(int k) {
-
-        return null;
-    }
 }

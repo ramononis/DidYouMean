@@ -59,11 +59,10 @@ public class CSVControl implements IDBControl {
             double p = 100 - r;
             int weight = IDBControl.calcWeight(n, p);
             dl[0] = dl[0].toLowerCase();
-            if(dl[0].contains("\"")) {
+            if (dl[0].contains("\"")) {
                 dl[0] = dl[0].substring(1, dl[0].length() - 1).replace("\"\"", "\"");
-                System.out.println(dl[0]);
             }
-            if(data.containsKey(dl[0])) {
+            if (data.containsKey(dl[0])) {
                 weight += data.get(dl[0]);
             }
             data.put(dl[0] + '\0', weight);
