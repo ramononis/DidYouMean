@@ -94,7 +94,7 @@ public class GUI {
         c.gridx = 3;
         terminane.add(searchbutton, c);
 
-        // make active part (listeners n stuff)
+        // active part
 
         searchbar.getDocument().addDocumentListener(new DocumentListener() {
             @Override
@@ -114,11 +114,19 @@ public class GUI {
             }
         });
 
+        searchbar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (e.getID() == 1001) {
+                    search(e);
+                }
+            }
+        });
+
         searchbutton.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) { // TODO: did you mean should be done here
-                String[] completions = AC.getTopN(NSUGGESTIONS, searchbar.getText());
-                updateOutput(completions);
+            public void actionPerformed(ActionEvent e) {
+                search(e);
             }
         });
 
@@ -138,6 +146,12 @@ public class GUI {
         });
 
         frame.setVisible(true);
+        frame.requestFocusInWindow();
+        searchbar.requestFocusInWindow();
+    }
+
+    private void search(ActionEvent event) {
+
     }
 
     private void updateOutput(String[] newoutput) {
