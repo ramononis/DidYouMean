@@ -114,7 +114,7 @@ public class GUI {
             }
         });
 
-        searchbutton.addActionListener(e -> search(e));
+        searchbutton.addActionListener(this::search);
 
         output.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent evt) { // TODO: something is clicked, do we do something with this?
