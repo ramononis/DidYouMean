@@ -55,7 +55,7 @@ public class AutoCompleter {
      * @param ns The subtrees to search in.
      * @return The {@link String} corresponding to the value of {@link Element#getWord} getWord of the highest weighed element.
      */
-    private String maxNode(Set<Element> ns) {
+    private static String maxNode(Set<Element> ns) {
         String result;
 
         Element maxN = Collections.max(ns, (o1, o2) -> o1.getWeight() - o2.getWeight());
@@ -77,7 +77,7 @@ public class AutoCompleter {
      * @return The smallest possible {@link Set} containing all elements whose
      * subtrees does not contain the element corresponding to {@code k}
      */
-    private Set<Element> excludeKeyword(Element n, String k) {
+    private static Set<Element> excludeKeyword(Element n, String k) {
         Set<Element> result = new HashSet<>();
         for (Element child : n.getChildren()) {
             if (child.getLetter() == k.charAt(0)) {
@@ -97,7 +97,7 @@ public class AutoCompleter {
      * @param p The string to search for in the subtree of (@code n}
      * @return The element that was found, or {@code null} if it doesn't exist
      */
-    private Element searchElement(Element n, String p) {
+    private static Element searchElement(Element n, String p) {
         if (p.isEmpty()) {
             return n;
         }
@@ -116,7 +116,7 @@ public class AutoCompleter {
      * @param p The prefix all the resulting keywords must have
      * @return A list with at most <code>c</code> keywords(less than <code>c</code> if no more could be found).
      */
-    private List<String> getTopKeywords(Root r, int c, String p) {
+    private static List<String> getTopKeywords(Root r, int c, String p) {
         p = p.toLowerCase();
         List<String> result = new ArrayList<>(c);
         Element n = searchElement(r, p);
