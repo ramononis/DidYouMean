@@ -1,5 +1,7 @@
 package autoComplete.tree;
 
+import autoComplete.AutoCompleter;
+
 /**
  * This class models a leaf in the tree.
  *
@@ -14,7 +16,7 @@ public class Leaf extends Element {
      * @param parent the parent of this Leaf, may not be <code>null</code> use {@link Root} as root
      */
     protected Leaf(Node parent) {
-        super((char) 0, parent);
+        super(AutoCompleter.TERM, parent);
     }
 
     /**
