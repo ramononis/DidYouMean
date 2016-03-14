@@ -70,6 +70,7 @@ public class AutoCompleter {
                 maxN = n;
             }
         }
+        assert maxN != null;
         if (maxN.getLetter() == TERM) {
             result = maxN.getWord();
         } else {

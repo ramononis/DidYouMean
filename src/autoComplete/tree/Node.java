@@ -53,12 +53,12 @@ public class Node extends Element {
     public Node(char letter, int maxWeight, Node parent) throws IllegalArgumentException {
         super(letter, maxWeight, parent);
         if (letter == 0) throw new IllegalArgumentException("letter may not be 0.");
-        children = new ConcurrentHashMap<Character, Element>();
+        children = new ConcurrentHashMap<>();
     }
 
     @Override
     public Set<Element> getChildren() {
-        return new HashSet<Element>(children.values());
+        return new HashSet<>(children.values());
     }
 
     @Override
@@ -88,7 +88,7 @@ public class Node extends Element {
      * otherwise the {@link Element} with the same letter that is already a child of this Node
      */
     public Element addNewChild(char letter) {
-        Element result = null;
+        Element result;
 
         if (children.containsKey(letter)) {
             result = children.get(letter);
@@ -101,16 +101,6 @@ public class Node extends Element {
         }
 
         return result;
-    }
-
-    /**
-     * Removes the specified child {@link Element} from this Node.
-     *
-     * @param element the {@link Element} to remove
-     * @return <code>true</code> if an {@link Element} was removed as a result of this call
-     */
-    public boolean removeChild(Element element) {
-        return children.values().remove(element);
     }
 
     @Override

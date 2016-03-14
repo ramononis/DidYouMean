@@ -100,7 +100,7 @@ public class CSVControl implements IDBControl {
         try {
             br = new BufferedReader(new FileReader(path));
 
-            while ((line = br.readLine()) != null) {
+            while (null != (line = br.readLine())) {
                 rawData.add(line);
             }
         } catch (IOException e) {

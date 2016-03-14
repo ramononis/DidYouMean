@@ -1,7 +1,5 @@
 package autoComplete.tree;
 
-import java.io.Serializable;
-
 /**
  * This class models the root of the tree.
  * The Root is a {@link Node} with no parent and no letter.

@@ -76,7 +76,7 @@ public abstract class Element {
      * @return a set containing all elements directly under this Element
      */
     public Set<Element> getChildren() {
-        return new HashSet<Element>();
+        return new HashSet<>();
     }
 
     /**
