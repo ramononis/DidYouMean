@@ -1,13 +1,10 @@
 package autoComplete;
 
 import autoComplete.tree.Element;
-import autoComplete.tree.Root;
 import autoComplete.tree.Node;
-import com.sun.xml.internal.fastinfoset.util.StringArray;
+import autoComplete.tree.Root;
 import database.CSVControl;
 import database.IDBControl;
-
-import util.TupleStringInt;
 
 import java.util.*;
 
@@ -44,7 +41,7 @@ public class AutoCompleter {
     private String maxNode(Set<Element> ns) {
         int maxWeight = -1;
         Element maxN = null;
-        String result = null;
+        String result;
         for (Element n : ns) {
             if (n.getWeight() > maxWeight) {
                 maxWeight = n.getWeight();
@@ -60,7 +57,7 @@ public class AutoCompleter {
     }
 
     private Set<Element> excludeKeyword(Element n, String k) {
-        Set<Element> result = new HashSet<Element>();
+        Set<Element> result = new HashSet<>();
         for (Element child : n.getChildren()) {
             if (child.getLetter() == k.charAt(0)) {
                 result.addAll(excludeKeyword(child, k.substring(1)));
@@ -103,12 +100,12 @@ public class AutoCompleter {
 
     private List<String> getTopKeywords(Root r, int c, String p) {
         p = p.toLowerCase();
-        List<String> result = new ArrayList<String>(c);
+        List<String> result = new ArrayList<>(c);
         Element n = searchElement(r, p);
         if (n == null) {
             return result;
         }
-        Set<Element> searchNodes = new HashSet<Element>();
+        Set<Element> searchNodes = new HashSet<>();
         searchNodes.addAll(n.getChildren());
         int i = 0;
         while (i++ < c && !searchNodes.isEmpty()) {
