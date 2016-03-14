@@ -28,7 +28,7 @@ public class AutoCompleter {
     }
 
     /**
-     * Gets data from the IDBControl and uses {@link #increment(Element, String, int) increment} to make a tree of this data.
+     * Gets data from {@link IDBControl#getData()} and uses {@link #increment(Element, String, int)} to make a tree of this data.
      */
     public void makeTree() {
         HashMap<String, Integer> data = DB.getData();
@@ -44,7 +44,7 @@ public class AutoCompleter {
      * The public method for requesting a top N best completions.
      * @param k the number of completions that are requested.
      * @param query the prefix that is currently in the search bar.
-     * @return a String Array of length {@param k} with the best suggestions for the prefix {@param query}.
+     * @return a String Array of length k with the best suggestions for the prefix query.
      */
     public String[] getTopN(int k, String query) {
         String[] r = new String[k];
@@ -55,11 +55,6 @@ public class AutoCompleter {
         return r;
     }
 
-    /**
-     *
-     * @param ns
-     * @return
-     */
     private String maxNode(Set<Element> ns) {
         int maxWeight = -1;
         Element maxN = null;

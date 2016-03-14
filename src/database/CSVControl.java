@@ -20,9 +20,9 @@ public class CSVControl implements IDBControl {
     private static final String[] FILENAMES = {"Data1.csv", "Data2.csv", "Data3.csv", "Data4.csv"};
 
     /**
-     * Provides the data from the CSV files in the correct format.
+     * Provides the data from the CSV files in the correct format using {@link #readCSV(String)}, {@link #filter(Set)} and {@link #process(Set)}
      *
-     * @return a hashmap<String, Integer> with the search term as key and its weight as value.
+     * @return a Hashmap with the search term as key and its weight as value.
      */
     @Override
     public HashMap<String, Integer> getData() {
@@ -40,10 +40,10 @@ public class CSVControl implements IDBControl {
     }
 
     /**
-     * Processes the data provided by filter().
+     * Processes the data provided by {@link #filter(Set) filter}.
      *
      * @param filteredData a set of string arrays which have a length of 3. Of the array the first element is the search term, the second the number of times it was searched and the third the percentage of search refinements.
-     * @return a hashmap<String, Integer> with the search term (null-terminated string) as key and its weight as value.
+     * @return a Hashmap with the search term (null-terminated string) as key and its weight as value.
      */
     private HashMap<String, Integer> process(Set<String[]> filteredData) {
         HashMap<String, Integer> data = new HashMap<>();

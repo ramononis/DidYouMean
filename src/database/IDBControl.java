@@ -9,7 +9,7 @@ import java.util.Set;
 /**
  * Interface for database control classes. Interacts with the database.
  *
- * @Author Tim
+ * @author Tim
  */
 public interface IDBControl {
     /**
