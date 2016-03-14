@@ -1,20 +1,14 @@
 package gui;
 
 import autoComplete.AutoCompleter;
-import com.sun.xml.internal.fastinfoset.util.StringArray;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.*;
-import java.util.List;
 
 /**
  * Displays a GUI and requests suggestions from AutoCompleter class. Also contains the main function to start the program.
@@ -39,7 +33,7 @@ public class GUI {
         JFrame frame = new JFrame();
         frame.setSize(400, 300);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        GridBagConstraints c = null;
+        GridBagConstraints c;
 
         JPanel manepane = new JPanel();
         manepane.setBackground(Color.blue);
@@ -114,21 +108,13 @@ public class GUI {
             }
         });
 
-        searchbar.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (e.getID() == 1001) {
-                    search(e);
-                }
-            }
-        });
-
-        searchbutton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
+        searchbar.addActionListener(e -> {
+            if (e.getID() == 1001) {
                 search(e);
             }
         });
+
+        searchbutton.addActionListener(e -> search(e));
 
         output.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent evt) { // TODO: something is clicked, do we do something with this?
@@ -150,7 +136,7 @@ public class GUI {
         searchbar.requestFocusInWindow();
     }
 
-    private void search(ActionEvent event) {
+    private void search(ActionEvent e) {
 
     }
 
