@@ -1,13 +1,9 @@
 package database;
 
-import util.TupleStringInt;
-
 import java.util.HashMap;
-import java.util.List;
-import java.util.Set;
 
 /**
- * Interface for database control classes. Interacts with the database.
+ * Interface for database control classes. Interacts with some type of database.
  *
  * @author Tim
  */

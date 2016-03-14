@@ -17,9 +17,9 @@ public abstract class Element {
      * Initializes a new Element.
      * The new Element is also directly added as child to the given parent, if possible.
      *
-     * @param letter the letter of this Element, or 0 for a Leaf (and -1 for the Root)
-     * @param weight the weight of this Element if it is a Leaf; the max weight of all sub Elements if this is a Node
-     * @param parent the parent of this Element
+     * @param letter the <code>letter</code> of this Element, or 0 for a {@link Leaf} (and -1 for the {@link Root})
+     * @param weight the <code>weight</code> of this Element if it is a {@link Leaf}; the max weight of all sub Elements if this is a {@link Node}
+     * @param parent the <code>parent</code> of this Element
      */
     public Element(char letter, int weight, Node parent) {
         this.letter = letter;
@@ -33,8 +33,8 @@ public abstract class Element {
     /**
      * Gets the letter of this Element.
      *
-     * @return the letter of this Element, or 0 for a Leaf
-     * @throws RuntimeException when this Element is the root because the root had no letter
+     * @return the letter of this Element, or 0 for a {@link Leaf}
+     * @throws RuntimeException when this Element is the root because {@link Root} had no letter
      */
     public char getLetter() {
         return letter;
@@ -52,7 +52,7 @@ public abstract class Element {
 
     /**
      * Sets the weight value of this Element.
-     * For a node this must be the max weight of all leafs under this node.
+     * For a {@link Node} this must be the max weight of all leafs under this node.
      *
      * @param weight the new weight value
      */
@@ -70,7 +70,7 @@ public abstract class Element {
     }
 
     /**
-     * Returns a set containing all elements directly under this Element.
+     * Returns a {@link Set} containing all elements directly under this Element.
      * If this Element has no children a empty set will be returned, never <code>null</code>.
      *
      * @return a set containing all elements directly under this Element
@@ -101,9 +101,9 @@ public abstract class Element {
     }
 
     /**
-     * Indicates if this Element is a Leaf.
+     * Indicates if this Element is a {@link Leaf}.
      *
-     * @return <code>true</code> when this Element is a Leaf; otherwise <code>false</code>
+     * @return <code>true</code> when this Element is a {@link Leaf}; otherwise <code>false</code>
      */
     public boolean isLeaf() {
         return false;
@@ -111,17 +111,18 @@ public abstract class Element {
     }
 
     /**
-     * Returns to word corresponding to the current node.
-     * @return A string corresponding to this node
+     * Returns the word corresponding to the current {@link Node}.
+     *
+     * @return A {@link String} corresponding to this {@link Node}
      */
     public String getWord() {
         return parent.getWord() + getLetter();
     }
 
     /**
-     * Indicates if this Element is the Root.
+     * Indicates if this Element is a {@link Root}.
      *
-     * @return <code>true</code> when this Element is the Root; otherwise <code>false</code>
+     * @return <code>true</code> when this Element is a {@link Root}; otherwise <code>false</code>
      */
     public boolean isRoot() {
         return false;

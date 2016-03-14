@@ -2,7 +2,7 @@ package autoComplete.tree;
 
 /**
  * This class models the root of the tree.
- * The Root is a Node with no parent and no letter.
+ * The Root is a {@link Node} with no parent and no letter.
  *
  * @author Frans
  */
@@ -16,10 +16,10 @@ public class Root extends Node {
     }
 
     /**
-     * Throws a RuntimeException because the Root had no letter.
+     * Throws a {@link RuntimeException} because the Root had no letter.
      *
-     * @return nothing because a RuntimeException will be thrown.
-     * @throws RuntimeException always throws a RuntimeException because the root had no letter.
+     * @return nothing because a {@link RuntimeException} will be thrown.
+     * @throws RuntimeException , always, because the root had no letter.
      */
     @Override
     public char getLetter() throws RuntimeException {
@@ -28,7 +28,7 @@ public class Root extends Node {
     }
 
     /**
-     * Indicates that this Element is the Root.
+     * Indicates that this {@link Element} is a Root.
      *
      * @return <code>true</code>
      */

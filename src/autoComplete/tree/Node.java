@@ -15,7 +15,7 @@ public class Node extends Element {
     /**
      * Initializes a new Node.
      *
-     * @param letter the letter of this Node (or -1 for the Root)
+     * @param letter the letter of this Node (or -1 for a {@link Root})
      */
     public Node(char letter) throws IllegalArgumentException {
         this(letter, 0, null);
@@ -25,7 +25,7 @@ public class Node extends Element {
      * Initializes a new Node.
      * The new Node is also directly added as child to the given parent, if possible.
      *
-     * @param letter the letter of this Node (or -1 for the Root)
+     * @param letter the letter of this Node (or -1 for a {@link Root})
      * @param parent    the parent of this Node
      */
     public Node(char letter, Node parent) throws IllegalArgumentException {
@@ -35,7 +35,7 @@ public class Node extends Element {
     /**
      * Initializes a new Node.
      *
-     * @param letter    the letter of this Node (or -1 for the Root)
+     * @param letter    the letter of this Node (or -1 for the {@link Root})
      * @param maxWeight the max weight of all sub Nodes
      */
     public Node(char letter, int maxWeight) throws IllegalArgumentException {
@@ -46,7 +46,7 @@ public class Node extends Element {
      * Initializes a new Node.
      * The new Node is also directly added as child to the given parent, if possible.
      *
-     * @param letter    the letter of this Node (or -1 for the Root)
+     * @param letter    the letter of this Node (or -1 for the {@link Root})
      * @param maxWeight the max weight of all sub Nodes
      * @param parent    the parent of this Node
      */
@@ -73,9 +73,9 @@ public class Node extends Element {
 
     /**
      * Adds a new child to this node if there is not already a child with the same letter.
-     * @param element the Element to add as child
-     * @return <code>null</code> if the Element was added;
-     * otherwise the Element with the same letter that is already a child of this Node
+     * @param element the {@link Element} to add as child
+     * @return <code>null</code> if the {@link Element} was added;
+     * otherwise the {@link Element} with the same letter that is already a child of this Node
      */
     public Element addChild(Element element) {
         return children.putIfAbsent(element.getLetter(), element);
@@ -83,9 +83,9 @@ public class Node extends Element {
 
     /**
      * Creates and adds a new child to this node if not already a child with the same letter.
-     * @param letter the letter of the new Element, 0 for a Leaf.
-     * @return the new added Element if there was not already a child with the same letter;
-     * otherwise the Element with the same letter that is already a child of this Node
+     * @param letter the letter of the new {@link Element}, 0 for a Leaf.
+     * @return the new added {@link Element} if there was not already a child with the same letter;
+     * otherwise the {@link Element} with the same letter that is already a child of this Node
      */
     public Element addNewChild(char letter) {
         Element result = null;
@@ -104,10 +104,10 @@ public class Node extends Element {
     }
 
     /**
-     * Removes the specified child Element from this Node.
+     * Removes the specified child {@link Element} from this Node.
      *
-     * @param element the Element to remove
-     * @return <code>true</code> if an Element was removed as a result of this call
+     * @param element the {@link Element} to remove
+     * @return <code>true</code> if an {@link Element} was removed as a result of this call
      */
     public boolean removeChild(Element element) {
         return children.values().remove(element);

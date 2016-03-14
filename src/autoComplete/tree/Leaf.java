@@ -29,7 +29,7 @@ public class Leaf extends Element {
     }
 
     /**
-     * Indicates that this Element is a Leaf.
+     * Indicates that this {@link Element} is a Leaf.
      *
      * @return <code>true</code>
      */
