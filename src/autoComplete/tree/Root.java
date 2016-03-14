@@ -6,13 +6,13 @@ package autoComplete.tree;
  *
  * @author Frans
  */
-public class Root extends Node{
+public class Root extends Node {
 
     /**
      * Initializes a new Root.
      */
     public Root() {
-        super((char) -1);
+        super((char) -1, null);
     }
 
     /**
@@ -27,6 +27,11 @@ public class Root extends Node{
         throw new RuntimeException("I'm root, I has no letter!");
     }
 
+    @Override
+    public String getWord() {
+        return "";
+    }
+
     /**
      * Indicates that this {@link Element} is a Root.
      *
@@ -35,11 +40,6 @@ public class Root extends Node{
     @Override
     public boolean isRoot() {
         return true;
-    }
-
-    @Override
-    public String getWord() {
-        return "";
     }
 
     @Override

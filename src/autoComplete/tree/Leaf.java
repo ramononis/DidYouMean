@@ -9,23 +9,12 @@ public class Leaf extends Element {
 
     /**
      * Initializes a new Leaf.
-     * The new Leaf is also directly added as child to the given parent, if possible.
+     * The new Leaf is not added as child to the given parent.
      *
-     * @param parent the parent of this Leaf
+     * @param parent the parent of this Leaf, may not be <code>null</code> use {@link Root} as root
      */
-    public Leaf(Node parent) {
-        this(0, parent);
-    }
-
-    /**
-     * Initializes a new Leaf.
-     * The new Leaf is also directly added as child to the given parent, if possible.
-     *
-     * @param weight the weight of this Leaf if it is a Leaf
-     * @param parent the parent of this Leaf
-     */
-    public Leaf(int weight, Node parent) {
-        super((char) 0, weight, parent);
+    protected Leaf(Node parent) {
+        super((char) 0, parent);
     }
 
     /**

@@ -14,45 +14,13 @@ public class Node extends Element {
 
     /**
      * Initializes a new Node.
+     * The new Node is not added as child to the given parent.
      *
      * @param letter the letter of this Node (or -1 for a {@link Root})
+     * @param parent the parent of this Node, may not be <code>null</code> use {@link Root} as root
      */
-    public Node(char letter) throws IllegalArgumentException {
-        this(letter, 0, null);
-    }
-
-    /**
-     * Initializes a new Node.
-     * The new Node is also directly added as child to the given parent, if possible.
-     *
-     * @param letter the letter of this Node (or -1 for a {@link Root})
-     * @param parent    the parent of this Node
-     */
-    public Node(char letter, Node parent) throws IllegalArgumentException {
-        this(letter, 0, parent);
-    }
-
-    /**
-     * Initializes a new Node.
-     *
-     * @param letter    the letter of this Node (or -1 for the {@link Root})
-     * @param maxWeight the max weight of all sub Nodes
-     */
-    public Node(char letter, int maxWeight) throws IllegalArgumentException {
-        this(letter, maxWeight, null);
-    }
-
-    /**
-     * Initializes a new Node.
-     * The new Node is also directly added as child to the given parent, if possible.
-     *
-     * @param letter    the letter of this Node (or -1 for the {@link Root})
-     * @param maxWeight the max weight of all sub Nodes
-     * @param parent    the parent of this Node
-     */
-    public Node(char letter, int maxWeight, Node parent) throws IllegalArgumentException {
-        super(letter, maxWeight, parent);
-        if (letter == 0) throw new IllegalArgumentException("letter may not be 0.");
+    protected Node(char letter, Node parent) {
+        super(letter, parent);
         children = new ConcurrentHashMap<>();
     }
 
@@ -72,22 +40,29 @@ public class Node extends Element {
     }
 
     /**
-     * Adds a new child to this node if there is not already a child with the same letter.
-     * @param element the {@link Element} to add as child
-     * @return <code>null</code> if the {@link Element} was added;
-     * otherwise the {@link Element} with the same letter that is already a child of this Node
+     * Adds the given (sub)keyword to this Node,
+     * when already present the given weight is added to the current weight.
+     *
+     * @param k the keyword, must be terminated with a null char.
+     * @param w the weight
      */
-    public Element addChild(Element element) {
-        return children.putIfAbsent(element.getLetter(), element);
+    public void addOrIncrementWord(String k, int w) {
+        Element child = addOrGetChild(k.charAt(0));
+        if (child instanceof Leaf) {
+            child.setWeight(child.getWeight() + w);
+        } else {
+            ((Node) child).addOrIncrementWord(k.substring(1), w);
+        }
     }
 
     /**
      * Creates and adds a new child to this node if not already a child with the same letter.
+     *
      * @param letter the letter of the new {@link Element}, 0 for a Leaf.
      * @return the new added {@link Element} if there was not already a child with the same letter;
      * otherwise the {@link Element} with the same letter that is already a child of this Node
      */
-    public Element addNewChild(char letter) {
+    private Element addOrGetChild(char letter) {
         Element result;
 
         if (children.containsKey(letter)) {
@@ -98,13 +73,14 @@ public class Node extends Element {
             } else {
                 result = new Node(letter, this);
             }
+            children.put(letter, result);
         }
 
         return result;
     }
 
     @Override
-    public String toString(){
+    public String toString() {
         return "Node(" + getLetter() + ", " + getWeight() + ")";
     }
 }

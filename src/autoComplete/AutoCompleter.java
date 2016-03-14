@@ -1,7 +1,6 @@
 package autoComplete;
 
 import autoComplete.tree.Element;
-import autoComplete.tree.Node;
 import autoComplete.tree.Root;
 import database.CSVControl;
 import database.IDBControl;
@@ -28,21 +27,21 @@ public class AutoCompleter {
     }
 
     /**
-     * Gets data from {@link IDBControl#getData()} and uses {@link #increment(Element, String, int)} to make a tree of this data.
+     * Gets data from {@link IDBControl#getData()}, creates a new {@link Root}
+     * and uses {@link Root#addOrIncrementWord(String, int)} to make a tree of this data.
      */
     private void makeTree() {
         HashMap<String, Integer> data = DB.getData();
 
         tree = new Root();
 
-        for (String key : data.keySet()) {
-            increment(tree, key, data.get(key));
-        }
+        data.entrySet().forEach(entry -> tree.addOrIncrementWord(entry.getKey(), entry.getValue()));
     }
 
     /**
      * The public method for requesting a top N best completions.
-     * @param k the number of completions that are requested.
+     *
+     * @param k     the number of completions that are requested.
      * @param query the prefix that is currently in the search bar.
      * @return a String Array of length k with the best suggestions for the prefix query.
      */
@@ -57,6 +56,7 @@ public class AutoCompleter {
 
     /**
      * Recursively searches for the {@link String}-value of the node with the highest weight in {@code ns}(including their subtrees).
+     *
      * @param ns The subtrees to search in.
      * @return The {@link String} corresponding to the value of {@link Element#getWord} getWord of the highest weighed element.
      */
@@ -82,10 +82,11 @@ public class AutoCompleter {
     /**
      * Returns the smallest possible set of elements that do not contain the element corresponding to {@code k}
      * (using {@code n} as starting point)
+     *
      * @param n The element to be used as root.
      * @param k The keyword to exclude from the subtree of {@code n}
      * @return The smallest possible {@link Set} containing all elements whose
-     *          subtrees does not contain the element corresponding to {@code k}
+     * subtrees does not contain the element corresponding to {@code k}
      */
     private Set<Element> excludeKeyword(Element n, String k) {
         Set<Element> result = new HashSet<>();
@@ -102,6 +103,7 @@ public class AutoCompleter {
     /**
      * Searches for the element in the subtree of <code>n</code> corresponding to <code>p</code>.
      * If <code>n</code> is a {@link Root}, {@link Element#getWord getWord} of the result will return {@code p}.
+     *
      * @param n The element to start to search in
      * @param p The string to search for in the subtree of (@code n}
      * @return The element that was found, or {@code null} if it doesn't exist
@@ -118,26 +120,8 @@ public class AutoCompleter {
     }
 
     /**
-     * Increments the weight of the given keyword, creates the keyword if it doesn't exist yet.
-     *
-     * @param n the root node.
-     * @param k the keyword.
-     * @param d the weight to add.
-     * @return the new weight of the keyword.
-     */
-    private int increment(Element n, String k, int d) {
-        if (k.equals("")) {
-            n.setWeight(n.getWeight() + d);
-            return n.getWeight();
-        }
-        Element child = ((Node) n).addNewChild(k.charAt(0));
-        n.setWeight(Math.max(n.getWeight(), increment(child, k.substring(1), d)));
-
-        return n.getWeight();
-    }
-
-    /**
      * Searches for the <code>c</code> keywords in <code>r</code> with the highest score beginning with <code>p</code>.
+     *
      * @param r The root of the tree to search in
      * @param c The amount of keywords to be return
      * @param p The prefix all the resulting keywords must have
@@ -160,7 +144,7 @@ public class AutoCompleter {
                 String word = e.getWord();
                 if (keyword.startsWith(word)) {
                     searchNodes.remove(e);
-                    searchNodes.addAll(excludeKeyword(e, keyword.replaceFirst(word,"")));
+                    searchNodes.addAll(excludeKeyword(e, keyword.replaceFirst(word, "")));
                     break; //i'm sorry, don't kill me for using break...
                 }
             }

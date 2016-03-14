@@ -15,19 +15,24 @@ public abstract class Element {
 
     /**
      * Initializes a new Element.
-     * The new Element is also directly added as child to the given parent, if possible.
+     * The new Element is not added as child to the given parent.
      *
      * @param letter the <code>letter</code> of this Element, or 0 for a {@link Leaf} (and -1 for the {@link Root})
-     * @param weight the <code>weight</code> of this Element if it is a {@link Leaf}; the max weight of all sub Elements if this is a {@link Node}
-     * @param parent the <code>parent</code> of this Element
+     * @param parent the <code>parent</code> of this Element, may only be <code>null</code> for {@link Root}
      */
-    public Element(char letter, int weight, Node parent) {
-        this.letter = letter;
-        this.weight = weight;
-        this.parent = parent;
-        if (parent != null) {
-            parent.addChild(this);
+    protected Element(char letter, Node parent) {
+        if (parent == null && !(this instanceof Root)) {
+            throw new IllegalArgumentException("Every element except Root must have a parent!");
         }
+        if (letter == (char) 0 && !(this instanceof Leaf)) {
+            throw new IllegalArgumentException("Letter may not be 0, except for leaves.");
+        }
+        if (letter == (char) -1 && !(this instanceof Root)) {
+            throw new IllegalArgumentException("Letter may not be 0, except for the root.");
+        }
+
+        this.letter = letter;
+        this.parent = parent;
     }
 
     /**
@@ -38,6 +43,15 @@ public abstract class Element {
      */
     public char getLetter() {
         return letter;
+    }
+
+    /**
+     * Returns the word corresponding to the current {@link Node}.
+     *
+     * @return A {@link String} corresponding to this {@link Node}
+     */
+    public String getWord() {
+        return parent.getWord() + getLetter();
     }
 
     /**
@@ -53,11 +67,16 @@ public abstract class Element {
     /**
      * Sets the weight value of this Element.
      * For a {@link Node} this must be the max weight of all leafs under this node.
+     * Also changes the weight of the parent if necessary.
      *
      * @param weight the new weight value
      */
-    public void setWeight(int weight) {
+    protected void setWeight(int weight) {
         this.weight = weight;
+        Node parent = getParent();
+        if (parent != null && parent.getWeight() < weight) {
+            parent.setWeight(weight);
+        }
     }
 
     /**
@@ -108,15 +127,6 @@ public abstract class Element {
     public boolean isLeaf() {
         return false;
         //return letter == 0;
-    }
-
-    /**
-     * Returns the word corresponding to the current {@link Node}.
-     *
-     * @return A {@link String} corresponding to this {@link Node}
-     */
-    public String getWord() {
-        return parent.getWord() + getLetter();
     }
 
     /**
