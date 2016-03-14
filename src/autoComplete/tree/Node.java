@@ -48,7 +48,7 @@ public class Node extends Element {
      */
     public void addOrIncrementWord(String k, int w) {
         Element child = addOrGetChild(k.charAt(0));
-        if (child instanceof Leaf) {
+        if (child.isLeaf()) {
             child.setWeight(child.getWeight() + w);
         } else {
             ((Node) child).addOrIncrementWord(k.substring(1), w);

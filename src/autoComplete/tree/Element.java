@@ -23,13 +23,13 @@ public abstract class Element {
      * @param parent the <code>parent</code> of this Element, may only be <code>null</code> for {@link Root}
      */
     protected Element(char letter, Node parent) {
-        if (parent == null && !(this instanceof Root)) {
+        if (parent == null && !this.isRoot()) {
             throw new IllegalArgumentException("Every element except Root must have a parent!");
         }
-        if (letter == AutoCompleter.TERM && !(this instanceof Leaf)) {
+        if (letter == AutoCompleter.TERM && !this.isLeaf()) {
             throw new IllegalArgumentException("Letter may not be 0, except for leaves.");
         }
-        if (letter == (char) -1 && !(this instanceof Root)) {
+        if (letter == (char) -1 && !this.isRoot()) {
             throw new IllegalArgumentException("Letter may not be 0, except for the root.");
         }
 
