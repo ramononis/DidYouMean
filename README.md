@@ -1,4 +1,3 @@
 # DidYouMean
-For KRAMP
 
-If you all use IntelliJ IDEA, that would be nice. Then nothing will break because of that at least.
+A auto-completer and a did-you-mean function. It is demo'd through a simple gui.
