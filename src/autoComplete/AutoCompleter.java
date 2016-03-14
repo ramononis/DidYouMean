@@ -102,6 +102,7 @@ public class AutoCompleter {
     }
 
     private List<String> getTopKeywords(Root r, int c, String p) {
+        p = p.toLowerCase();
         List<String> result = new ArrayList<String>(c);
         Element n = searchElement(r, p);
         if (n == null) {
