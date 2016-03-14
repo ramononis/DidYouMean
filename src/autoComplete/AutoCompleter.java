@@ -56,16 +56,10 @@ public class AutoCompleter {
      * @return The {@link String} corresponding to the value of {@link Element#getWord} getWord of the highest weighed element.
      */
     private String maxNode(Set<Element> ns) {
-        int maxWeight = -1;
-        Element maxN = null;
         String result;
-        for (Element n : ns) {
-            if (n.getWeight() > maxWeight) {
-                maxWeight = n.getWeight();
-                maxN = n;
-            }
-        }
-        assert maxN != null;
+
+        Element maxN = Collections.max(ns, (o1, o2) -> o1.getWeight() - o2.getWeight());
+
         if (maxN.getLetter() == TERM) {
             result = maxN.getWord();
         } else {
