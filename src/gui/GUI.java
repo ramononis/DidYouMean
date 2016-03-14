@@ -55,7 +55,7 @@ public class GUI {
         c.weightx = 1;
         c.weighty = 1;
         c.gridx = 0;
-        c.gridy = 0;
+        c.gridy = 1;
         manepane.add(listpane, c);
 
         JPanel terminane = new JPanel();
@@ -65,7 +65,7 @@ public class GUI {
         c.fill = GridBagConstraints.HORIZONTAL;
         c.gridheight = 1;
         c.gridx = 0;
-        c.gridy = 7;
+        c.gridy = 0;
         manepane.add(terminane, c);
 
         outputList = new String[0];
