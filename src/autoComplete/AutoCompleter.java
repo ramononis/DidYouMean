@@ -9,26 +9,43 @@ import database.IDBControl;
 import java.util.*;
 
 /**
- * Created by Tim on 23-2-2016.
+ * Main class for auto-completion. The GUI has an instance of this class and requests suggested completions.
+ * The AutoCompleter class uses IDBControl, a tree (made of Elements) and several private functions to give the suggested completions.
+ *
+ * @author Tim
  */
 public class AutoCompleter {
     public final static char TERM = '\0';
     private IDBControl DB;
-    private Root tree = new Root();
+    private Root tree;
 
+    /**
+     * Initializes a new AutoCompleter.
+     */
     public AutoCompleter() {
         this.DB = new CSVControl();
         makeTree();
     }
 
+    /**
+     * Gets data from the IDBControl and uses {@link #increment(Element, String, int) increment} to make a tree of this data.
+     */
     public void makeTree() {
         HashMap<String, Integer> data = DB.getData();
+
+        tree = new Root();
 
         for (String key : data.keySet()) {
             increment(tree, key, data.get(key));
         }
     }
 
+    /**
+     * The public method for requesting a top N best completions.
+     * @param k the number of completions that are requested.
+     * @param query the prefix that is currently in the search bar.
+     * @return a String Array of length {@param k} with the best suggestions for the prefix {@param query}.
+     */
     public String[] getTopN(int k, String query) {
         String[] r = new String[k];
         List<String> suggestions = getTopKeywords(tree, k, query);
@@ -38,6 +55,11 @@ public class AutoCompleter {
         return r;
     }
 
+    /**
+     *
+     * @param ns
+     * @return
+     */
     private String maxNode(Set<Element> ns) {
         int maxWeight = -1;
         Element maxN = null;
