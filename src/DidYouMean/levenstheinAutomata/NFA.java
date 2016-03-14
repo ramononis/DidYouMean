@@ -1,7 +1,5 @@
 package DidYouMean.levenstheinAutomata;
 
-import java.util.HashSet;
-
 /**
  * Created by Tim on 3/9/2016.
  */

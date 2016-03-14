@@ -136,10 +136,18 @@ public class GUI {
         searchbar.requestFocusInWindow();
     }
 
+    /**
+     * Searches for the word that is currently in the searchbar.
+     * @param e the {@link ActionEvent} that triggered the search
+     */
     private void search(ActionEvent e) {
 
     }
 
+    /**
+     * Updates the output list and the output on the screen
+     * @param newoutput the new {@link String[]} that should be displayed.
+     */
     private void updateOutput(String[] newoutput) {
         outputList = newoutput;
         output.setListData(outputList);

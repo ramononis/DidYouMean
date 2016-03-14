@@ -2,10 +2,8 @@ package DidYouMean;
 
 import autoComplete.tree.Node;
 import autoComplete.tree.Root;
-import database.CSVControl;
 import database.IDBControl;
 
-import java.util.HashMap;
 import java.util.HashSet;
 
 /**
