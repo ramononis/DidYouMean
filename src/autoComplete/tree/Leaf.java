@@ -37,4 +37,9 @@ public class Leaf extends Element {
     public boolean isLeaf() {
         return true;
     }
+
+    @Override
+    public String toString() {
+        return "Leaf(" + getWeight() + ")";
+    }
 }

@@ -113,7 +113,8 @@ public class Node extends Element {
         return children.values().remove(element);
     }
 
+    @Override
     public String toString(){
-        return "" + getLetter() + ": " + getWeight();
+        return "Node(" + getLetter() + ", " + getWeight() + ")";
     }
 }

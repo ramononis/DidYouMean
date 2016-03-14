@@ -37,12 +37,13 @@ public class Root extends Node {
         return true;
     }
 
-    public String toString() {
-        return "Root";
-    }
-
     @Override
     public String getWord() {
         return "";
+    }
+
+    @Override
+    public String toString() {
+        return "Root(" + getWeight() + ")";
     }
 }
