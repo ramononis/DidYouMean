@@ -19,8 +19,8 @@ public abstract class Element {
      * Initializes a new Element.
      * The new Element is not added as child to the given parent.
      *
-     * @param letter the <code>letter</code> of this Element, or 0 for a {@link Leaf} (and -1 for the {@link Root})
-     * @param parent the <code>parent</code> of this Element, may only be <code>null</code> for {@link Root}
+     * @param letter the {@code letter} of this Element, or 0 for a {@link Leaf} (and -1 for the {@link Root})
+     * @param parent the {@code parent} of this Element, may only be {@code null} for {@link Root}
      */
     Element(char letter, Node parent) {
         if (parent == null && !this.isRoot()) {
@@ -84,7 +84,7 @@ public abstract class Element {
     /**
      * Gets the parent of this Element.
      *
-     * @return the parent of this Element; or <code>null</code> when this Element has no parent
+     * @return the parent of this Element; or {@code null} when this Element has no parent
      */
     public Node getParent() {
         return parent;
@@ -92,7 +92,7 @@ public abstract class Element {
 
     /**
      * Returns a {@link Set} containing all elements directly under this Element.
-     * If this Element has no children a empty set will be returned, never <code>null</code>.
+     * If this Element has no children a empty set will be returned, never {@code null}.
      *
      * @return a set containing all elements directly under this Element
      */
@@ -104,7 +104,7 @@ public abstract class Element {
      * Checks if this Element has a child with the given letter.
      *
      * @param letter the letter
-     * @return <code>true</code> when this Element has a child with the given letter; otherwise <code>false</code>
+     * @return {@code true} when this Element has a child with the given letter; otherwise {@code false}
      */
     public boolean hasChild(char letter) {
         return false;
@@ -115,7 +115,7 @@ public abstract class Element {
      *
      * @param letter the letter
      * @return the child of this Element with the given letter;
-     * or <code>null</code> when this Element has no child with the given letter
+     * or {@code null} when this Element has no child with the given letter
      */
     public Element getChild(char letter) {
         return null;
@@ -143,7 +143,7 @@ public abstract class Element {
     /**
      * Indicates if this Element is a {@link Leaf}.
      *
-     * @return <code>true</code> when this Element is a {@link Leaf}; otherwise <code>false</code>
+     * @return {@code true} when this Element is a {@link Leaf}; otherwise {@code false}
      */
     public boolean isLeaf() {
         return false;
@@ -153,7 +153,7 @@ public abstract class Element {
     /**
      * Indicates if this Element is a {@link Root}.
      *
-     * @return <code>true</code> when this Element is a {@link Root}; otherwise <code>false</code>
+     * @return {@code true} when this Element is a {@link Root}; otherwise {@code false}
      */
     public boolean isRoot() {
         return false;
