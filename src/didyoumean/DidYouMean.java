@@ -24,7 +24,7 @@ public class DidYouMean {
      * Creates a NFA from a given word.
      * @param word The word the NFA should be made from.
      * @param errorRange The error range that the words should be in.
-     * @return The NFA made from the <code>word</code>.
+     * @return The NFA made from the {@code word}.
      */
     public NFA makeNFAFromWord(String word, int errorRange){
         return new NFA(0,0);
@@ -41,7 +41,7 @@ public class DidYouMean {
     /**
      * Creates a DFA from a given NFA.
      * @param nfa The NFA that should be transformed.
-     * @return The DFA that was made from the <code>nfa</code>.
+     * @return The DFA that was made from the {@code nfa}.
      */
     public DFA makeDFAFromNFA(NFA nfa){
         DFA result = new DFA(new State(0,0,0,true));

@@ -17,7 +17,7 @@ public class Node extends Element {
      * The new Node is not added as child to the given parent.
      *
      * @param letter the letter of this Node (or -1 for a {@link Root})
-     * @param parent the parent of this Node, may not be <code>null</code> use {@link Root} as root
+     * @param parent the parent of this Node, may not be {@code null} use {@link Root} as root
      */
     Node(char letter, Node parent) {
         super(letter, parent);

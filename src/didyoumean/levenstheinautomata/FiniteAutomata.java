@@ -38,7 +38,7 @@ public class FiniteAutomata {
     /**
      * Checks whether or not a State is an accepting state.
      * @param state The State to be checked.
-     * @return Whether State <code>state</code> is an accepting state.
+     * @return Whether State {@code state} is an accepting state.
      */
     public boolean isFinalState(State state){
         return getAcceptingStates().contains(state);

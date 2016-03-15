@@ -54,7 +54,7 @@ public class Root extends Node {
     /**
      * Indicates that this {@link Element} is a Root.
      *
-     * @return <code>true</code>
+     * @return {@code true}
      */
     @Override
     public boolean isRoot() {

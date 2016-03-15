@@ -28,11 +28,11 @@ public class DFA extends FiniteAutomata{
     }
 
     /**
-     * Gets the next State according to a given <code>state</code> and <code>letter</code>.
+     * Gets the next State according to a given {@code state} and {@code letter}.
      * @param state The state of the starting State.
-     * @param letter The letter that is on the Transition from <code>state</code> to possibly another State.
-     * @return The State <code>state</code> connects to via <code>letter</code>. If there is no such State,
-     * returns <code>null</code>.
+     * @param letter The letter that is on the Transition from {@code state} to possibly another State.
+     * @return The State {@code state} connects to via {@code letter}. If there is no such State,
+     * returns {@code null}.
      */
     public State nextState(State state, char letter){
         return getTransitions().getStateByEdge(state, letter);

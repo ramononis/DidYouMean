@@ -13,7 +13,7 @@ public class Leaf extends Element {
      * Initializes a new Leaf.
      * The new Leaf is not added as child to the given parent.
      *
-     * @param parent the parent of this Leaf, may not be <code>null</code> use {@link Root} as root
+     * @param parent the parent of this Leaf, may not be {@code null} use {@link Root} as root
      */
     Leaf(Node parent) {
         super(Algorithm.TERM, parent);
@@ -22,7 +22,7 @@ public class Leaf extends Element {
     /**
      * Indicates that this {@link Element} is a Leaf.
      *
-     * @return <code>true</code>
+     * @return {@code true}
      */
     @Override
     public boolean isLeaf() {

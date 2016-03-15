@@ -15,9 +15,9 @@ public class TransitionSet {
     }
 
     /**
-     * Gets a set of transitions that have <code>state</code> as its start.
+     * Gets a set of transitions that have {@code state} as its start.
      * @param state The state the transitions are sought from.
-     * @return Set of transitions that start from <code>state</code>. May be empty.
+     * @return Set of transitions that start from {@code state}. May be empty.
      */
     public Set<Transition> getTransitionsByState(State state){
        Set<Transition> result = transitions.get(state);
@@ -28,20 +28,20 @@ public class TransitionSet {
     }
 
     /**
-     * Gets a set of states that are connected to <code>state</code>, with <code>state</code>
+     * Gets a set of states that are connected to {@code state}, with {@code state}
      * being the start state.
      * @param state The State that the connected States are sought from.
-     * @return Set of states connected to <code>state</code>. May be empty.
+     * @return Set of states connected to {@code state}. May be empty.
      */
     public Set<State> getConnectedStatesByState(State state){
         return getTransitionsByState(state).stream().map(Transition::getToState).collect(Collectors.toSet());
     }
 
     /**
-     * Gets the next State of a State <code>state</code> when applying letter <code>letter</code>.
+     * Gets the next State of a State {@code state} when applying letter {@code letter}.
      * @param state The starting State.
-     * @param letter The letter that connects <code>state</code> with another State.
-     * @return The state that connects with <code>state</code> if there is one, <code>null</code> if there
+     * @param letter The letter that connects {@code state} with another State.
+     * @return The state that connects with {@code state} if there is one, {@code null} if there
      * is no such state.
      */
     public State getStateByEdge(State state, char letter){
@@ -57,10 +57,10 @@ public class TransitionSet {
     }
 
     /**
-     * Gets the next States of a State <code>state</code> when applying letter <code>letter</code>.
+     * Gets the next States of a State {@code state} when applying letter {@code letter}.
      * @param state The starting State.
-     * @param letter The letter that connects <code>state</code> with another State.
-     * @return The state that connects with <code>state</code> if there is one, <code>null</code> if there
+     * @param letter The letter that connects {@code state} with another State.
+     * @return The state that connects with {@code state} if there is one, {@code null} if there
      * is no such state.
      */
     public Set<State> getStatesByEdge(State state, char letter){

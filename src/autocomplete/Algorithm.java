@@ -60,12 +60,12 @@ public final class Algorithm {
     }
 
     /**
-     * Searches for the <code>c</code> keywords in <code>r</code> with the highest score beginning with <code>p</code>.
+     * Searches for the {@code c} keywords in {@code r} with the highest score beginning with {@code p}.
      *
      * @param r The root of the tree to search in
      * @param c The amount of keywords to be return
      * @param p The prefix all the resulting keywords must have
-     * @return A list with at most <code>c</code> keywords(less than <code>c</code> if no more could be found).
+     * @return A list with at most {@code c} keywords(less than {@code c} if no more could be found).
      */
     public static List<String> getTopKeywords(Root r, int c, String p) {
         p = p.toLowerCase();

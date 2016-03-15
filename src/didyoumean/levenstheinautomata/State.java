@@ -64,7 +64,7 @@ public class State {
     /**
      * Checks whether 2 states are equal. This is only true iff n1 == n2 and p1 == p2.
      * @param argState the State to compare.
-     * @return Whether this State and <code>argState</code> are equal.
+     * @return Whether this State and {@code argState} are equal.
      */
     public boolean equals(State argState){
         return (argState.getE() == getE() && argState.getN() == argState.getN());
