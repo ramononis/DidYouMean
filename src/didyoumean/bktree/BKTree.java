@@ -94,7 +94,7 @@ public class BKTree {
         tree.add("Tekt");
         tree.add("accu");
         BKTree bkTree = new BKTree();
-        bkTree.addData(new CSVControl().getData());
+        // TODO: clean die sjeit -- bkTree.addData(new CSVControl().getData());
         bkTree.buildTree(tree);
         bkTree.printTree(bkTree.getRoot());
         for(String s : bkTree.searchTree(bkTree.getRoot(),"Gest",4)){

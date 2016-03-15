@@ -1,6 +1,7 @@
 package gui;
 
 import autocomplete.AutoCompleter;
+import database.CSVControl;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -18,6 +19,8 @@ import java.awt.event.MouseEvent;
 public class GUI {
     private static final int NSUGGESTIONS = 5;
 
+    private static final String[] FILENAMES = {"./csv/Data1.csv", "./csv/Data2.csv", "./csv/Data3.csv", "./csv/Data4.csv"};
+
     private AutoCompleter AC;
 
     String[] outputList;
@@ -27,7 +30,7 @@ public class GUI {
      * Initializes new GUI.
      */
     public GUI() {
-        AC = new AutoCompleter();
+        AC = new AutoCompleter(new CSVControl(FILENAMES));
 
         // first just make a gui
         JFrame frame = new JFrame();

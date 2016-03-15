@@ -21,8 +21,12 @@ public class AutoCompleter {
     /**
      * Initializes a new AutoCompleter.
      */
-    public AutoCompleter() {
-        this.DB = new CSVControl();
+    public AutoCompleter(IDBControl idb) {
+        this.DB = idb;
+        makeTree();
+    }
+
+    public void resetTree(){
         makeTree();
     }
 

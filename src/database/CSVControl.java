@@ -15,8 +15,15 @@ import java.util.Set;
  * @author Tim
  */
 public class CSVControl implements IDBControl {
-    private static final String DATALOCATION = "./csv/";
-    private static final String[] FILENAMES = {"Data1.csv", "Data2.csv", "Data3.csv", "Data4.csv"};
+    private String[] paths;
+
+    /**
+     * Initializes a new CSVControl.
+     * @param paths a {@link String[]} that represent paths to (cleaned) CSV files
+     */
+    public CSVControl(String[] paths) {
+        this.paths = paths;
+    }
 
     /**
      * Provides the data from the CSV files in the correct format using {@link #readCSV(String)}, {@link #filter(Set)} and {@link #process(Set)}
@@ -24,11 +31,12 @@ public class CSVControl implements IDBControl {
      * @return a Hashmap with the search term as key and its weight as value.
      */
     @Override
+
     public HashMap<String, Integer> getData() {
         Set<String> rawData = new HashSet<>();
 
-        for (String file : FILENAMES) {
-            rawData.addAll(readCSV(DATALOCATION + file));
+        for (String file : paths) {
+            rawData.addAll(readCSV(file));
         }
 
         Set<String[]> filteredData = filter(rawData);

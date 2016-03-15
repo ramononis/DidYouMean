@@ -1,8 +1,6 @@
 package didyoumean;
 
-import didyoumean.levenstheinautomata.DFA;
-import didyoumean.levenstheinautomata.NFA;
-import didyoumean.levenstheinautomata.State;
+import didyoumean.levenstheinautomata.*;
 import database.CSVControl;
 import database.IDBControl;
 
@@ -13,13 +11,15 @@ import java.util.HashMap;
  */
 public class DidYouMean {
 
+    private static final String[] FILENAMES = {"./csv/Data1.csv", "./csv/Data2.csv", "./csv/Data3.csv", "./csv/Data4.csv"};
+
+    private HashMap<String, Integer> data;
+    private IDBControl databaseController = new CSVControl(FILENAMES);
+    private TreeControlDYM treeControl = new TreeControlDYM(databaseController);
+
     public DidYouMean(){
         fillInData();
     }
-
-    private HashMap<String, Integer> data;
-    private IDBControl databaseController = new CSVControl();
-    private TreeControlDYM treeControl = new TreeControlDYM(databaseController);
 
     /**
      * Creates a NFA from a given word.
