@@ -6,7 +6,9 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
 /**
- * Created by Tim on 15-3-2016.
+ * Tests the IDBControl.
+ *
+ * @author Tim
  */
 public class IDBControlTest {
 
