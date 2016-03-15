@@ -2,12 +2,12 @@ package gui;
 
 import autocomplete.AutoCompleter;
 import database.CSVControl;
+import didyoumean.DidYouMean;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -22,6 +22,7 @@ public class GUI {
     private static final String[] FILENAMES = {"./csv/Data1.csv", "./csv/Data2.csv", "./csv/Data3.csv", "./csv/Data4.csv"};
 
     private AutoCompleter AC;
+    private DidYouMean DYM;
 
     String[] outputList;
     JList<String> output;
@@ -31,6 +32,7 @@ public class GUI {
      */
     public GUI() {
         AC = new AutoCompleter(new CSVControl(FILENAMES));
+        DYM = new DidYouMean();
 
         // first just make a gui
         JFrame frame = new JFrame();
@@ -113,11 +115,11 @@ public class GUI {
 
         searchbar.addActionListener(e -> {
             if (e.getID() == 1001) {
-                search(e);
+                search(searchbar.getText());
             }
         });
 
-        searchbutton.addActionListener(this::search);
+        searchbutton.addActionListener(e -> search(searchbar.getText()));
 
         output.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent evt) { // TODO: something is clicked, do we do something with this?
@@ -130,7 +132,7 @@ public class GUI {
                 String clicked = outputList[index];
                 if(clicked == null) return;
 
-                System.out.println(clicked);
+                searchbar.setText(clicked);
             }
         });
 
@@ -141,10 +143,10 @@ public class GUI {
 
     /**
      * Searches for the word that is currently in the searchbar.
-     * @param e the {@link ActionEvent} that triggered the search
+     * @param query the {@link String} that is currently in the searchbar
      */
-    private void search(ActionEvent e) {
-
+    private void search(String query) {
+        updateOutput(new String[]{DYM.getDYMFromString(query)});
     }
 
     /**

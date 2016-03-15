@@ -24,6 +24,7 @@ public interface IDBControl {
      * @return appropriate weight for the search term.
      */
     static int calcWeight(int n, double p) {
-        return (int) Math.round(n * p);
+        System.out.println("herman " + n + " " + p);
+        return (int) (n * p);
     }
 }
