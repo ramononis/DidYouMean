@@ -1,10 +1,9 @@
 package autocomplete;
 
 import autocomplete.tree.Root;
-import database.CSVControl;
 import database.IDBControl;
 
-import java.util.*;
+import java.util.HashMap;
 
 import static autocomplete.Algorithm.getTopKeywords;
 
@@ -39,7 +38,7 @@ public class AutoCompleter {
 
         tree = new Root();
 
-        data.entrySet().forEach(entry -> tree.addOrIncrementWord(entry.getKey() + autocomplete.Algorithm.TERM, entry.getValue()));
+        data.entrySet().forEach(entry -> tree.addOrIncrementWord(entry.getKey(), entry.getValue()));
     }
 
     /**

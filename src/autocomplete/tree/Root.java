@@ -1,7 +1,5 @@
 package autocomplete.tree;
 
-import autocomplete.Algorithm;
-
 /**
  * This class models the root of the tree.
  * The Root is a {@link Node} with no parent and no letter.
@@ -38,17 +36,19 @@ public class Root extends Node {
      * Adds the given (sub)keyword to this Node,
      * when already present the given weight is added to the current weight.
      *
-     * @param k the keyword, must be terminated with a null char.
+     * @param k the keyword, may not contain {@link #TERM}.
      * @param w the weight
+     * @throws IllegalArgumentException when {@code k} contains the reserved termination character {@link #TERM}
+     * @throws IllegalArgumentException when {@code w < 0}.
      */
     @Override
-    public synchronized void addOrIncrementWord(String k, int w) {
-        if (k.indexOf(Algorithm.TERM) != k.length() - 1) {
-            throw new IllegalArgumentException("Keyword must end with termination character.");
+    public synchronized void addOrIncrementWord(String k, int w) throws IllegalArgumentException {
+        if (k.indexOf(TERM) != -1) {
+            throw new IllegalArgumentException("Keyword may not contain the reserved termination character.");
         } else if (w < 0) {
             throw new IllegalArgumentException("Weight must be at least 0.");
         }
-        super.addOrIncrementWord(k, w);
+        super.addOrIncrementWord(k + TERM, w);
     }
 
     /**

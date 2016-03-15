@@ -1,7 +1,5 @@
 package autocomplete.tree;
 
-import autocomplete.Algorithm;
-
 import java.util.HashSet;
 import java.util.Set;
 
@@ -11,6 +9,11 @@ import java.util.Set;
  * @author Frans
  */
 public abstract class Element {
+    /**
+     * Character used for termination of keywords in the tree, the letter used for a {@link Leaf}.
+     */
+    public final static char TERM = '\0';
+
     private final char letter;
     private int weight;
     private final Node parent;
@@ -26,7 +29,7 @@ public abstract class Element {
         if (parent == null && !this.isRoot()) {
             throw new IllegalArgumentException("Every element except Root must have a parent!");
         }
-        if (letter == Algorithm.TERM && !this.isLeaf()) {
+        if (letter == TERM && !this.isLeaf()) {
             throw new IllegalArgumentException("Letter may not be 0, except for leaves.");
         }
         if (letter == (char) -1 && !this.isRoot()) {
@@ -147,7 +150,7 @@ public abstract class Element {
      */
     public boolean isLeaf() {
         return false;
-        //return letter == 0;
+        //return letter == TERM;
     }
 
     /**

@@ -15,11 +15,6 @@ public final class Algorithm {
     }
 
     /**
-     * Character used for termination of keywords, to indicate a {@link Leaf} should be made.
-     */
-    public final static char TERM = '\0';
-
-    /**
      * Recursively searches for the {@link String}-value of the node with the highest weight in {@code ns}(including their subtrees).
      *
      * @param ns The subtrees to search in.
@@ -30,7 +25,7 @@ public final class Algorithm {
 
         Element maxN = Collections.max(ns, (o1, o2) -> o1.getWeight() - o2.getWeight());
 
-        if (maxN.getLetter() == TERM) {
+        if (maxN.isLeaf()) {
             result = maxN.getWord();
         } else {
             result = maxNode(maxN.getChildren());
