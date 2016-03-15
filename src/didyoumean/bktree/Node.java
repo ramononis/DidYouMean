@@ -2,6 +2,7 @@ package didyoumean.bktree;
 
 
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by Yannick on 10-3-2016.
@@ -9,7 +10,7 @@ import java.util.HashMap;
 public class Node
 {
     private String name;
-    private HashMap<Integer, Node> children;
+    private Map<Integer, Node> children;
     private int score;
 
     public Node(String word){
@@ -37,7 +38,7 @@ public class Node
         return name;
     }
 
-    public HashMap<Integer, Node> getChildren(){
+    public Map<Integer, Node> getChildren(){
         return children;
     }
 
@@ -57,5 +58,9 @@ public class Node
 
     public void setScore(int score) {
         this.score = score;
+    }
+
+    public String toString(){
+        return getName() + " (" + getScore() + ")";
     }
 }
