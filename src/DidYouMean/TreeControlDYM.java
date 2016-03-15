@@ -1,7 +1,7 @@
 package DidYouMean;
 
-import autoComplete.tree.Node;
-import autoComplete.tree.Root;
+import autocomplete.tree.Node;
+import autocomplete.tree.Root;
 import database.IDBControl;
 
 import java.util.HashSet;

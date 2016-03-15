@@ -1,6 +1,6 @@
-package autoComplete.tree;
+package autocomplete.tree;
 
-import autoComplete.Algorithm;
+import autocomplete.Algorithm;
 import org.junit.Before;
 import org.junit.Test;
 

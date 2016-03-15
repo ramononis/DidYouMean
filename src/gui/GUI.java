@@ -1,6 +1,6 @@
 package gui;
 
-import autoComplete.AutoCompleter;
+import autocomplete.AutoCompleter;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;

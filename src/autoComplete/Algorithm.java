@@ -1,6 +1,6 @@
-package autoComplete;
+package autocomplete;
 
-import autoComplete.tree.*;
+import autocomplete.tree.*;
 
 import java.util.*;
 

@@ -1,12 +1,12 @@
-package autoComplete;
+package autocomplete;
 
-import autoComplete.tree.Root;
+import autocomplete.tree.Root;
 import database.CSVControl;
 import database.IDBControl;
 
 import java.util.*;
 
-import static autoComplete.Algorithm.getTopKeywords;
+import static autocomplete.Algorithm.getTopKeywords;
 
 /**
  * Main class for auto-completion. The GUI has an instance of this class and requests suggested completions.

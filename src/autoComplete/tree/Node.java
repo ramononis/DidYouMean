@@ -1,4 +1,4 @@
-package autoComplete.tree;
+package autocomplete.tree;
 
 import java.util.HashSet;
 import java.util.Set;

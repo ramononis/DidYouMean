@@ -1,6 +1,6 @@
-package autoComplete.tree;
+package autocomplete.tree;
 
-import autoComplete.Algorithm;
+import autocomplete.Algorithm;
 
 /**
  * This class models a leaf in the tree.
