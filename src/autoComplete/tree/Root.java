@@ -42,7 +42,7 @@ public class Root extends Node {
      * @param w the weight
      */
     @Override
-    public void addOrIncrementWord(String k, int w) {
+    public synchronized void addOrIncrementWord(String k, int w) {
         if (k.indexOf(Algorithm.TERM) != k.length() - 1) {
             throw new IllegalArgumentException("Keyword must end with termination character.");
         } else if (w < 0) {
