@@ -4,6 +4,7 @@ import autocomplete.tree.Node;
 import autocomplete.tree.Root;
 import database.IDBControl;
 
+import java.util.HashMap;
 import java.util.HashSet;
 
 /**
@@ -14,9 +15,11 @@ public class TreeControlDYM {
     Root root = new Root();
 
     private IDBControl databaseController;
+    HashMap<String, Integer> data;
 
     public TreeControlDYM(IDBControl db){
         databaseController = db;
+        data = db.getData();
     }
 
     /**

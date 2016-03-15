@@ -35,7 +35,9 @@ public class TransitionSet {
      */
     public HashSet<State> getConnectedStatesByState(State state){
         HashSet<State> resultSet = new HashSet<>();
-        // FIXME: 3/9/2016
+        for (Transition trans : getTransitionsByState(state)){
+            resultSet.add(trans.getToState());
+        }
         return resultSet;
     }
 
@@ -48,7 +50,14 @@ public class TransitionSet {
      */
     public State getStateByEdge(State state, char letter){
         //this is the "nextState" function in the pseudo code algorithm of findNextValidString.
-        return null;
+        HashSet<Transition> transSet = getTransitionsByState(state);
+        State resState = null;
+        for(Transition trans : transSet){
+            if(trans.hasLetter() && trans.getLetter() == letter){
+                resState = trans.getToState();
+            }
+        }
+        return resState;
     }
 
     /**

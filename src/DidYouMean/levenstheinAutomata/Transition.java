@@ -41,7 +41,7 @@ public class Transition {
      *          either Token.EPSILON or Token.ANY.
      */
     public boolean hasLetter() {
-        return letter != '\0';
+        return getToken() == Token.LETTER;
     }
 
     /**

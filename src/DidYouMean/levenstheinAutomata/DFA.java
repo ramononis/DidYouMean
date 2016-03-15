@@ -33,7 +33,7 @@ public class DFA extends FiniteAutomata{
      * returns <code>null</code>.
      */
     public State nextState(State state, char letter){
-        return null;
+        return getTransitions().getStateByEdge(state, letter);
     }
 
     /**
@@ -50,12 +50,11 @@ public class DFA extends FiniteAutomata{
 
     /**
      * Gets the String that is most likely to be the meant String, given a current state and a character.
-     * @param dfa The DFA we are currently in.
      * @param state The current state.
      * @param x The letter which is up next.
      * @return The String most likely to be searched for, given previous conditions.
      */
-    public String findNextEdge(DFA dfa, State state, char x){
+    public String findNextEdge(State state, char x){
         return null;
     }
 
