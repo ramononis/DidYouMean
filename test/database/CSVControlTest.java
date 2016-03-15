@@ -5,9 +5,8 @@ import org.junit.Test;
 
 import java.util.HashMap;
 
-import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertThat;
 
 /**
  * Tests the CSVControl using the blackbox bethod.
@@ -30,12 +29,12 @@ public class CSVControlTest {
 
         assertThat(testData.size(), is(7)); // skips everything it shouldn't/can't parse
 
-        assertThat(testData.get("1"), is((int)(2*(100-5))));
-        assertThat(testData.get("one"), is((int)(2*(100-100))));
-        assertThat(testData.get("two"), is((int)(1337*(100-80.4))));
-        assertThat(testData.get("three"), is((int)(2048*(100-64.64))));
-        assertThat(testData.get("four"), is((int)(2296222*(100-43.98))));
-        assertThat(testData.get("five,six"), is((int)(2296546*(100-1.88))));
-        assertThat(testData.get("inch\""), is((int)(2296*(100-0))));
+        assertThat(testData.get("1"), is(190));
+        assertThat(testData.get("one"), is(0));
+        assertThat(testData.get("two"), is(26205));
+        assertThat(testData.get("three"), is(72417));
+        assertThat(testData.get("four"), is(128634356));
+        assertThat(testData.get("five,six"), is(225337093));
+        assertThat(testData.get("inch\""), is(229600));
     }
 }
