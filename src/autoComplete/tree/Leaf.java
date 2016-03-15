@@ -15,7 +15,7 @@ public class Leaf extends Element {
      *
      * @param parent the parent of this Leaf, may not be <code>null</code> use {@link Root} as root
      */
-    protected Leaf(Node parent) {
+    Leaf(Node parent) {
         super(AutoCompleter.TERM, parent);
     }
 

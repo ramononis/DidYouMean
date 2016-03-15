@@ -22,7 +22,7 @@ public abstract class Element {
      * @param letter the <code>letter</code> of this Element, or 0 for a {@link Leaf} (and -1 for the {@link Root})
      * @param parent the <code>parent</code> of this Element, may only be <code>null</code> for {@link Root}
      */
-    protected Element(char letter, Node parent) {
+    Element(char letter, Node parent) {
         if (parent == null && !this.isRoot()) {
             throw new IllegalArgumentException("Every element except Root must have a parent!");
         }
@@ -73,7 +73,7 @@ public abstract class Element {
      *
      * @param weight the new weight value
      */
-    protected void setWeight(int weight) {
+    void setWeight(int weight) {
         this.weight = weight;
         Node parent = getParent();
         if (parent != null && parent.getWeight() < weight) {

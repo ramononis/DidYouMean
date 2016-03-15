@@ -19,7 +19,7 @@ public class Node extends Element {
      * @param letter the letter of this Node (or -1 for a {@link Root})
      * @param parent the parent of this Node, may not be <code>null</code> use {@link Root} as root
      */
-    protected Node(char letter, Node parent) {
+    Node(char letter, Node parent) {
         super(letter, parent);
         children = new ConcurrentHashMap<>();
     }
@@ -46,7 +46,7 @@ public class Node extends Element {
      * @param k the keyword, must be terminated with a null char.
      * @param w the weight
      */
-    protected void addOrIncrementWord(String k, int w) {
+    void addOrIncrementWord(String k, int w) {
         Element child = addOrGetChild(k.charAt(0));
         if (child.isLeaf()) {
             child.setWeight(child.getWeight() + w);
