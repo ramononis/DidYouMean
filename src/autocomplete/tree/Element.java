@@ -122,6 +122,25 @@ public abstract class Element {
     }
 
     /**
+     * Searches for the element in the subtree of this Element corresponding to {@code p}.
+     * If this Element is a {@link Root}, {@link Element#getWord getWord} of the result will return {@code p}.
+     *
+     * @param p The string to search for in the subtree of (@code n}
+     * @return The element that was found, or {@code null} if it doesn't exist
+     */
+    public Element searchElement(String p) {
+        Element result = null;
+
+        if (p.isEmpty()) {
+            result = this;
+        } else if (hasChild(p.charAt(0))) {
+            result = getChild(p.charAt(0)).searchElement(p.substring(1));
+        }
+
+        return result;
+    }
+
+    /**
      * Indicates if this Element is a {@link Leaf}.
      *
      * @return <code>true</code> when this Element is a {@link Leaf}; otherwise <code>false</code>

@@ -60,25 +60,6 @@ public final class Algorithm {
     }
 
     /**
-     * Searches for the element in the subtree of <code>n</code> corresponding to <code>p</code>.
-     * If <code>n</code> is a {@link Root}, {@link Element#getWord getWord} of the result will return {@code p}.
-     *
-     * @param n The element to start to search in
-     * @param p The string to search for in the subtree of (@code n}
-     * @return The element that was found, or {@code null} if it doesn't exist
-     */
-    public static Element searchElement(Element n, String p) {
-        if (p.isEmpty()) {
-            return n;
-        }
-        if (n.hasChild(p.charAt(0))) {
-            return searchElement(n.getChild(p.charAt(0)), p.substring(1));
-        } else {
-            return null;
-        }
-    }
-
-    /**
      * Searches for the <code>c</code> keywords in <code>r</code> with the highest score beginning with <code>p</code>.
      *
      * @param r The root of the tree to search in
@@ -89,7 +70,7 @@ public final class Algorithm {
     public static List<String> getTopKeywords(Root r, int c, String p) {
         p = p.toLowerCase();
         List<String> result = new ArrayList<>(c);
-        Element n = searchElement(r, p);
+        Element n = r.searchElement(p);
         if (n == null) {
             return result;
         }
