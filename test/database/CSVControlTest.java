@@ -17,13 +17,16 @@ public class CSVControlTest {
 
     @Before
     public void setUp() throws Exception {
-        c = new CSVControl(new String[]{"./csv/DataTest"});
+        c = new CSVControl(new String[]{"./csv/DataTest.csv"});
     }
 
     @Test
     public void testGetData() throws Exception {
         HashMap<String,Integer> testData = c.getData();
 
+        System.out.println(testData.toString());
         assertThat(testData.size(), is(6));
+
+
     }
 }
