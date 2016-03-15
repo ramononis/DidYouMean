@@ -1,6 +1,6 @@
 package autoComplete.tree;
 
-import autoComplete.AutoCompleter;
+import autoComplete.Algorithm;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -26,7 +26,7 @@ public abstract class Element {
         if (parent == null && !this.isRoot()) {
             throw new IllegalArgumentException("Every element except Root must have a parent!");
         }
-        if (letter == AutoCompleter.TERM && !this.isLeaf()) {
+        if (letter == Algorithm.TERM && !this.isLeaf()) {
             throw new IllegalArgumentException("Letter may not be 0, except for leaves.");
         }
         if (letter == (char) -1 && !this.isRoot()) {

@@ -1,6 +1,6 @@
 package autoComplete.tree;
 
-import autoComplete.AutoCompleter;
+import autoComplete.Algorithm;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -43,7 +43,7 @@ public class TreeTest {
     @Test(expected = IllegalArgumentException.class)
     public void testNodeInvalidConstructor3() throws Exception {
         // 0 is reserved for Leaf
-        new Node(AutoCompleter.TERM, root);
+        new Node(Algorithm.TERM, root);
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -56,14 +56,14 @@ public class TreeTest {
     @Test
     public void testRootGetChildren() throws Exception {
         testGetChildren(root);
-        root.addOrIncrementWord("a" + AutoCompleter.TERM, 1);
+        root.addOrIncrementWord("a" + Algorithm.TERM, 1);
         assertThat(root.getChildren().size(), is(1));
     }
 
     @Test
     public void testNodeGetChildren() throws Exception {
         testGetChildren(node);
-        node.addOrIncrementWord("a" + AutoCompleter.TERM, 1);
+        node.addOrIncrementWord("a" + Algorithm.TERM, 1);
         assertThat(node.getChildren().size(), is(1));
     }
 
@@ -85,7 +85,7 @@ public class TreeTest {
     @Test
     public void testRootHasChild() throws Exception {
         testHasChild(root);
-        root.addOrIncrementWord("a" + AutoCompleter.TERM, 1);
+        root.addOrIncrementWord("a" + Algorithm.TERM, 1);
         testHasChild(root);
         assertThat(root.hasChild('a'), is(true));
     }
@@ -93,7 +93,7 @@ public class TreeTest {
     @Test
     public void testNodeHasChild() throws Exception {
         testHasChild(node);
-        node.addOrIncrementWord("a" + AutoCompleter.TERM, 1);
+        node.addOrIncrementWord("a" + Algorithm.TERM, 1);
         testHasChild(node);
         assertThat(node.hasChild('a'), is(true));
     }
@@ -104,7 +104,7 @@ public class TreeTest {
     }
 
     private void testHasChild(Element e) throws Exception {
-        assertThat(e.hasChild(AutoCompleter.TERM), is(false));
+        assertThat(e.hasChild(Algorithm.TERM), is(false));
         assertThat(e.hasChild('n'), is(false));
         assertThat(e.hasChild('m'), is(false));
     }
@@ -113,7 +113,7 @@ public class TreeTest {
     @Test
     public void testRootGetChild() throws Exception {
         testGetChild(root);
-        root.addOrIncrementWord("a" + AutoCompleter.TERM, 1);
+        root.addOrIncrementWord("a" + Algorithm.TERM, 1);
         assertThat(root.getChild('a').getLetter(), is('a'));
         assertThat(root.getChild('a').getWeight(), is(1));
     }
@@ -121,7 +121,7 @@ public class TreeTest {
     @Test
     public void testNodeGetChild() throws Exception {
         testGetChild(node);
-        node.addOrIncrementWord("a" + AutoCompleter.TERM, 1);
+        node.addOrIncrementWord("a" + Algorithm.TERM, 1);
         assertThat(node.getChild('a').getLetter(), is('a'));
         assertThat(node.getChild('a').getWeight(), is(1));
     }
@@ -132,7 +132,7 @@ public class TreeTest {
     }
 
     private void testGetChild(Element e) throws Exception {
-        assertThat(e.getChild(AutoCompleter.TERM), nullValue());
+        assertThat(e.getChild(Algorithm.TERM), nullValue());
         assertThat(e.getChild('n'), nullValue());
         assertThat(e.getChild('m'), nullValue());
     }
@@ -150,7 +150,7 @@ public class TreeTest {
 
     @Test
     public void testLeafGetLetter() throws Exception {
-        assertThat(leaf.getLetter(), is(AutoCompleter.TERM));
+        assertThat(leaf.getLetter(), is(Algorithm.TERM));
     }
 
     //------ getWord()
@@ -166,7 +166,7 @@ public class TreeTest {
 
     @Test
     public void testLeafGetWord() throws Exception {
-        assertThat(leaf.getWord(), is("n" + AutoCompleter.TERM));
+        assertThat(leaf.getWord(), is("n" + Algorithm.TERM));
     }
 
     //------ isLeaf()
@@ -226,24 +226,24 @@ public class TreeTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void testInvalidAddOrIncrementWord2() throws Exception {
-        root.addOrIncrementWord("Contain termination character" + AutoCompleter.TERM + "somewhere else then the end.", 1);
+        root.addOrIncrementWord("Contain termination character" + Algorithm.TERM + "somewhere else then the end.", 1);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testInvalidAddOrIncrementWord3() throws Exception {
-        root.addOrIncrementWord("Contain termination character" + AutoCompleter.TERM + "somewhere else then the end." + AutoCompleter.TERM, 1);
+        root.addOrIncrementWord("Contain termination character" + Algorithm.TERM + "somewhere else then the end." + Algorithm.TERM, 1);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testInvalidAddOrIncrementWord4() throws Exception {
-        root.addOrIncrementWord("Weight must be at least 0" + AutoCompleter.TERM, -1);
+        root.addOrIncrementWord("Weight must be at least 0" + Algorithm.TERM, -1);
     }
 
     @Test
     public void testWithChildren() throws Exception {
         int sum = 0;
         for (int i = 1; i < 5; i++) {
-            root.addOrIncrementWord("ab" + AutoCompleter.TERM, i);
+            root.addOrIncrementWord("ab" + Algorithm.TERM, i);
             sum += i;
 
             assertThat(root.getWeight(), is(sum));
@@ -264,16 +264,16 @@ public class TreeTest {
             assertThat(b.getLetter(), is('b'));
             assertThat(b.getWeight(), is(sum));
             assertThat(b.getChildren().size(), is(1));
-            assertThat(b.hasChild(AutoCompleter.TERM), is(true));
+            assertThat(b.hasChild(Algorithm.TERM), is(true));
 
-            Element l = b.getChild(AutoCompleter.TERM);
+            Element l = b.getChild(Algorithm.TERM);
 
             assertThat(l, instanceOf(Leaf.class));
-            assertThat(l.getLetter(), is(AutoCompleter.TERM));
+            assertThat(l.getLetter(), is(Algorithm.TERM));
             assertThat(l.getWeight(), is(sum));
         }
 
-        root.addOrIncrementWord("ac" + AutoCompleter.TERM, 100);
+        root.addOrIncrementWord("ac" + Algorithm.TERM, 100);
 
         assertThat(root.getWeight(), is(100));
         assertThat(root.getChildren().size(), is(1));
@@ -294,12 +294,12 @@ public class TreeTest {
         assertThat(b.getLetter(), is('b'));
         assertThat(b.getWeight(), is(sum));
         assertThat(b.getChildren().size(), is(1));
-        assertThat(b.hasChild(AutoCompleter.TERM), is(true));
+        assertThat(b.hasChild(Algorithm.TERM), is(true));
 
-        Element ab = b.getChild(AutoCompleter.TERM);
+        Element ab = b.getChild(Algorithm.TERM);
 
         assertThat(ab, instanceOf(Leaf.class));
-        assertThat(ab.getLetter(), is(AutoCompleter.TERM));
+        assertThat(ab.getLetter(), is(Algorithm.TERM));
         assertThat(ab.getWeight(), is(sum));
 
         Element c = a.getChild('c');
@@ -308,12 +308,12 @@ public class TreeTest {
         assertThat(c.getLetter(), is('c'));
         assertThat(c.getWeight(), is(100));
         assertThat(c.getChildren().size(), is(1));
-        assertThat(c.hasChild(AutoCompleter.TERM), is(true));
+        assertThat(c.hasChild(Algorithm.TERM), is(true));
 
-        Element ac = c.getChild(AutoCompleter.TERM);
+        Element ac = c.getChild(Algorithm.TERM);
 
         assertThat(ac, instanceOf(Leaf.class));
-        assertThat(ac.getLetter(), is(AutoCompleter.TERM));
+        assertThat(ac.getLetter(), is(Algorithm.TERM));
         assertThat(ac.getWeight(), is(100));
     }
 }

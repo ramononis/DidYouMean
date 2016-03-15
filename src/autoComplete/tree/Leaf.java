@@ -1,6 +1,6 @@
 package autoComplete.tree;
 
-import autoComplete.AutoCompleter;
+import autoComplete.Algorithm;
 
 /**
  * This class models a leaf in the tree.
@@ -16,7 +16,7 @@ public class Leaf extends Element {
      * @param parent the parent of this Leaf, may not be <code>null</code> use {@link Root} as root
      */
     Leaf(Node parent) {
-        super(AutoCompleter.TERM, parent);
+        super(Algorithm.TERM, parent);
     }
 
     /**

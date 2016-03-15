@@ -62,7 +62,7 @@ public class CSVControl implements IDBControl {
             if (data.containsKey(dl[0])) {
                 weight += data.get(dl[0]);
             }
-            data.put(dl[0] + '\0', weight);
+            data.put(dl[0], weight);
         }
 
         return data;

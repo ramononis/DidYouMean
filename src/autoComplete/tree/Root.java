@@ -1,6 +1,6 @@
 package autoComplete.tree;
 
-import autoComplete.AutoCompleter;
+import autoComplete.Algorithm;
 
 /**
  * This class models the root of the tree.
@@ -43,7 +43,7 @@ public class Root extends Node {
      */
     @Override
     public void addOrIncrementWord(String k, int w) {
-        if (k.indexOf(AutoCompleter.TERM) != k.length() - 1) {
+        if (k.indexOf(Algorithm.TERM) != k.length() - 1) {
             throw new IllegalArgumentException("Keyword must end with termination character.");
         } else if (w < 0) {
             throw new IllegalArgumentException("Weight must be at least 0.");
