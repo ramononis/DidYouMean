@@ -2,12 +2,14 @@ package didyoumean.levenstheinautomata;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Created by Tim on 3/9/2016.
  */
 public class DFA extends FiniteAutomata{
-    private HashSet<State> states;
+    private Set<State> states;
 
     /**
      * Creates a new DFA with a given initial state.
@@ -21,7 +23,7 @@ public class DFA extends FiniteAutomata{
      * Assigns scores to the current accepting states (possible words).
      * @param data The data the scores are currently stored in.
      */
-    public void setScores(HashMap<String, Integer> data){
+    public void setScores(Map<String, Integer> data){
         //TODO
     }
 
@@ -62,7 +64,7 @@ public class DFA extends FiniteAutomata{
      * Gets the current set of states.
      * @return The current set of states. Is never empty, as a DFA is initialized with a starting state.
      */
-    public HashSet<State> getStates() {
+    public Set<State> getStates() {
         return states;
     }
 }

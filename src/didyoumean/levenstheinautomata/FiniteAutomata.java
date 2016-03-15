@@ -1,6 +1,7 @@
 package didyoumean.levenstheinautomata;
 
 import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Created by Tim on 3/8/2016.
@@ -10,7 +11,7 @@ public class FiniteAutomata {
 
     private State initState;
     private TransitionSet transitions;
-    private HashSet<State> acceptingStates;
+    private Set<State> acceptingStates;
 
     public FiniteAutomata(State initState){
         this.initState = initState;
@@ -30,7 +31,7 @@ public class FiniteAutomata {
      * Gets a set of states that are accepting states.
      * @return The set of accepting states. May be empty.
      */
-    public HashSet<State> getAcceptingStates() {
+    public Set<State> getAcceptingStates() {
         return acceptingStates;
     }
 

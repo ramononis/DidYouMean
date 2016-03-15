@@ -5,10 +5,7 @@ import didyoumean.levenstheinautomata.*;
 import database.CSVControl;
 import database.IDBControl;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created by Tim on 3/9/2016.
@@ -47,8 +44,23 @@ public class DidYouMean {
      * @return The DFA that was made from the <code>nfa</code>.
      */
     public DFA makeDFAFromNFA(NFA nfa){
-        return new DFA(new State(0,0));
+        DFA result = new DFA(new State(0,0,0,true));
+        Map<State, Set<State>> stateMap = new HashMap<State, Set<State>>();
+        Set<State> states = new HashSet<State>();
+        states.add(nfa.getInitState());
+        stateMap.put(result.getInitState(), nfa.lambdaClosure(nfa.getInitState()));
+        State state = null;
+        while((state = states.iterator().next()) != null) {
+            states.remove(state);
+            Set<State> closures = stateMap.get(state);
+            Set<Character> outs = new HashSet<Character>();
+        }
+        return result;
     }
+
+    /**
+     *
+     */
 
     /**
      * Gets the final did-you-mean suggestion, given a search string.

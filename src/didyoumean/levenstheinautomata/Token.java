@@ -5,6 +5,6 @@ package didyoumean.levenstheinautomata;
  */
 public enum Token {
     ANY,
-    EPSILON,
+    LAMBDA,
     LETTER
 }

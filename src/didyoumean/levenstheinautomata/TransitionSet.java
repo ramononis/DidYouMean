@@ -1,15 +1,17 @@
 package didyoumean.levenstheinautomata;
 
-import java.util.HashSet;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Created by Tim on 3/8/2016.
  */
 public class TransitionSet {
 
-    private HashSet<Transition> transitions;
-    public TransitionSet(){
-        transitions = new HashSet<>();
+    private Map<State, Set<Transition>> transitions;
+
+    public TransitionSet() {
+        transitions = new HashMap<State, Set<Transition>>();
     }
 
     /**
@@ -17,14 +19,12 @@ public class TransitionSet {
      * @param state The state the transitions are sought from.
      * @return Set of transitions that start from <code>state</code>. May be empty.
      */
-    public HashSet<Transition> getTransitionsByState(State state){
-       HashSet<Transition> resultSet = new HashSet<>();
-        for (Transition trans : getTransitions()) {
-            if(trans.getFromState().equals(state)){
-                resultSet.add(trans);
-            }
+    public Set<Transition> getTransitionsByState(State state){
+       Set<Transition> result = transitions.get(state);
+        if(result == null) {
+            result = new HashSet<Transition>();
         }
-        return resultSet;
+        return result;
     }
 
     /**
@@ -33,12 +33,8 @@ public class TransitionSet {
      * @param state The State that the connected States are sought from.
      * @return Set of states connected to <code>state</code>. May be empty.
      */
-    public HashSet<State> getConnectedStatesByState(State state){
-        HashSet<State> resultSet = new HashSet<>();
-        for (Transition trans : getTransitionsByState(state)){
-            resultSet.add(trans.getToState());
-        }
-        return resultSet;
+    public Set<State> getConnectedStatesByState(State state){
+        return getTransitionsByState(state).stream().map(Transition::getToState).collect(Collectors.toSet());
     }
 
     /**
@@ -49,15 +45,30 @@ public class TransitionSet {
      * is no such state.
      */
     public State getStateByEdge(State state, char letter){
-        //this is the "nextState" function in the pseudo code algorithm of findNextValidString.
-        HashSet<Transition> transSet = getTransitionsByState(state);
-        State resState = null;
-        for(Transition trans : transSet){
-            if(trans.hasLetter() && trans.getLetter() == letter){
-                resState = trans.getToState();
-            }
+        Optional<Transition> result =  getTransitionsByState(state)
+                .stream()
+                .filter(t -> t.hasLetter() && t.getLetter() == letter)
+                .findFirst();
+        if(result.isPresent()) {
+            return result.get().getToState();
+        } else {
+            return null;
         }
-        return resState;
+    }
+
+    /**
+     * Gets the next States of a State <code>state</code> when applying letter <code>letter</code>.
+     * @param state The starting State.
+     * @param letter The letter that connects <code>state</code> with another State.
+     * @return The state that connects with <code>state</code> if there is one, <code>null</code> if there
+     * is no such state.
+     */
+    public Set<State> getStatesByEdge(State state, char letter){
+        return getTransitionsByState(state)
+                .parallelStream()
+                .filter(t -> (t.hasLetter() && t.getLetter() == letter) || t.getToken() == Token.ANY)
+                .map(Transition::getToState)
+                .collect(Collectors.toSet());
     }
 
     /**
@@ -66,14 +77,14 @@ public class TransitionSet {
      * @return Whether the addition completed successfully.
      */
     public boolean add(Transition transition){
-        return getTransitions().add(transition);
+        return transitions.get(transition.getFromState()).add(transition);
     }
 
     /**
      * Gets the current set of Transitions.
      * @return The set of Transitions.
      */
-    public HashSet<Transition> getTransitions() {
+    public Map<State, Set<Transition>> getTransitions() {
         return transitions;
     }
 
@@ -81,7 +92,7 @@ public class TransitionSet {
      * Sets the current set of Transitions to a given set.
      * @param transitions A set of Transitions this TransitionSet should have.
      */
-    public void setTransitions(HashSet<Transition> transitions) {
+    public void setTransitions(Map<State, Set<Transition>> transitions) {
         this.transitions = transitions;
     }
 

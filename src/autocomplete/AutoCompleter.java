@@ -39,7 +39,7 @@ public class AutoCompleter {
 
         tree = new Root();
 
-        data.entrySet().forEach(entry -> tree.addOrIncrementWord(entry.getKey() + Algorithm.TERM, entry.getValue()));
+        data.entrySet().forEach(entry -> tree.addOrIncrementWord(entry.getKey() + autocomplete.Algorithm.TERM, entry.getValue()));
     }
 
     /**
