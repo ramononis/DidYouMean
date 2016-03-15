@@ -1,8 +1,8 @@
-package DidYouMean;
+package didyoumean;
 
-import DidYouMean.levenstheinAutomata.DFA;
-import DidYouMean.levenstheinAutomata.NFA;
-import DidYouMean.levenstheinAutomata.State;
+import didyoumean.levenstheinautomata.DFA;
+import didyoumean.levenstheinautomata.NFA;
+import didyoumean.levenstheinautomata.State;
 import database.CSVControl;
 import database.IDBControl;
 

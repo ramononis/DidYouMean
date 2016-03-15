@@ -1,4 +1,4 @@
-package DidYouMean;
+package didyoumean;
 
 import autocomplete.tree.Node;
 import autocomplete.tree.Root;

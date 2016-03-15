@@ -1,4 +1,4 @@
-package DidYouMean.levenstheinAutomata;
+package didyoumean.levenstheinautomata;
 
 import java.util.HashSet;
 

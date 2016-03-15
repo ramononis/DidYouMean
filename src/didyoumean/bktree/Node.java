@@ -1,7 +1,5 @@
-package DidYouMean.bktree;
+package didyoumean.bktree;
 
-
-import util.CalculateDistance;
 
 import java.util.HashMap;
 

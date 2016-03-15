@@ -1,7 +1,6 @@
-package DidYouMean.bktree;
+package didyoumean.bktree;
 
 import database.CSVControl;
-import util.CalculateDistance;
 
 import java.util.ArrayList;
 import java.util.HashMap;

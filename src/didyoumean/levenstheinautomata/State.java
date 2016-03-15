@@ -1,4 +1,4 @@
-package DidYouMean.levenstheinAutomata;
+package didyoumean.levenstheinautomata;
 
 /**
  * Created by Tim on 3/8/2016.
