@@ -1,10 +1,14 @@
 package didyoumean;
 
+import didyoumean.bktree.BKTree;
 import didyoumean.levenstheinautomata.*;
 import database.CSVControl;
 import database.IDBControl;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Created by Tim on 3/9/2016.
@@ -13,12 +17,10 @@ public class DidYouMean {
 
     private static final String[] FILENAMES = {"./csv/Data1.csv", "./csv/Data2.csv", "./csv/Data3.csv", "./csv/Data4.csv"};
 
-    private HashMap<String, Integer> data;
     private IDBControl databaseController = new CSVControl(FILENAMES);
-    private TreeControlDYM treeControl = new TreeControlDYM(databaseController);
 
     public DidYouMean(){
-        fillInData();
+        setup();
     }
 
     /**
@@ -34,8 +36,9 @@ public class DidYouMean {
     /**
      * Gets the data from the database, and saves it in this Class.
      */
-    public void fillInData(){
-        data = databaseController.getData();
+    public void setup(){
+        List<String> tree = new ArrayList<>(databaseController.getData().keySet());
+        BKTree.buildTree(tree, databaseController.getData());
     }
 
     /**
@@ -53,6 +56,6 @@ public class DidYouMean {
      * @return The String the user most likely meant to type. May be equal to the given search string.
      */
     public String getDYMFromString(String searchString){
-        return null;
+        return BKTree.getDYM(searchString);
     }
 }
