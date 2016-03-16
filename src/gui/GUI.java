@@ -24,6 +24,7 @@ public class GUI {
     private AutoCompleter AC;
     private DidYouMean DYM;
 
+    JFrame frame;
     String[] outputList;
     JList<String> output;
 
@@ -35,7 +36,7 @@ public class GUI {
         DYM = new DidYouMean();
 
         // first just make a gui
-        JFrame frame = new JFrame();
+        frame = new JFrame("Autocomplete");
         frame.setSize(400, 300);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         GridBagConstraints c;
@@ -110,6 +111,9 @@ public class GUI {
             public void changedUpdate(DocumentEvent e) {
                 String[] completions = AC.getTopN(NSUGGESTIONS, searchbar.getText());
                 updateOutput(completions);
+                if (frame.getTitle() != "Autocomplete") {
+                    frame.setTitle("Autocomplete");
+                }
             }
         });
 
@@ -122,7 +126,7 @@ public class GUI {
         searchbutton.addActionListener(e -> search(searchbar.getText()));
 
         output.addMouseListener(new MouseAdapter() {
-            public void mouseClicked(MouseEvent evt) { // TODO: something is clicked, do we do something with this?
+            public void mouseClicked(MouseEvent evt) {
                 JList list = (JList) evt.getSource();
 
                 // Double-click detected
@@ -156,6 +160,7 @@ public class GUI {
     private void updateOutput(String[] newoutput) {
         outputList = newoutput;
         output.setListData(outputList);
+        frame.setTitle("Did you mean");
     }
 
     /**
