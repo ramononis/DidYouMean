@@ -32,6 +32,14 @@ public class GUI {
      * Initializes new GUI.
      */
     public GUI() {
+        frame = new JFrame("Autocomplete");
+        ImageIcon loading = new ImageIcon("./res/ajax-loader.gif");
+        frame.add(new JLabel("loading... ", loading, JLabel.CENTER));
+
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(400, 300);
+        frame.setVisible(true);
+
         AC = new AutoCompleter(new CSVControl(FILENAMES));
         DYM = new DidYouMean();
 
