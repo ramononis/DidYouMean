@@ -18,6 +18,12 @@ public class BKTree {
 
     private BKTree(){}
 
+    /**
+     * Builds a new tree given a list of words and data to fill nodes with. Nodes contain
+     * the scores of a word.
+     * @param list The list of words the tree should contain.
+     * @param data The data (word, score) the tree should contain.
+     */
     public static void buildTree(List<String> list, Map<String, Integer> data){
         root = new Node(list.get(0), data.get(list.get(0)));
         for(String s : list){
@@ -31,11 +37,21 @@ public class BKTree {
         }
     }
 
+    /**
+     * Prints a tree's structure.
+     * @param root The root of the tree.
+     */
     public static void printTree(Node root){
         System.out.println(root.getName());
         root.printTree();
     }
 
+    /**
+     * Calculates the Levenshtein Distance between 2 words.
+     * @param lhs The first word.
+     * @param rhs The second word.
+     * @return The LD between lhs and rhs.
+     */
     public static int calculateDistance(String lhs, String rhs){
         lhs = lhs.toLowerCase();
         rhs = rhs.toLowerCase();
@@ -56,10 +72,24 @@ public class BKTree {
         return distance[lhs.length()][rhs.length()];
     }
 
+    /**
+     * Gets the minimum between 3 integers.
+     * @param a The first integer.
+     * @param b The second integer.
+     * @param c The third integer.
+     * @return The minimum of a, b and c.
+     */
     private static int minimum(int a, int b, int c) {
         return Math.min(Math.min(a, b), c);
     }
 
+    /**
+     * Retrieves all the words within a certain LD of a word.
+     * @param root The root of the tree.
+     * @param term The term that words should be compared with.
+     * @param errorRange The maximum LD a word should have compared to {@code term}.
+     * @return The list of words with maximum LD to term.
+     */
     public static List<String> searchTree(Node root, String term, int errorRange){
         List<String> result = new ArrayList<>();
         int distance = calculateDistance(term, root.getName());
@@ -74,6 +104,13 @@ public class BKTree {
         return result;
     }
 
+    /**
+     * Retrieves all the Nodes within a certain lD of a word.
+     * @param root The root of the tree.
+     * @param term The term that Nodes should be compared with.
+     * @param errorRange The maximum LD a Node should have compared to {#code term}
+     * @return The list of Nodes with maximum LD to term.
+     */
     public static Map<Node, Integer> searchTreeForNodes(Node root, String term, int errorRange){
         Map<Node, Integer> result = new HashMap<>();
         int distance = calculateDistance(term, root.getName());
@@ -88,6 +125,11 @@ public class BKTree {
         return result;
     }
 
+    /**
+     * Gets a 'did-you-mean' suggestion for a word.
+     * @param word The word the user searched for.
+     * @return The word the user probably meant when searching for {@code word}. May be the same as {@code word}.
+     */
     public static String getDYM(String word){
         Map<Node, Integer> nodeMap = searchTreeForNodes(getRoot(), word, MAX_ERROR_RANGE);
         Node bestNode = null;
@@ -132,6 +174,10 @@ public class BKTree {
         return costs[word2.length()];
     }
 
+    /**
+     * Gets the root of this tree.
+     * @return The root of this tree.
+     */
     public static Node getRoot(){
         return root;
     }

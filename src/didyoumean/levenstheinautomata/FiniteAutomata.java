@@ -14,6 +14,10 @@ public class FiniteAutomata {
     private Set<State> acceptingStates;
     private Set<State> states;
 
+    /**
+     * Creates a new Finite Automata with a given initial State.
+     * @param initState The initial state this Finite Automata should have.
+     */
     public FiniteAutomata(State initState){
         this.initState = initState;
         this.initState.setAcceptingState(true);
@@ -90,6 +94,10 @@ public class FiniteAutomata {
         this.transitions = transitions;
     }
 
+    /**
+     * Returns the list of States this FA has.
+     * @return The list of States of this FA.
+     */
     public Set<State> getStates() {
         return states;
     }
