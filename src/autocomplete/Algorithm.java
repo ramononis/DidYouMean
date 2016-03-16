@@ -74,7 +74,7 @@ public final class Algorithm {
         int i = 0;
         while (i++ < c && !searchNodes.isEmpty()) {
             String keyword = maxNode(searchNodes);
-            result.add(keyword);
+            result.add(keyword.replace(String.valueOf(Element.TERM), ""));
             for (Element e : searchNodes) {
                 String word = e.getWord();
                 if (keyword.startsWith(word)) {

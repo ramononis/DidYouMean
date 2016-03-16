@@ -51,9 +51,9 @@ public abstract class Element {
     }
 
     /**
-     * Returns the word corresponding to the current {@link Node}.
+     * Returns the word corresponding to the current {@link Element}.
      *
-     * @return A {@link String} corresponding to this {@link Node}
+     * @return A {@link String} corresponding to this {@link Element}
      */
     public String getWord() {
         return parent.getWord() + getLetter();

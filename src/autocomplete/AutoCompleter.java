@@ -4,6 +4,7 @@ import autocomplete.tree.Root;
 import database.IDBControl;
 
 import java.util.HashMap;
+import java.util.List;
 
 import static autocomplete.Algorithm.getTopKeywords;
 
@@ -35,8 +36,11 @@ public class AutoCompleter {
      */
     private void makeTree() {
         HashMap<String, Integer> data = DB.getData();
-
         tree = new Root();
+
+        if (data == null) {
+            return;
+        }
 
         data.entrySet().forEach(entry -> tree.addOrIncrementWord(entry.getKey(), entry.getValue()));
     }
@@ -49,6 +53,7 @@ public class AutoCompleter {
      * @return a String Array of length k with the best suggestions for the prefix query.
      */
     public String[] getTopN(int k, String query) {
-        return getTopKeywords(tree, k, query).toArray(new String[k]);
+        List<String> top = getTopKeywords(tree, k, query);
+        return top.toArray(new String[top.size()]);
     }
 }

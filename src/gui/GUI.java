@@ -43,6 +43,8 @@ public class GUI {
         AC = new AutoCompleter(new CSVControl(FILENAMES));
         DYM = new DidYouMean();
 
+        frame.dispose();
+
         // first just make a gui
         frame = new JFrame("Autocomplete");
         frame.setSize(400, 300);
