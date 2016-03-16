@@ -2,8 +2,10 @@ package autocomplete;
 
 import database.CSVCStub;
 
+import java.util.Arrays;
 import java.util.HashMap;
 
+import static org.hamcrest.CoreMatchers.anyOf;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
@@ -27,16 +29,23 @@ public class AutoCompleterTest {
         assertThat(AC.getTopN(5, "").length, is(0));
 
         DD.setData(generateData1());
-        AC = new AutoCompleter(DD);
+        AC.resetTree();
         assertThat(AC.getTopN(7, ""), is(new String[]{"NR1", "NR2", "NR3", "NR4", "NR5", "NR6", "NR7"}));
 
         DD.setData(generateData2());
-        AC = new AutoCompleter(DD);
-        assertThat(AC.getTopN(7, ""), equalTo(new String[]{"NR2", "NR123", "NR3", "NR4", "NR567", "NR6", "NR7"}));
+        AC.resetTree();
+        assertThat(AC.getTopN(7, ""), anyOf(is(new String[]{"NR2", "NR123", "NR3", "NR4", "NR567", "NR6", "NR7"}), is(new String[]{"NR123", "NR2", "NR3", "NR4", "NR567", "NR6", "NR7"})));
+
+        DD.setData(generateData3());
+        AC.resetTree();
+        assertThat(AC.getTopN(10,""), is(new String[]{"accu", "accuboor", "ac motor", "12v motor", "12v motor groen"}));
+        assertThat(AC.getTopN(10,"ac"), is(new String[]{"accu", "accuboor", "ac motor"}));
+        assertThat(AC.getTopN(10,"motor"), is(new String[]{}));
+        assertThat(AC.getTopN(10,"12v motor"), is(new String[]{"12v motor", "12v motor groen"}));
     }
 
     private HashMap generateData1() { // standard
-        HashMap<String,Integer> r = new HashMap();
+        HashMap<String, Integer> r = new HashMap();
         r.put("NR1", 500); //1
         r.put("NR2", 454); //2
         r.put("NR3", 354); //3
@@ -48,11 +57,11 @@ public class AutoCompleterTest {
     }
 
     private HashMap generateData2() { // same values, this is sort of random because it depends on how the children are iterated. children are a set so no order.
-        HashMap<String,Integer> r = new HashMap();
+        HashMap<String, Integer> r = new HashMap();
         r.put("NR123", 500); //2
         r.put("NR2", 500); //1
         r.put("NR3", 354); //3
-        r.put("NR4", 200); //4
+        r.put("NR4", 220); //4
         r.put("NR567", 200); //5
         r.put("NR6", 117); //6
         r.put("NR7", 2); //7
@@ -60,14 +69,12 @@ public class AutoCompleterTest {
     }
 
     private HashMap generateData3() { // more variations in keywords
-        HashMap<String,Integer> r = new HashMap();
-        r.put("NR12", 500);
-        r.put("NR2", 454);
-        r.put("NR3", 354);
-        r.put("NR4", 298);
-        r.put("NR5", 238);
-        r.put("NR6", 117);
-        r.put("NR7", 2);
+        HashMap<String, Integer> r = new HashMap();
+        r.put("accu", 500);
+        r.put("accuboor", 454);
+        r.put("ac motor", 354);
+        r.put("12v motor", 301);
+        r.put("12v motor groen", 298);
         return r;
     }
 }
