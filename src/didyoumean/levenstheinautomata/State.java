@@ -67,7 +67,7 @@ public class State {
      * @return Whether this State and {@code argState} are equal.
      */
     public boolean equals(State argState){
-        return (argState.getE() == getE() && argState.getN() == argState.getN());
+        return (argState.getE() == getE() && argState.getN() == getN());
     }
 
     /**
@@ -116,5 +116,9 @@ public class State {
      */
     public void setAcceptingState(boolean acceptingState) {
         this.acceptingState = acceptingState;
+    }
+
+    public String toString(){
+        return "(" + getN() + ", " + getE() +")";
     }
 }

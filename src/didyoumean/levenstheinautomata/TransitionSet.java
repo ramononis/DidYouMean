@@ -76,7 +76,10 @@ public class TransitionSet {
      * @param transition The Transition to be added.
      * @return Whether the addition completed successfully.
      */
-    public boolean add(Transition transition){
+    public boolean add(Transition transition) {
+        if(transitions.get(transition.getFromState()) == null){
+            transitions.put(transition.getFromState(), new HashSet<>());
+        }
         return transitions.get(transition.getFromState()).add(transition);
     }
 

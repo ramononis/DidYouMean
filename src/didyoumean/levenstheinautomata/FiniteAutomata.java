@@ -12,10 +12,14 @@ public class FiniteAutomata {
     private State initState;
     private TransitionSet transitions;
     private Set<State> acceptingStates;
+    private Set<State> states;
 
     public FiniteAutomata(State initState){
         this.initState = initState;
+        this.initState.setAcceptingState(true);
         acceptingStates = new HashSet<>();
+        states = new HashSet<>();
+        transitions = new TransitionSet();
     }
 
     /**
@@ -84,5 +88,51 @@ public class FiniteAutomata {
      */
     public void setTransitions(TransitionSet transitions) {
         this.transitions = transitions;
+    }
+
+    public Set<State> getStates() {
+        return states;
+    }
+
+    /**
+     * Creates a new State in this FA. If there already is such a state in position (n, e), returns
+     * the state that already exists.
+     * @param n The consumed letters so far.
+     * @param e The errors encountered so far.
+     * @return A new (n, e, 0, false) State if there was no such state, else the existing State corresponding to (n,e)
+     */
+    public State createState(int n, int e){
+        State state = new State(n, e);
+        boolean isNew = true;
+        for(State s : getStates()){
+            if(s.equals(state)){
+                state = s;
+                isNew = false;
+            }
+        }
+        if(isNew){
+            getStates().add(state);
+        }
+        return state;
+    }
+
+    public String toString(){
+        StringBuilder sb = new StringBuilder("Initial state: ");
+        sb.append(getInitState());
+        sb.append("\nAccepting states");
+        for(State s : getAcceptingStates()){
+            sb.append(", ").append(s);
+        }
+        sb.append("\nAll states");
+        for(State s : getStates()){
+            sb.append(", ").append(s);
+        }
+        sb.append("\nTransitions");
+        for(State s : getTransitions().getTransitions().keySet()){
+            for(Transition t : getTransitions().getTransitions().get(s)){
+                sb.append(", ").append(t);
+            }
+        }
+        return sb.toString();
     }
 }

@@ -52,7 +52,6 @@ public class NFA extends FiniteAutomata {
         return lambdaClosure(ss);
     }
 
-
     /**
      * Returns union of the λ-closures of states {@code ss}.
      *

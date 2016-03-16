@@ -27,7 +27,41 @@ public class DidYouMean {
      * @return The NFA made from the {@code word}.
      */
     public NFA makeNFAFromWord(String word, int errorRange){
-        return new NFA(0,0);
+        NFA nfa = new NFA(0,0);
+        int i = 0;
+        for(char letter : word.toCharArray()){
+            for(int e = 0; e <= errorRange; e++){
+                nfa.addTransition(new Transition(nfa.createState(i, e),
+                        Token.LETTER,
+                        nfa.createState(i + 1, e), letter));
+                if(e < errorRange){
+                    //insertion
+                    nfa.addTransition(new Transition(nfa.createState(i, e),
+                            Token.ANY,
+                            nfa.createState(i, e + 1)));
+                    //deletion
+                    nfa.addTransition(new Transition(nfa.createState(i, e),
+                            Token.LAMBDA,
+                            nfa.createState(i + 1, e + 1)));
+                    //substitution
+                    nfa.addTransition(new Transition(nfa.createState(i, e),
+                            Token.ANY,
+                            nfa.createState(i + 1, e + 1)));
+                }
+            }
+            i++;
+        }
+        //add final states and transitions between them
+        for(int e = 0; e <= errorRange; e++){
+            if(e < errorRange){
+                nfa.addTransition(new Transition(nfa.createState(word.length(), e),
+                        Token.ANY,
+                        nfa.createState(word.length(), e + 1)));
+            }
+            nfa.setFinalState(nfa.createState(word.length(), e));
+        }
+
+        return nfa;
     }
 
     /**
@@ -69,5 +103,10 @@ public class DidYouMean {
      */
     public String getDYMFromString(String searchString){
         return BKTree.getDYM(searchString);
+    }
+
+    public static void main(String[] args){
+        DidYouMean dym = new DidYouMean();
+        System.out.println(dym.makeNFAFromWord("food", 2));
     }
 }

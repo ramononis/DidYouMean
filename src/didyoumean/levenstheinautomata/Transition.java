@@ -108,5 +108,13 @@ public class Transition {
         this.letter = letter;
     }
 
-
+    public String toString(){
+        String token;
+        if(getToken() == Token.LETTER){
+            token = "" + getLetter();
+        }else{
+            token = "" + getToken();
+        }
+        return " " + getFromState().toString() + " " + token + " " + getToState().toString();
+    }
 }
