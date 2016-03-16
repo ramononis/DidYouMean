@@ -3,6 +3,7 @@ package autocomplete.tree;
 import org.junit.Before;
 import org.junit.Test;
 
+import static autocomplete.tree.TreeMatchers.*;
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 
@@ -56,14 +57,14 @@ public class TreeTest {
     public void testRootGetChildren() throws Exception {
         testGetChildren(root);
         root.addOrIncrementWord("a", 1);
-        assertThat(root.getChildren().size(), is(1));
+        assertThat(root, hasNumberOfChildren(1));
     }
 
     @Test
     public void testNodeGetChildren() throws Exception {
         testGetChildren(node);
         node.addOrIncrementWord("a" + Element.TERM, 1);
-        assertThat(node.getChildren().size(), is(1));
+        assertThat(node, hasNumberOfChildren(1));
     }
 
     @Test
@@ -72,12 +73,12 @@ public class TreeTest {
     }
 
     private void testGetChildren(Element e) throws Exception {
-        assertThat(e.getChildren().size(), is(0));
+        assertThat(e, hasNumberOfChildren(0));
         e.getChildren().add(e);
         e.getChildren().add(root);
         e.getChildren().add(node);
         e.getChildren().add(leaf);
-        assertThat(e.getChildren().size(), is(0));
+        assertThat(e, hasNumberOfChildren(0));
     }
 
     //------ hasChild()
@@ -86,7 +87,7 @@ public class TreeTest {
         testHasChild(root);
         root.addOrIncrementWord("a", 1);
         testHasChild(root);
-        assertThat(root.hasChild('a'), is(true));
+        assertThat(root, hasChildWithLetter('a'));
     }
 
     @Test
@@ -94,7 +95,7 @@ public class TreeTest {
         testHasChild(node);
         node.addOrIncrementWord("a" + Element.TERM, 1);
         testHasChild(node);
-        assertThat(node.hasChild('a'), is(true));
+        assertThat(node, hasChildWithLetter('a'));
     }
 
     @Test
@@ -103,9 +104,7 @@ public class TreeTest {
     }
 
     private void testHasChild(Element e) throws Exception {
-        assertThat(e.hasChild(Element.TERM), is(false));
-        assertThat(e.hasChild('n'), is(false));
-        assertThat(e.hasChild('m'), is(false));
+        assertThat(e, allOf(not(hasChildWithLetter(Element.TERM)), not(hasChildWithLetter('n')), not(hasChildWithLetter('m'))));
     }
 
     //------ getChild()
@@ -166,6 +165,44 @@ public class TreeTest {
     @Test
     public void testLeafGetWord() throws Exception {
         assertThat(leaf.getWord(), is("n" + Element.TERM));
+    }
+
+    //------ searchElement()
+    @Test
+    public void testRootSearchElement() throws Exception {
+        testSearchElementWithoutChildren(root);
+
+        root.addOrIncrementWord("abc", 5);
+
+        assertThat(root.searchElement(""), is(root));
+        assertThat(root.searchElement(String.valueOf(Element.TERM)), nullValue());
+        assertThat(root.searchElement("a"), allOf(hasLetter('a'), wordIs("a"), instanceOf(Node.class)));
+        assertThat(root.searchElement("ab"), allOf(hasLetter('b'), wordIs("ab"), instanceOf(Node.class)));
+        assertThat(root.searchElement("abc"), allOf(hasLetter('c'), wordIs("abc"), instanceOf(Node.class)));
+        assertThat(root.searchElement("d"), nullValue());
+    }
+
+    @Test
+    public void testNodeSearchElement() throws Exception {
+        testSearchElementWithoutChildren(node);
+    }
+
+    @Test
+    public void testLeafSearchElement() throws Exception {
+        testSearchElementWithoutChildren(leaf);
+    }
+
+    private void testSearchElementWithoutChildren(Element e) throws Exception {
+        assertThat(e.searchElement(""), is(e));
+        assertThat(e.searchElement(String.valueOf(Element.TERM)), nullValue());
+        assertThat(e.searchElement("a"), nullValue());
+        assertThat(e.searchElement("ab"), nullValue());
+        assertThat(e.searchElement("abc"), nullValue());
+        assertThat(e.searchElement("d"), nullValue());
+        assertThat(e.searchElement("a" + Element.TERM), nullValue());
+        assertThat(e.searchElement("ab" + Element.TERM), nullValue());
+        assertThat(e.searchElement("abc" + Element.TERM), nullValue());
+        assertThat(e.searchElement("d" + Element.TERM), nullValue());
     }
 
     //------ isLeaf()
@@ -240,74 +277,51 @@ public class TreeTest {
             root.addOrIncrementWord("ab", i);
             sum += i;
 
-            assertThat(root.getWeight(), is(sum));
-            assertThat(root.getChildren().size(), is(1));
-            assertThat(root.hasChild('a'), is(true));
+            assertThat(root, allOf(hasWeight(sum), hasNumberOfChildren(1), hasChildWithLetter('a')));
 
             Element a = root.getChild('a');
 
             assertThat(a, instanceOf(Node.class));
-            assertThat(a.getLetter(), is('a'));
-            assertThat(a.getWeight(), is(sum));
-            assertThat(a.getChildren().size(), is(1));
-            assertThat(a.hasChild('b'), is(true));
+            assertThat(a, allOf(hasLetter('a'), hasWeight(sum), hasNumberOfChildren(1), hasChildWithLetter('b')));
 
             Element b = a.getChild('b');
 
             assertThat(b, instanceOf(Node.class));
-            assertThat(b.getLetter(), is('b'));
-            assertThat(b.getWeight(), is(sum));
-            assertThat(b.getChildren().size(), is(1));
-            assertThat(b.hasChild(Element.TERM), is(true));
+            assertThat(b, allOf(hasLetter('b'), hasWeight(sum), hasNumberOfChildren(1), hasChildWithLetter(Element.TERM)));
 
             Element l = b.getChild(Element.TERM);
 
             assertThat(l, instanceOf(Leaf.class));
-            assertThat(l.getLetter(), is(Element.TERM));
-            assertThat(l.getWeight(), is(sum));
+            assertThat(l, both(hasLetter(Element.TERM)).and(hasWeight(sum)));
         }
 
         root.addOrIncrementWord("ac", 100);
 
-        assertThat(root.getWeight(), is(100));
-        assertThat(root.getChildren().size(), is(1));
-        assertThat(root.hasChild('a'), is(true));
+        assertThat(root, allOf(hasWeight(100), hasNumberOfChildren(1), hasChildWithLetter('a')));
 
         Element a = root.getChild('a');
 
         assertThat(a, instanceOf(Node.class));
-        assertThat(a.getLetter(), is('a'));
-        assertThat(a.getWeight(), is(100));
-        assertThat(a.getChildren().size(), is(2));
-        assertThat(a.hasChild('b'), is(true));
-        assertThat(a.hasChild('c'), is(true));
+        assertThat(a, allOf(hasLetter('a'), hasWeight(100), hasNumberOfChildren(2), hasChildWithLetter('b'), hasChildWithLetter('c')));
 
         Element b = a.getChild('b');
 
         assertThat(b, instanceOf(Node.class));
-        assertThat(b.getLetter(), is('b'));
-        assertThat(b.getWeight(), is(sum));
-        assertThat(b.getChildren().size(), is(1));
-        assertThat(b.hasChild(Element.TERM), is(true));
+        assertThat(b, allOf(hasLetter('b'), hasWeight(sum), hasNumberOfChildren(1), hasChildWithLetter(Element.TERM)));
 
         Element ab = b.getChild(Element.TERM);
 
         assertThat(ab, instanceOf(Leaf.class));
-        assertThat(ab.getLetter(), is(Element.TERM));
-        assertThat(ab.getWeight(), is(sum));
+        assertThat(ab, both(hasLetter(Element.TERM)).and(hasWeight(sum)));
 
         Element c = a.getChild('c');
 
         assertThat(c, instanceOf(Node.class));
-        assertThat(c.getLetter(), is('c'));
-        assertThat(c.getWeight(), is(100));
-        assertThat(c.getChildren().size(), is(1));
-        assertThat(c.hasChild(Element.TERM), is(true));
+        assertThat(c, allOf(hasLetter('c'), hasWeight(100), hasNumberOfChildren(1), hasChildWithLetter(Element.TERM)));
 
         Element ac = c.getChild(Element.TERM);
 
         assertThat(ac, instanceOf(Leaf.class));
-        assertThat(ac.getLetter(), is(Element.TERM));
-        assertThat(ac.getWeight(), is(100));
+        assertThat(ac, both(hasLetter(Element.TERM)).and(hasWeight(100)));
     }
 }
