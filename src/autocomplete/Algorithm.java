@@ -34,21 +34,23 @@ public final class Algorithm {
     }
 
     /**
-     * Returns the smallest possible set of elements that do not contain the element corresponding to {@code k}
+     * Returns the smallest possible set of (sub)trees that do not contain the element corresponding to {@code k}
      * (using {@code n} as starting point)
      *
      * @param n The element to be used as root.
-     * @param k The keyword to exclude from the subtree of {@code n}
+     * @param k The keyword to exclude from the subtree of {@code n}.
      * @return The smallest possible {@link Set} containing all elements whose
      * subtrees does not contain the element corresponding to {@code k}
      */
     public static Set<Element> excludeKeyword(Element n, String k) {
         Set<Element> result = new HashSet<>();
-        for (Element child : n.getChildren()) {
-            if (child.getLetter() == k.charAt(0)) {
-                result.addAll(excludeKeyword(child, k.substring(1)));
-            } else {
-                result.add(child);
+        if (!k.isEmpty()) {
+            for (Element child : n.getChildren()) {
+                if (child.getLetter() == k.charAt(0)) {
+                    result.addAll(excludeKeyword(child, k.substring(1)));
+                } else {
+                    result.add(child);
+                }
             }
         }
         return result;
@@ -60,7 +62,7 @@ public final class Algorithm {
      * @param r The root of the tree to search in
      * @param c The amount of keywords to be return
      * @param p The prefix all the resulting keywords must have
-     * @return A list with at most {@code c} keywords(less than {@code c} if no more could be found).
+     * @return A list with at most {@code c} keywords (less than {@code c} if no more could be found).
      */
     public static List<String> getTopKeywords(Root r, int c, String p) {
         p = p.toLowerCase();
