@@ -19,13 +19,17 @@ public class AutoCompleter {
     private Root tree;
 
     /**
-     * Initializes a new AutoCompleter.
+     * Initializes new AutoCompleter
+     * @param idb the database control.
      */
     public AutoCompleter(IDBControl idb) {
         this.DB = idb;
         makeTree();
     }
 
+    /**
+     * Rebuilds the tree from scratch, also putting in any new data from the database control.
+     */
     public void resetTree(){
         makeTree();
     }
@@ -43,6 +47,15 @@ public class AutoCompleter {
         }
 
         data.entrySet().forEach(entry -> tree.addOrIncrementWord(entry.getKey(), entry.getValue()));
+    }
+
+    /**
+     * Learns a keyword: adds the keyword to the tree if it doesn't exist yet, or increments the weight if it already exists.
+     * @param keyword the keyword that should be learned.
+     * @param weight the amount the weight of the keyword will be incremented.
+     */
+    public void learn(String keyword, int weight){
+        tree.addOrIncrementWord(keyword, weight);
     }
 
     /**

@@ -42,6 +42,8 @@ public class AutoCompleterTest {
         assertThat(AC.getTopN(10,"ac"), is(new String[]{"accu", "accuboor", "ac motor"}));
         assertThat(AC.getTopN(10,"motor"), is(new String[]{}));
         assertThat(AC.getTopN(10,"12v motor"), is(new String[]{"12v motor", "12v motor groen"}));
+        AC.learn("12v motor blauw", 1);;
+        assertThat(AC.getTopN(10,"12v motor"), is(new String[]{"12v motor", "12v motor groen", "12v motor blauw"}));
     }
 
     private HashMap generateData1() { // standard
