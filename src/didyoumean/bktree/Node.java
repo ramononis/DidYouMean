@@ -3,6 +3,7 @@ package didyoumean.bktree;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Created by Yannick on 10-3-2016.
@@ -19,7 +20,7 @@ public class Node
      */
     public Node(String word){
         name = word;
-        children = new HashMap<>();
+        children = new ConcurrentHashMap<Integer, Node>();
         score = 0;
     }
 
@@ -38,7 +39,7 @@ public class Node
      * @param child The Node that this Node should be the parent of.
      */
     public void addChild(Node child){
-        int distance = BKTree.calculateDistance(child.getName(),name);
+        int distance = BKTree.calculateLD(child.getName(),name);
         if(children.get(distance)!=null){
             children.get(distance).addChild(child);
         }
@@ -68,7 +69,7 @@ public class Node
      */
     public void printTree(){
         for(Node n : children.values()){
-            System.out.print(BKTree.calculateDistance(name, n.getName()) + " : " + n.getName() + " (" + n.getScore() + ") " + "; ");
+            System.out.print(BKTree.calculateLD(name, n.getName()) + " : " + n.getName() + " (" + n.getScore() + ") " + "; ");
         }
         System.out.print("\n");
         for(Node n : children.values()){

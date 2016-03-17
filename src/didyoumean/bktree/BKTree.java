@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 
 /**
@@ -47,32 +48,6 @@ public class BKTree {
     }
 
     /**
-     * Calculates the Levenshtein Distance between 2 words.
-     * @param lhs The first word.
-     * @param rhs The second word.
-     * @return The LD between lhs and rhs.
-     */
-    public static int calculateDistance(String lhs, String rhs){
-        lhs = lhs.toLowerCase();
-        rhs = rhs.toLowerCase();
-        int[][] distance = new int[lhs.length() + 1][rhs.length() + 1];
-
-        for (int i = 0; i <= lhs.length(); i++)
-            distance[i][0] = i;
-        for (int j = 1; j <= rhs.length(); j++)
-            distance[0][j] = j;
-
-        for (int i = 1; i <= lhs.length(); i++)
-            for (int j = 1; j <= rhs.length(); j++)
-                distance[i][j] = minimum(
-                        distance[i - 1][j] + 1,
-                        distance[i][j - 1] + 1,
-                        distance[i - 1][j - 1] + ((lhs.charAt(i - 1) == rhs.charAt(j - 1)) ? 0 : 1));
-
-        return distance[lhs.length()][rhs.length()];
-    }
-
-    /**
      * Gets the minimum between 3 integers.
      * @param a The first integer.
      * @param b The second integer.
@@ -92,12 +67,13 @@ public class BKTree {
      */
     public static List<String> searchTree(Node root, String term, int errorRange){
         List<String> result = new ArrayList<>();
-        int distance = calculateDistance(term, root.getName());
+        int distance = calculateLD(term, root.getName());
         if(distance <= errorRange){
             result.add(root.getName());
         }
+
         for(Node n : root.getChildren().values()){
-            if(Math.abs(calculateDistance(n.getName(),root.getName())-distance) <= errorRange){
+            if(Math.abs(calculateLD(n.getName(),root.getName())-distance) <= errorRange){
                 result.addAll(searchTree(n,term,errorRange));
             }
         }
@@ -112,16 +88,15 @@ public class BKTree {
      * @return The list of Nodes with maximum LD to term.
      */
     public static Map<Node, Integer> searchTreeForNodes(Node root, String term, int errorRange){
-        Map<Node, Integer> result = new HashMap<>();
-        int distance = calculateDistance(term, root.getName());
+        Map<Node, Integer> result = new ConcurrentHashMap<Node, Integer>();
+        int distance = calculateLD(term, root.getName());
         if(distance <= errorRange){
             result.put(root, distance);
         }
-        for(Node n : root.getChildren().values()){
-            if(Math.abs(calculateDistance(n.getName(),root.getName())-distance) <= errorRange){
-                result.putAll(searchTreeForNodes(n,term,errorRange));
-            }
-        }
+        root.getChildren().values()
+                .parallelStream()
+                .filter(n -> Math.abs(calculateLD(n.getName(),root.getName())-distance) <= errorRange)
+                .forEach(n -> result.putAll(searchTreeForNodes(n, term, errorRange)));
         return result;
     }
 
@@ -131,6 +106,7 @@ public class BKTree {
      * @return The word the user probably meant when searching for {@code word}. May be the same as {@code word}.
      */
     public static String getDYM(String word){
+        word = word.toLowerCase();
         Map<Node, Integer> nodeMap = searchTreeForNodes(getRoot(), word, MAX_ERROR_RANGE);
         Node bestNode = null;
         double bestScore = -1;
@@ -153,8 +129,6 @@ public class BKTree {
 
     public static int calculateLD(String word1, String word2){
         //based on http://rosettacode.org/wiki/Levenshtein_distance#Java
-        word1 = word1.toLowerCase();
-        word2 = word2.toLowerCase();
 
         int[] costs = new int[word2.length() + 1];
         for (int j = 0; j < costs.length; j++) {
@@ -183,6 +157,7 @@ public class BKTree {
     }
 
     public static void main(String[] args){
+        System.out.println("beginn");
         ArrayList<String> tree = new ArrayList<String>();
         String[] dataPlaces = new String[]{"./csv/Data1.csv", "./csv/Data2.csv", "./csv/Data3.csv", "./csv/Data4.csv"};
         HashMap<String, Integer> data = new CSVControl(dataPlaces).getData();
@@ -216,9 +191,9 @@ public class BKTree {
 //        }
         long start2 = System.currentTimeMillis();
 
-        for (int i = 0; i < 1; i++) {
-//                BKTree.getDYM("accu 6");
-            System.out.println("\nDid you mean: " + BKTree.getDYM("accu 6"));
+        for (int i = 0; i < 100; i++) {
+               BKTree.getDYM("batery");
+//            System.out.println("\nDid you mean: " + BKTree.getDYM("accu 6"));
         }
         stop = System.currentTimeMillis();
         System.out.println(stop - start + "ms inclusief bouwen, " + (stop - start2) + " exclusief bouwen");
