@@ -1,11 +1,15 @@
-package autocomplete.tree;
+package matchers;
 
+import autocomplete.tree.Element;
 import org.hamcrest.*;
 
+import java.util.Collection;
+
+import static matchers.CollectionMatchers.sizeIs;
 import static org.hamcrest.CoreMatchers.equalTo;
 
 /**
- * Contains hamcrest matchers for testing auto complete tree
+ * Contains hamcrest matchers for machting some auto complete tree properties
  *
  * @author Frans
  */
@@ -42,10 +46,10 @@ public final class TreeMatchers {
     }
 
     public static Matcher<Element> hasNumberOfChildren(final int i) {
-        return new FeatureMatcher<Element, Integer>(equalTo(i), "number of children", "number of children") {
+        return new FeatureMatcher<Element, Collection<Element>>(sizeIs(i), "children collection", "children collection") {
             @Override
-            protected Integer featureValueOf(Element element) {
-                return element.getChildren().size();
+            protected Collection<Element> featureValueOf(Element element) {
+                return element.getChildren();
             }
         };
     }
