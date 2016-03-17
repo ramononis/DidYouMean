@@ -24,6 +24,7 @@ public class FiniteAutomata {
         acceptingStates = new HashSet<>();
         states = new HashSet<>();
         transitions = new TransitionSet();
+        states.add(initState);
     }
 
     /**
@@ -112,14 +113,14 @@ public class FiniteAutomata {
     public State createState(int n, int e){
         State state = new State(n, e);
         boolean isNew = true;
-        for(State s : getStates()){
+        for(State s : states){
             if(s.equals(state)){
                 state = s;
                 isNew = false;
             }
         }
         if(isNew){
-            getStates().add(state);
+            states.add(state);
         }
         return state;
     }
