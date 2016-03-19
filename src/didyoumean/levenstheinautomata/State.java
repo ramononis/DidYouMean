@@ -10,7 +10,7 @@ public class State {
     private int score;
     private boolean acceptingState;
 
-
+    public State(){}
     /**
      * Creates a new State.
      * @param n The number of consumed letters.

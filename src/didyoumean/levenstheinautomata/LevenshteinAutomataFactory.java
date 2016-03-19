@@ -5,6 +5,8 @@ import utils.Pair;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static java.util.Collections.max;
+
 /**
  * Definitions that are being reffered to are from:<br>
  * Fast string correction with Levenshtein automata (KU Schulz & S Mihov, 2002)
@@ -23,23 +25,46 @@ public class LevenshteinAutomataFactory {
     private Set<ParametricState> pStates;
     private Map<ParametricState, Pair<Integer, Integer>> acceptingIntervals;
     private Map<Integer, TransitionTable> transitionTables;
+    private boolean reduced = false;
+
     public LevenshteinAutomataFactory(int n) {
         maxN = n;
     }
 
     public static void main(String[] args) {
-        LevenshteinAutomataFactory laf = new LevenshteinAutomataFactory(2);
+        long start = System.currentTimeMillis();
+        LevenshteinAutomataFactory laf = new LevenshteinAutomataFactory(1);
         laf.precalculate();
+        System.out.println(System.currentTimeMillis() - start);
     }
-
 
     public void precalculate() {
         calculateParametricStates();
         calculateFinalStates();
         calculateTransitionTables();
+        reduceStates();
+    }
+
+    private void reduceStates() {
+        Map<ParametricState, Object> stateReductions = new HashMap<>();
+        Integer i = 0;
+        for (ParametricState pState : pStates) {
+            Integer o = i++;
+            stateReductions.put(pState, o);
+            pState.o = o;
+            pState.hash = pState.hashCode();
+        }
+        transitionTables.values().forEach(t -> t.reduce(stateReductions));
+        pStates.forEach(p -> p.positions.clear());
+        pStates.clear();
+        reduced = true;
     }
 
     private void calculateTransitionTables() {
+        transitionTables = new HashMap<>();
+        for (int l = 0; l <= maxN * 2 + 1; l++) {
+            transitionTables.put(l, new TransitionTable(l));
+        }
     }
 
     private void calculateFinalStates() {
@@ -76,13 +101,13 @@ public class LevenshteinAutomataFactory {
     }
 
 
-    private ParametricState constructPState(int[][] data) {
-        ParametricState result = new ParametricState();
+    private Set<ParametricPosition> constructPositions(int[][] data) {
+        Set<ParametricPosition> result = new HashSet<>();
         for (int[] ie : data) {
             if (ie.length < 2) {
                 throw new IllegalArgumentException("data must contain elements of arrays of at least size 2");
             }
-            result.addPosition(new ParametricPosition(ie[0], ie[1]));
+            result.add(new ParametricPosition(ie[0], ie[1]));
         }
         return result;
     }
@@ -90,7 +115,7 @@ public class LevenshteinAutomataFactory {
     private Set<CharacteristicVector> vectorCombinations(int l) {
         Set<CharacteristicVector> result = new HashSet<>(1 << l);
         int i = -1;
-        while(++i < (1 << l)) {
+        while (++i < (1 << l)) {
             Boolean[] bits = new Boolean[l];
             for (int b = 0; b < l; b++) {
                 bits[b] = (i & (1 << b)) != 0;
@@ -100,12 +125,32 @@ public class LevenshteinAutomataFactory {
         return result;
     }
 
+    private class StateWrapper extends State {
+        Pair<ParametricState, Integer> state;
+        StateWrapper(Pair<ParametricState, Integer> s) {
+            s = state;
+        }
+    }
+    public State outState(State s, char c, String w) {
+        if(!(s instanceof StateWrapper))
+            return null;
+        int l = Math.min(w.length(), 2*maxN+1);
+        w = w.substring(0,l);
+        CharacteristicVector cv = new CharacteristicVector(c,w);
+        return transitionTables.get(l).get((StateWrapper) s, cv);
+    }
     private class ParametricState {
 
         final Set<ParametricPosition> positions;
+        int hash;
+        Object o;
 
         ParametricState() {
             positions = new HashSet<>();
+        }
+
+        private ParametricState(Set<ParametricPosition> ps) {
+            positions = ps;
         }
 
         boolean addPosition(ParametricPosition p) {
@@ -116,7 +161,7 @@ public class LevenshteinAutomataFactory {
             if (positions.isEmpty()) {
                 return 0;
             }
-            return Collections.max(positions, (o1, o2) -> o1.indexOffset - o2.indexOffset).indexOffset;
+            return max(positions, (o1, o2) -> o1.indexOffset - o2.indexOffset).indexOffset;
         }
 
         int minOffset() {
@@ -149,11 +194,11 @@ public class LevenshteinAutomataFactory {
             if (positions.isEmpty()) {
                 return 0;
             }
-            return Collections.max(positions.stream().map(p -> p.indexOffset - p.edits).collect(Collectors.toSet()));
+            return max(positions.stream().map(p -> p.indexOffset - p.edits).collect(Collectors.toSet()));
         }
 
         /**
-         * Returns the accepting interval relative to the word length.<br>
+         * Returns ithe accepting interval relative to the word length.<br>
          *
          * @return
          */
@@ -165,18 +210,25 @@ public class LevenshteinAutomataFactory {
         }
 
 
+        @Override
         public int hashCode() {
+            if (reduced) {
+                return hash;
+            }
             return positions.hashCode();
         }
 
 
         public boolean equals(Object o) {
-            return o instanceof ParametricState
-                    && ((ParametricState) o).positions.equals(positions);
+            return o instanceof ParametricState && ((reduced && ((ParametricState) o).o == this.o)
+                    || ((ParametricState) o).positions.equals(positions));
         }
 
         @Override
         public String toString() {
+            if (reduced) {
+                return o.toString();
+            }
             if (positions.isEmpty()) {
                 return "∅";
             }
@@ -196,6 +248,16 @@ public class LevenshteinAutomataFactory {
             ParametricState result = new ParametricState();
             result.positions.addAll(positions);
             return result;
+        }
+
+        ParametricState applyVector(CharacteristicVector v, int wordOffset) {
+            Set<ParametricPosition> ps = new HashSet<>();
+            positions.forEach(p -> ps.addAll(p.applyVector(v, wordOffset)));
+            return new ParametricState(ps);
+        }
+
+        public boolean isEmpty() {
+            return positions.isEmpty();
         }
     }
 
@@ -246,40 +308,111 @@ public class LevenshteinAutomataFactory {
             String i = indexOffset == 0 ? "i" : ("(i " + (indexOffset > 0 ? "+ " : "- ") + Math.abs(indexOffset) + ")");
             return i + "#" + edits;
         }
+
+        public Set<ParametricPosition> applyVector(CharacteristicVector v, int offset) {
+            offset += indexOffset;
+            Set<ParametricPosition> result = new HashSet<>();
+            int j = v.minimalIndex(indexOffset) + 1;
+            int i = indexOffset;
+            int e = edits;
+            if (0 <= edits && edits <= maxN - 1) {
+                if (offset <= -2) {
+                    if (j == 1) {
+                        result.addAll(constructPositions(new int[][]{{i + 1, e}}));
+                    } else if (j == -1) {
+                        result.addAll(constructPositions(new int[][]{{i, e + 1}, {i + 1, e + 1}}));
+                    } else {
+                        result.addAll(constructPositions(new int[][]{{i, e + 1}, {i + 1, e + 1}, {i + j, e + j - 1}}));
+                    }
+                } else if (offset == -1) {
+                    if (j == 1) {
+                        result.addAll(constructPositions(new int[][]{{i + 1, e}}));
+                    } else {
+                        result.addAll(constructPositions(new int[][]{{i, e + 1}, {i + 1, e + 1}}));
+                    }
+                } else {
+                    //offset == 0
+                    result.addAll(constructPositions(new int[][]{{i, e + 1}}));
+                }
+            } else if (offset <= -1 && j == 1) {
+                result.addAll(constructPositions(new int[][]{{i + 1, e}}));
+            }
+            return result;
+        }
     }
 
     private class TransitionTable {
         Map<Pair<ParametricState, CharacteristicVector>, Pair<ParametricState, Integer>> table;
-        TransitionTable(int l) {
-            table = new HashMap<>();
 
+        TransitionTable(int l) {
+            constructTable(l);
+        }
+
+        void reduce(Map<ParametricState, Object> mapping) {
+            for (Pair<ParametricState, Integer> pair : table.values()) {
+                ParametricState pState = pair.getLeft();
+                Object o = mapping.get(pState);
+                pState.o = o;
+                pState.hash = pState.hashCode();
+                pState.positions.clear();
+            }
+        }
+        State get(StateWrapper s, CharacteristicVector cv) {
+            Pair<ParametricState, Integer> value =  table.get(new Pair<>(s.state.getLeft(), cv));
+            return new StateWrapper(new Pair<>(value.getLeft(), value.getRight() + s.state.getRight()));
         }
         void constructTable(int l) {
             Set<CharacteristicVector> vectors = vectorCombinations(l);
-            table.clear();
-            for(ParametricState p : pStates) {
-                for(CharacteristicVector v : vectors) {
+            table = new HashMap<>();
+            for (ParametricState p : pStates) {
+                if (p.isEmpty() || p.maxOffset() > l) {
+                    continue;
+                }
+                for (CharacteristicVector v : vectors) {
+                    ParametricState out = p.applyVector(v, -l);
+                    if (out.isEmpty()) {
+                        continue;
+                    }
+                    int offset = out.minOffset();// offset >= 0?
+                    out = out.reduce();
+                    table.put(new Pair<>(p, v), new Pair<>(out, offset));
                 }
             }
         }
 
     }
+
     private class CharacteristicVector {
         Boolean[] value;
+
         CharacteristicVector(char x, String w) {
             value = (Boolean[]) w.chars().mapToObj(i -> new Boolean(((char) i == x))).toArray();
         }
+
         CharacteristicVector(Boolean[] v) {
             value = v;
         }
+
+
+        int minimalIndex(int startAt) {
+            for (int i = startAt; i < value.length; i++) {
+                if (value[i]) {
+                    return i - startAt;
+                }
+            }
+            return -1;
+        }
+
         @Override
         public String toString() {
             return "<" + Arrays.stream(value).reduce("", (s, b) -> s + (b ? '1' : '0'), ((s, s2) -> s + s2)) + ">";
         }
+
         @Override
         public int hashCode() {
-            return Arrays.stream(value).reduce(0, (i, b) -> i*2 + (b ? 1 : 0), (i,j) -> i+j);
+            return Arrays.stream(value).reduce(0, (i, b) -> i * 2 + (b ? 1 : 0), (i, j) -> i + j);
         }
+
         @Override
         public boolean equals(Object o) {
             return o instanceof CharacteristicVector && Arrays.equals(value, ((CharacteristicVector) o).value);
