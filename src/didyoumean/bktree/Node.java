@@ -37,9 +37,13 @@ public class Node
     /**
      * Adds a new child to this node.
      * @param child The Node that this Node should be the parent of.
+     * @throws IllegalArgumentException if {@code child} is null.
      */
-    public void addChild(Node child){
-        int distance = BKTree.calculateLD(child.getName(),name);
+    protected void addChild(Node child){
+        if(child == null){
+            throw new IllegalArgumentException("Given Node is null in Node.addChild");
+        }
+        int distance = BKTree.calculateDistance(child.getName(),name);
         if(children.get(distance)!=null){
             children.get(distance).addChild(child);
         }
@@ -69,7 +73,7 @@ public class Node
      */
     public void printTree(){
         for(Node n : children.values()){
-            System.out.print(BKTree.calculateLD(name, n.getName()) + " : " + n.getName() + " (" + n.getScore() + ") " + "; ");
+            System.out.print(BKTree.calculateDistance(name, n.getName()) + " : " + n.getName() + " (" + n.getScore() + ") " + "; ");
         }
         System.out.print("\n");
         for(Node n : children.values()){
@@ -83,14 +87,6 @@ public class Node
      */
     public int getScore() {
         return score;
-    }
-
-    /**
-     * Sets the score of this Node.
-     * @param score
-     */
-    public void setScore(int score) {
-        this.score = score;
     }
 
     public String toString(){

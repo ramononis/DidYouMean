@@ -138,7 +138,7 @@ public class FiniteAutomata {
         }
         sb.append("\nTransitions");
         for(State s : getTransitions().getTransitions().keySet()){
-            for(Transition t : getTransitions().getTransitions().get(s)){
+            for(Transition t : getTransitions().getTransitionsByState(s)){
                 sb.append(", ").append(t);
             }
         }

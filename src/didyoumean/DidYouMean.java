@@ -26,7 +26,7 @@ public class DidYouMean {
      * @param errorRange The error range that the words should be in.
      * @return The NFA made from the {@code word}.
      */
-    public NFA makeNFAFromWord(String word, int errorRange){
+    protected NFA makeNFAFromWord(String word, int errorRange){
         NFA nfa = new NFA(0,0);
         int i = 0;
         for(char letter : word.toCharArray()){
@@ -66,6 +66,7 @@ public class DidYouMean {
 
     /**
      * Gets the data from the database, and saves it in this Class.
+     * Also creates a new tree from the data (takes a few seconds).
      */
     public void setup(){
         List<String> tree = new ArrayList<>(databaseController.getData().keySet());
@@ -77,7 +78,7 @@ public class DidYouMean {
      * @param nfa The NFA that should be transformed.
      * @return The DFA that was made from the {@code nfa}.
      */
-    public DFA makeDFAFromNFA(NFA nfa){
+    protected DFA makeDFAFromNFA(NFA nfa){
         DFA result = new DFA(new State(0,0,0,true));
         Map<State, Set<State>> stateMap = new HashMap<State, Set<State>>();
         Set<State> states = new HashSet<State>();
@@ -93,20 +94,24 @@ public class DidYouMean {
     }
 
     /**
-     *
-     */
-
-    /**
      * Gets the final did-you-mean suggestion, given a search string.
      * @param searchString The user's search string.
      * @return The String the user most likely meant to type. May be equal to the given search string.
+     * @throws IllegalArgumentException if {@code searchString} is {@code null}.
      */
     public String getDYMFromString(String searchString){
+        if(searchString == null){
+            throw new IllegalArgumentException("Search string is null in DidYouMean.getDYMFromString.");
+        }
         return BKTree.getDYM(searchString);
     }
 
     public static void main(String[] args){
         DidYouMean dym = new DidYouMean();
-        System.out.println(dym.makeNFAFromWord("food", 2));
+        long start, stop;
+        start = System.currentTimeMillis();
+        System.out.println(dym.makeNFAFromWord("moeilijk land woord jwz tocch", 100));
+        stop = System.currentTimeMillis();
+        System.out.println(stop - start + "ms");
     }
 }
