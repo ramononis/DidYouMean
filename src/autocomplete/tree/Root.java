@@ -33,7 +33,7 @@ public class Root extends Node {
     }
 
     /**
-     * Adds the given (sub)keyword to this Node,
+     * Adds the given keyword to this Root,
      * when already present the given weight is added to the current weight.
      *
      * @param k the keyword, may not contain {@link #TERM}.
