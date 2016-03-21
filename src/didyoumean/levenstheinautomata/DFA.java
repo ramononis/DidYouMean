@@ -157,11 +157,11 @@ public class DFA extends FiniteAutomata{
         dfa2.setTransitions(set2);
 
         DidYouMean dym = new DidYouMean();
-        DFA dfa3 = dym.makeDFAFromNFA(dym.makeNFAFromWord("la",1));
+//        DFA dfa3 = dym.makeDFAFromNFA(dym.makeNFAFromWord("la",1));
 
-        for(String s: dfa2.intersect(dfa3)){
-            System.out.println(s);
-        }
+//        for(String s: dfa2.intersect(dfa3)){
+//            System.out.println(s);
+//        }
 
     }
 }

@@ -19,19 +19,25 @@ public class Node
      * @param word The word corresponding to this Node.
      */
     public Node(String word){
-        name = word;
-        children = new ConcurrentHashMap<Integer, Node>();
-        score = 0;
+        this(word, 0);
     }
 
     /**
      * Creates a new Node with a certain word and score. Has no children.
      * @param word The word corresponding to this Node.
      * @param score The score this Node should have.
+     * @throws IllegalArgumentException if {@code word} is {@code null} or {@code score} is negative.
      */
     public Node(String word, int score){
-        this(word);
+        if(word == null){
+            throw new IllegalArgumentException("Tried to make a Node with a null String.");
+        }
+        if(score < 0){
+            throw new IllegalArgumentException("Tried to give a negative score to a Node.");
+        }
+        this.name = word;
         this.score = score;
+        children = new ConcurrentHashMap<Integer, Node>();
     }
 
     /**
@@ -68,18 +74,18 @@ public class Node
         return children;
     }
 
-    /**
-     * Prints this tree in a readable fashion.
-     */
-    public void printTree(){
-        for(Node n : children.values()){
-            System.out.print(BKTree.calculateDistance(name, n.getName()) + " : " + n.getName() + " (" + n.getScore() + ") " + "; ");
-        }
-        System.out.print("\n");
-        for(Node n : children.values()){
-            n.printTree();
-        }
-    }
+//    /**
+//     * Prints this tree in a readable fashion.
+//     */
+//    public void printTree(){
+//        for(Node n : children.values()){
+//            System.out.print(BKTree.calculateDistance(name, n.getName()) + " : " + n.getName() + " (" + n.getScore() + ") " + "; ");
+//        }
+//        System.out.print("\n");
+//        for(Node n : children.values()){
+//            n.printTree();
+//        }
+//    }
 
     /**
      * Returns the score of this Node.
@@ -87,6 +93,15 @@ public class Node
      */
     public int getScore() {
         return score;
+    }
+
+    @Override
+    public boolean equals(Object o){
+        if(o instanceof Node){
+            return ((Node) o).getName().equals(getName());
+        }else{
+            return super.equals(o);
+        }
     }
 
     public String toString(){

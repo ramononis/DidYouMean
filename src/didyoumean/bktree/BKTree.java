@@ -38,14 +38,14 @@ public class BKTree {
         }
     }
 
-    /**
-     * Prints a tree's structure.
-     * @param root The root of the tree.
-     */
-    public static void printTree(Node root){
-        System.out.println(root.getName());
-        root.printTree();
-    }
+//    /**
+//     * Prints a tree's structure.
+//     * @param root The root of the tree.
+//     */
+//    public static void printTree(Node root){
+//        System.out.println(root.getName());
+//        root.printTree();
+//    }
 
     /**
      * Calculates the Levenshtein Distance between 2 words.
@@ -199,46 +199,4 @@ public class BKTree {
         return root;
     }
 
-    public static void main(String[] args){
-        ArrayList<String> tree = new ArrayList<String>();
-        String[] dataPlaces = new String[]{"./csv/Data1.csv", "./csv/Data2.csv", "./csv/Data3.csv", "./csv/Data4.csv"};
-        HashMap<String, Integer> data = new CSVControl(dataPlaces).getData();
-        tree.addAll(data.keySet());
-        tree.add("test");
-        tree.add("text");
-        tree.add("telt");
-        tree.add("geld");
-        tree.add("geld");
-        tree.add("galt");
-        tree.add("tekt");
-        tree.add("accu");
-        data.put("test", 16);
-        data.put("text", 10);
-        data.put("telt", 3);
-        data.put("geld", 10);
-        data.put("gold", 9);
-        data.put("galt", 8);
-        data.put("tekt", 18);
-
-
-        long start, stop;
-        for(int i = 0; i < 10; i++) {
-            start = System.currentTimeMillis();
-            BKTree.buildTree(tree, data);
-//            data.clear();
-//        bkTree.printTree(bkTree.getRoot());
-//        HashMap<Node, Integer> nodeMap = bkTree.searchTreeForNodes(bkTree.getRoot(), "Test", 4);
-//        for(Node n : nodeMap.keySet()){
-//            System.out.print(n.toString() + ", LD " + nodeMap.get(n) + "; ");
-//        }
-            long start2 = System.currentTimeMillis();
-
-            for (int j = 0; j < 100; j++) {
-                BKTree.getDYM("batery 6");
-//            System.out.println("\nDid you mean: " + BKTree.getDYM("accu 6"));
-            }
-            stop = System.currentTimeMillis();
-            System.out.println(stop - start + "ms inclusief bouwen, " + (stop - start2) + " exclusief bouwen");
-        }
-    }
 }
