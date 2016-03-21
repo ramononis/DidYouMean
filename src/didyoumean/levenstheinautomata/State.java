@@ -109,6 +109,9 @@ public class State {
     public boolean isAcceptingState() {
         return acceptingState;
     }
+    public boolean isAcceptingState(int w) {
+        return acceptingState;
+    }
 
     /**
      * Sets the current acceptance of this State.
@@ -116,6 +119,10 @@ public class State {
      */
     public void setAcceptingState(boolean acceptingState) {
         this.acceptingState = acceptingState;
+    }
+
+    public State outState(char c, String w) {
+        return null;
     }
 
     public String toString(){

@@ -50,7 +50,7 @@ public class FiniteAutomata {
      * @return Whether State {@code state} is an accepting state.
      */
     public boolean isFinalState(State state){
-        return getAcceptingStates().contains(state);
+        return getAcceptingStates().contains(state) || state.isAcceptingState();
     }
 
     /**
