@@ -42,15 +42,6 @@ public class BKTree {
         }
     }
 
-//    /**
-//     * Prints a api.tree's structure.
-//     * @param root The root of the api.tree.
-//     */
-//    public static void printTree(Node root){
-//        System.out.println(root.getName());
-//        root.printTree();
-//    }
-
     /**
      * Calculates the Levenshtein Distance between 2 words.
      *
@@ -105,8 +96,6 @@ public class BKTree {
             if (levenDis == 0) {
                 return n.getName();
             } else {
-
-//                System.out.println("\n" + n.getName() + " (" + score + ")");
                 if (score > bestScore) {
                     bestNode = n;
                     bestScore = score;
@@ -115,28 +104,6 @@ public class BKTree {
         }
         return bestNode == null ? "" : bestNode.getName();
     }
-
-//    public static int calculateLD(String word1, String word2){
-//        //based on http://rosettacode.org/wiki/Levenshtein_distance#Java
-//
-//        int[] costs = new int[word2.length() + 1];
-//        for (int j = 0; j < costs.length; j++) {
-//            costs[j] = j;
-//        }
-//        for (int i = 1; i <= word1.length(); i++) {
-//            // j == 0; nw = lev(i - 1, j)
-//            costs[0] = i;
-//            int nw = i - 1;
-//            for (int j = 1; j <= word2.length(); j++) {
-//                int costj = Math.min(1 + Math.min(costs[j], costs[j - 1]),
-//                        word1.charAt(i - 1) == word2.charAt(j - 1) ? nw : nw + 1);
-//                nw = costs[j];
-//                costs[j] = costj;
-//            }
-//        }
-//        return costs[word2.length()];
-//    }
-
     /**
      * Gets the root of this api.tree.
      *

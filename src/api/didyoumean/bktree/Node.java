@@ -77,19 +77,6 @@ public class Node
         return children;
     }
 
-//    /**
-//     * Prints this api.tree in a readable fashion.
-//     */
-//    public void printTree(){
-//        for(Node n : children.values()){
-//            System.out.print(BKTree.calculateDistance(name, n.getName()) + " : " + n.getName() + " (" + n.getScore() + ") " + "; ");
-//        }
-//        System.out.print("\n");
-//        for(Node n : children.values()){
-//            n.printTree();
-//        }
-//    }
-
     /**
      * Returns the score of this Node.
      * @return the score of this Node.
@@ -97,28 +84,6 @@ public class Node
     public int getScore() {
         return score;
     }
-
-//    /**
-//     * Retrieves all the words within a certain LD of a word from this (sub)api.tree.
-//     *
-//     * @param term       The term that words should be compared with.
-//     * @param errorRange The maximum LD a word should have compared to {@code term}.
-//     * @return The list of words with maximum LD to term.
-//     */
-//    public List<String> searchTree(String term, int errorRange) {
-//        List<String> result = new ArrayList<>();
-//        int distance = calculateDistance(term, getName());
-//        if (distance <= errorRange) {
-//            result.add(getName());
-//        }
-//
-//        for (Node n : getChildren().values()) {
-//            if (Math.abs(calculateDistance(n.getName(), getName()) - distance) <= errorRange) {
-//                result.addAll(n.searchTree(term, errorRange));
-//            }
-//        }
-//        return result;
-//    }
 
     /**
      * Retrieves all the Nodes within a certain lD of a word from this (sub)api.tree.
