@@ -93,7 +93,7 @@ public class LevenshteinAutomataFactory {
 
     private Set<ParametricState> calculateParametricStates(ParametricState state, List<ParametricPosition> ps) {
         if (ps.isEmpty()) {
-            Set<ParametricState> result = new HashSet<ParametricState>();
+            Set<ParametricState> result = new HashSet<>();
             result.add(state.reduce());
             return result;
         }
@@ -199,8 +199,8 @@ public class LevenshteinAutomataFactory {
             }
         }
 
-        boolean addPosition(ParametricPosition p) {
-            return positions.add(p);
+        void addPosition(ParametricPosition p) {
+            positions.add(p);
         }
 
         int maxOffset() {
@@ -228,6 +228,7 @@ public class LevenshteinAutomataFactory {
         }
 
 
+        @SuppressWarnings("BooleanMethodIsAlwaysInverted")
         boolean subsumes(ParametricPosition p) {
             for (ParametricPosition p2 : positions) {
                 if (p2.subsumes(p)) {
@@ -248,9 +249,9 @@ public class LevenshteinAutomataFactory {
         }
 
         /**
-         * Returns ithe accepting interval relative to the word length.<br>
+         * Returns the accepting interval relative to the word length.<br>
          *
-         * @return
+         * @return A {@link Pair} of non-positive integers corresponding to the relative accepting interval
          */
         Pair<Integer, Integer> acceptingInterval() {
             if (positions.isEmpty()) {
@@ -289,12 +290,12 @@ public class LevenshteinAutomataFactory {
                 return "∅";
             }
             StringBuilder result = new StringBuilder("{");
-            positions.forEach(p -> result.append(p.toString() + ", "));
+            positions.forEach(p -> result.append(p.toString()).append(", "));
             result.delete(result.length() - 2, result.length());
             result.append("} ");
             result.append("(0 <= i <= w");
             if (maxOffset() > 0) {
-                result.append(" - " + maxOffset());
+                result.append(" - ").append(maxOffset());
             }
             result.append(")");
             return result.toString();
@@ -308,7 +309,7 @@ public class LevenshteinAutomataFactory {
                 return "∅";
             }
             StringBuilder result = new StringBuilder("{");
-            positions.forEach(p -> result.append(p.toString(i) + ", "));
+            positions.forEach(p -> result.append(p.toString(i)).append(", "));
             result.delete(result.length() - 2, result.length());
             result.append("} ");
             return result.toString();
@@ -354,7 +355,7 @@ public class LevenshteinAutomataFactory {
         }
 
         List<ParametricPosition> subsumptionTriangle() {
-            List<ParametricPosition> result = new ArrayList<ParametricPosition>();
+            List<ParametricPosition> result = new ArrayList<>();
             for (int e = 0; e <= maxN - edits; e++) {
                 for (int i = -e; i <= e; i++) {
                     result.add(new ParametricPosition(i + indexOffset, e + edits));
@@ -432,8 +433,7 @@ public class LevenshteinAutomataFactory {
         void reduce(Map<ParametricState, Object> mapping) {
             for (Pair<ParametricState, Integer> pair : table.values()) {
                 ParametricState pState = pair.getLeft();
-                Object o = mapping.get(pState);
-                pState.o = o;
+                pState.o = mapping.get(pState);
                 pState.hash = pState.hashCode();
                 pState.maxBase = pState.maxBaseOffset();
                 pState.positions.clear();
@@ -473,7 +473,7 @@ public class LevenshteinAutomataFactory {
         Boolean[] value;
 
         CharacteristicVector(char x, String w) {
-            value = w.chars().mapToObj(i -> new Boolean(((char) i == x))).toArray(Boolean[]::new);
+            value = w.chars().mapToObj(i -> (char) i == x).toArray(Boolean[]::new);
         }
 
         CharacteristicVector(Boolean[] v) {

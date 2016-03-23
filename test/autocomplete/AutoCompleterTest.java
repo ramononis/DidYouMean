@@ -2,11 +2,10 @@ package autocomplete;
 
 import database.CSVCStub;
 
-import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Map;
 
 import static org.hamcrest.CoreMatchers.anyOf;
-import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
@@ -42,12 +41,12 @@ public class AutoCompleterTest {
         assertThat(AC.getTopN(10,"ac"), is(new String[]{"accu", "accuboor", "ac motor"}));
         assertThat(AC.getTopN(10,"motor"), is(new String[]{}));
         assertThat(AC.getTopN(10,"12v motor"), is(new String[]{"12v motor", "12v motor groen"}));
-        AC.learn("12v motor blauw", 1);;
+        AC.learn("12v motor blauw", 1);
         assertThat(AC.getTopN(10,"12v motor"), is(new String[]{"12v motor", "12v motor groen", "12v motor blauw"}));
     }
 
-    private HashMap generateData1() { // standard
-        HashMap<String, Integer> r = new HashMap();
+    private Map<String, Integer> generateData1() { // standard
+        Map<String, Integer> r = new HashMap<>();
         r.put("NR1", 500); //1
         r.put("NR2", 454); //2
         r.put("NR3", 354); //3
@@ -58,8 +57,8 @@ public class AutoCompleterTest {
         return r;
     }
 
-    private HashMap generateData2() { // same values, this is sort of random because it depends on how the children are iterated. children are a set so no order.
-        HashMap<String, Integer> r = new HashMap();
+    private Map<String, Integer> generateData2() { // same values, this is sort of random because it depends on how the children are iterated. children are a set so no order.
+        Map<String, Integer> r = new HashMap<>();
         r.put("NR123", 500); //2
         r.put("NR2", 500); //1
         r.put("NR3", 354); //3
@@ -70,8 +69,8 @@ public class AutoCompleterTest {
         return r;
     }
 
-    private HashMap generateData3() { // more variations in keywords
-        HashMap<String, Integer> r = new HashMap();
+    private Map<String, Integer> generateData3() { // more variations in keywords
+        Map<String, Integer> r = new HashMap<>();
         r.put("accu", 500);
         r.put("accuboor", 454);
         r.put("ac motor", 354);

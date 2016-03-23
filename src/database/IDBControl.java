@@ -1,6 +1,6 @@
 package database;
 
-import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Interface for database control classes. Interacts with some type of database.
@@ -13,7 +13,7 @@ public interface IDBControl {
      *
      * @return a HashMap with the search term (null-terminated String) as key and the weight (int) as the value.
      */
-    HashMap<String, Integer> getData();
+    Map<String, Integer> getData();
 
     /**
      * Calculates the weight that a search term should have.

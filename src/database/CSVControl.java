@@ -5,6 +5,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -33,7 +34,7 @@ public class CSVControl implements IDBControl {
      */
     @Override
 
-    public HashMap<String, Integer> getData() {
+    public Map<String, Integer> getData() {
         Set<String> rawData = new HashSet<>();
 
         for (String file : paths) {
@@ -49,10 +50,10 @@ public class CSVControl implements IDBControl {
      * Processes the data provided by {@link #filter(Set)}.
      *
      * @param filteredData a set of string arrays which have a length of 3. Of the array the first element is the search term, the second the number of times it was searched and the third the percentage of search refinements.
-     * @return a {@link HashMap<String, Integer>} with the search term (null-terminated string) as key and its weight as value.
+     * @return a {@link Map Map&lt;String, Integer&gt;} with the search term (null-terminated string) as key and its weight as value.
      */
-    private HashMap<String, Integer> process(Set<String[]> filteredData) {
-        HashMap<String, Integer> data = new HashMap<>();
+    private Map<String, Integer> process(Set<String[]> filteredData) {
+        Map<String, Integer> data = new HashMap<>();
 
         int skipped = 0;
 
@@ -72,7 +73,6 @@ public class CSVControl implements IDBControl {
                 data.put(dl[0], weight);
             } catch (Exception e) {
                 skipped++;
-                continue;
             }
         }
 

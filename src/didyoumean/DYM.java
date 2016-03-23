@@ -1,4 +1,4 @@
-package utils;
+package didyoumean;
 
 /**
  * A simple enumerator. This will be used to tell the DYM which method to use.

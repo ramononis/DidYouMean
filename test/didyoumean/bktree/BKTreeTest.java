@@ -127,7 +127,7 @@ public class BKTreeTest {
     @Test
     public void testBuildTree(){
         // same structure as the addChild test
-        ArrayList<String> wordList = new ArrayList<>();
+        List<String> wordList = new ArrayList<>();
         String[] wordArray = {"setup", "setup1", "setup12", "setup3"};
         Collections.addAll(wordList, wordArray);
         Map<String, Integer> data = new ConcurrentHashMap<>();

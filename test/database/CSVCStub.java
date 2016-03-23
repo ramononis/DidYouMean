@@ -1,20 +1,20 @@
 package database;
 
-import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by Tim on 15-3-2016.
  */
 public class CSVCStub implements IDBControl{
-    private HashMap<String, Integer> data;
+    private Map<String, Integer> data;
 
-    public void setData(HashMap data){
+    public void setData(Map<String, Integer> data){
         this.data = data;
     }
 
 
     @Override
-    public HashMap<String, Integer> getData() {
+    public Map<String, Integer> getData() {
         return data;
     }
 }

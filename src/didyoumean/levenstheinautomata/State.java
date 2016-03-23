@@ -1,136 +1,28 @@
 package didyoumean.levenstheinautomata;
 
-/**
- * Created by Tim on 3/8/2016.
- */
-public class State {
-
-    private int n;
-    private int e;
-    private int score;
-    private boolean acceptingState;
-
-    public State(){}
-    /**
-     * Creates a new State.
-     * @param n The number of consumed letters.
-     * @param e The number of current errors.
-     * @param score The score of this state.
-     * @param acceptingState Whether or not this state is an accepting
-     *                       state (this State is the end of a word of our dictionary).
-     */
-    public State(int n, int e, int score, boolean acceptingState){
-        this.score = score;
-        this.n = n;
-        this.e = e;
-        this.acceptingState = acceptingState;
-    }
-
-    /**
-     * Creates a new State. Assumes this is not an accepting state.
-     * @param n The number of consumed letters.
-     * @param e The number of current errors.
-     * @param score The score of this state.
-     */
-    public State(int n, int e, int score){
-        this(n, e, score, false);
-    }
-
-    /**
-     * Creates a new State. Assumes this is not an accepting state, and has score 0.
-     * @param n The number of consumed letters.
-     * @param e The number of current errors.
-     */
-    public State(int n, int e){
-        this(n, e, 0, false);
-    }
-
-    /**
-     * Gets the score of this State.
-     * @return The score of this State.
-     */
-    public int getScore(){
-        return score;
-    }
-
-    /**
-     * Sets the score of this State.
-     * @param score The new score of this State.
-     */
-    public void setScore(int score){
-        this.score = score;
-    }
-
-    /**
-     * Checks whether 2 states are equal. This is only true iff n1 == n2 and p1 == p2.
-     * @param argState the State to compare.
-     * @return Whether this State and {@code argState} are equal.
-     */
-    public boolean equals(State argState){
-        return (argState.getE() == getE() && argState.getN() == getN());
-    }
-
-    /**
-     * Returns the amount of consumed letters of this State.
-     * @return The amount of consumed letters.
-     */
-    public int getN() {
-        return n;
-    }
-
-    /**
-     * Sets a new amount of consumed letters for this State.
-     * @param n The new amount of consumed letters.
-     */
-    public void setN(int n) {
-        this.n = n;
-    }
-
-    /**
-     * Gets the current errors of this State.
-     * @return The number of errors of this State.
-     */
-    public int getE() {
-        return e;
-    }
-
-    /**
-     * Changes the current errors of this State.
-     * @param e The new number of errors of this State.
-     */
-    public void setE(int e) {
-        this.e = e;
-    }
+public abstract class State {
 
     /**
      * Checks if not this State is an accepting State.
+     * @param w The length of the word of the DFA
      * @return Whether or not this State is an accepting one.
      */
-    public boolean isAcceptingState() {
-        return acceptingState;
-    }
-    public boolean isAcceptingState(int w) {
-        return acceptingState;
-    }
+    public abstract boolean isAcceptingState(int w);
 
     /**
-     * Sets the current acceptance of this State.
-     * @param acceptingState The new acceptance of this State.
+     * Returns the next state for a given symbol and word length.
+     * @param c the next symbol
+     * @param w the word length
+     * @return the next state for the given parameters, or {@code null} if these would lead to a failure state.
      */
-    public void setAcceptingState(boolean acceptingState) {
-        this.acceptingState = acceptingState;
-    }
+    public abstract State outState(char c, String w);
 
-    public State outState(char c, String w) {
-        return null;
-    }
+    /**
+     * Gets the Levenshtein distance between the word of this Levenshtein-automata and the word corresponding to the
+     * symbols that are used to get to this state.
+     * @param w the length of the wordt corresponding to the Levenshtein-automata
+     * @return the Levenshtein-automata
+     */
+    public abstract int getDistance(int w);
 
-    public int getDistance(int w) {
-        return 0;
-    }
-
-
-    public String toString(){
-        return "(" + getN() + ", " + getE() +")";
-    }
 }

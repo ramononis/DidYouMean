@@ -1,7 +1,10 @@
 package utils;
 
+
 /**
- * Created by ramon on 18-3-2016.
+ * A simple immutable class for 2-tuples.
+ * @param <L> the first class
+ * @param <R> the second class
  */
 public class Pair<L, R> {
 

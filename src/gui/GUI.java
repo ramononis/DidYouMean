@@ -3,8 +3,7 @@ package gui;
 import autocomplete.AutoCompleter;
 import database.CSVControl;
 import didyoumean.DidYouMean;
-import didyoumean.bktree.BKTree;
-import utils.DYM;
+import didyoumean.DYM;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -24,7 +23,7 @@ public class GUI {
 
     private AutoCompleter AC;
     private DidYouMean DYM;
-    private DYM method = utils.DYM.BKTREE;
+    private DYM method = didyoumean.DYM.BKTREE;
 
     JFrame frame;
     String[] outputList;
@@ -43,7 +42,7 @@ public class GUI {
         frame.setVisible(true);
 
         AC = new AutoCompleter(new CSVControl(FILENAMES));
-        DYM = new DidYouMean(utils.DYM.LEVENSHTEIN);
+        DYM = new DidYouMean(didyoumean.DYM.LEVENSHTEIN);
 
         frame.dispose();
 
@@ -146,9 +145,9 @@ public class GUI {
             }
         });
 
-        BK.addActionListener(e -> method = utils.DYM.BKTREE);
+        BK.addActionListener(e -> method = didyoumean.DYM.BKTREE);
 
-        LA.addActionListener(e -> method = utils.DYM.LEVENSHTEIN);
+        LA.addActionListener(e -> method = didyoumean.DYM.LEVENSHTEIN);
 
         searchbar.addActionListener(e -> {
             if (e.getID() == 1001) {

@@ -3,8 +3,8 @@ package autocomplete;
 import tree.Root;
 import database.IDBControl;
 
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static autocomplete.Algorithm.getTopKeywords;
 
@@ -39,7 +39,7 @@ public class AutoCompleter {
      * and uses {@link Root#addOrIncrementWord(String, int)} to make a tree of this data.
      */
     private void makeTree() {
-        HashMap<String, Integer> data = DB.getData();
+        Map<String, Integer> data = DB.getData();
         tree = new Root();
 
         if (data == null) {
