@@ -3,14 +3,14 @@ package gui;
 import autocomplete.AutoCompleter;
 import database.CSVControl;
 import didyoumean.DidYouMean;
+import didyoumean.bktree.BKTree;
 import utils.DYM;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 
 /**
  * Displays a GUI and requests suggestions from AutoCompleter class. Also contains the main function to start the program.
@@ -24,6 +24,7 @@ public class GUI {
 
     private AutoCompleter AC;
     private DidYouMean DYM;
+    private DYM method = utils.DYM.BKTREE;
 
     JFrame frame;
     String[] outputList;
@@ -88,6 +89,23 @@ public class GUI {
         c.fill = GridBagConstraints.BOTH;
         listpane.add(output, c);
 
+        JRadioButton BK = new JRadioButton("BK Tree");
+        JRadioButton LA = new JRadioButton("Automata");
+        ButtonGroup group = new ButtonGroup();
+        group.add(BK);
+        group.add(LA);
+        BK.setSelected(true);
+        JPanel radiopane = new JPanel();
+        c = new GridBagConstraints();
+        c.fill = GridBagConstraints.VERTICAL;
+        c.gridx = 3;
+        listpane.add(radiopane, c);
+
+        radiopane.setLayout(new GridLayout(3,1));
+        radiopane.add(new JLabel("Select DYM method"));
+        radiopane.add(BK);
+        radiopane.add(LA);
+
         terminane.setLayout(new GridBagLayout());
 
         JTextField searchbar = new JTextField();
@@ -127,6 +145,10 @@ public class GUI {
                 }
             }
         });
+
+        BK.addActionListener(e -> method = utils.DYM.BKTREE);
+
+        LA.addActionListener(e -> method = utils.DYM.LEVENSHTEIN);
 
         searchbar.addActionListener(e -> {
             if (e.getID() == 1001) {
