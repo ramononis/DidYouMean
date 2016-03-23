@@ -26,7 +26,7 @@ public class BKTree {
      * @param data The data (word, score) the tree should contain.
      * @throws IllegalArgumentException if either list or data is null.
      */
-    public static void buildTree(List<String> list, Map<String, Integer> data) {
+    public void buildTree(List<String> list, Map<String, Integer> data) {
         if (list == null) {
             throw new IllegalArgumentException("Tried to make a tree from a list that is null.");
         }
@@ -87,25 +87,13 @@ public class BKTree {
     }
 
     /**
-     * Gets the minimum between 3 integers.
-     *
-     * @param a The first integer.
-     * @param b The second integer.
-     * @param c The third integer.
-     * @return The minimum of a, b and c.
-     */
-    private static int minimum(int a, int b, int c) {
-        return Math.min(Math.min(a, b), c);
-    }
-
-    /**
      * Gets a 'did-you-mean' suggestion for a word.
      *
      * @param word The word the user searched for.
      * @return The word the user probably meant when searching for {@code word}. May be the same as {@code word}.
      * @throws IllegalArgumentException if {@code word} is null
      */
-    public static String getDYM(String word) {
+    public String getDYM(String word) {
         if (word == null) {
             throw new IllegalArgumentException("Null word in BKTree.getDYM");
         }
@@ -116,7 +104,7 @@ public class BKTree {
         double bestScore = -1;
         for (Node n : nodeMap.keySet()) {
             int levenDis = nodeMap.get(n);
-            double score = n.getScore() / Math.pow(levenDis, 6); //TODO: random formula for now, change to a good one.
+            double score = n.getScore() / Math.pow(levenDis, 6);
             if (levenDis == 0) {
                 return n.getName();
             } else {

@@ -8,6 +8,7 @@ import database.IDBControl;
 import java.util.*;
 
 /**
+ *
  * Created by Tim on 3/9/2016.
  */
 public class DidYouMean {
@@ -15,8 +16,10 @@ public class DidYouMean {
     private static final String[] FILENAMES = {"./csv/Data1.csv", "./csv/Data2.csv", "./csv/Data3.csv", "./csv/Data4.csv"};
 
     private IDBControl databaseController = new CSVControl(FILENAMES);
+    private BKTree tree;
 
     public DidYouMean(){
+        tree = new BKTree();
         setup();
     }
 
@@ -70,7 +73,7 @@ public class DidYouMean {
      */
     public void setup(){
         List<String> tree = new ArrayList<>(databaseController.getData().keySet());
-        BKTree.buildTree(tree, databaseController.getData());
+        getTree().buildTree(tree, databaseController.getData());
     }
 
     /**
@@ -80,11 +83,11 @@ public class DidYouMean {
      */
     protected DFA makeDFAFromNFA(NFA nfa){
         DFA result = new DFA(new State(0,0,0,true));
-        Map<State, Set<State>> stateMap = new HashMap<State, Set<State>>();
-        Set<State> states = new HashSet<State>();
+        Map<State, Set<State>> stateMap = new HashMap<>();
+        Set<State> states = new HashSet<>();
         states.add(nfa.getInitState());
         stateMap.put(result.getInitState(), nfa.lambdaClosure(nfa.getInitState()));
-        State state = null;
+        State state;
         while((state = states.iterator().next()) != null) {
             states.remove(state);
             Set<State> closures = stateMap.get(state);
@@ -103,15 +106,16 @@ public class DidYouMean {
         if(searchString == null){
             throw new IllegalArgumentException("Search string is null in DidYouMean.getDYMFromString.");
         }
-        return BKTree.getDYM(searchString);
+        return getTree().getDYM(searchString);
     }
 
-    public static void main(String[] args){
-        DidYouMean dym = new DidYouMean();
-        long start, stop;
-        start = System.currentTimeMillis();
-        System.out.println(dym.makeNFAFromWord("moeilijk land woord jwz tocch", 100));
-        stop = System.currentTimeMillis();
-        System.out.println(stop - start + "ms");
+    public BKTree getTree() {
+        return tree;
+    }
+    public String getDYMFromAutomata(String searchString){
+        if(searchString == null){
+            throw new IllegalArgumentException("Search string is null in DidYouMean.getDYMFromString.");
+        }
+        return null;
     }
 }

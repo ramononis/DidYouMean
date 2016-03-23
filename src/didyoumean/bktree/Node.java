@@ -99,27 +99,27 @@ public class Node
         return score;
     }
 
-    /**
-     * Retrieves all the words within a certain LD of a word from this (sub)tree.
-     *
-     * @param term       The term that words should be compared with.
-     * @param errorRange The maximum LD a word should have compared to {@code term}.
-     * @return The list of words with maximum LD to term.
-     */
-    public List<String> searchTree(String term, int errorRange) {
-        List<String> result = new ArrayList<>();
-        int distance = calculateDistance(term, getName());
-        if (distance <= errorRange) {
-            result.add(getName());
-        }
-
-        for (Node n : getChildren().values()) {
-            if (Math.abs(calculateDistance(n.getName(), getName()) - distance) <= errorRange) {
-                result.addAll(n.searchTree(term, errorRange));
-            }
-        }
-        return result;
-    }
+//    /**
+//     * Retrieves all the words within a certain LD of a word from this (sub)tree.
+//     *
+//     * @param term       The term that words should be compared with.
+//     * @param errorRange The maximum LD a word should have compared to {@code term}.
+//     * @return The list of words with maximum LD to term.
+//     */
+//    public List<String> searchTree(String term, int errorRange) {
+//        List<String> result = new ArrayList<>();
+//        int distance = calculateDistance(term, getName());
+//        if (distance <= errorRange) {
+//            result.add(getName());
+//        }
+//
+//        for (Node n : getChildren().values()) {
+//            if (Math.abs(calculateDistance(n.getName(), getName()) - distance) <= errorRange) {
+//                result.addAll(n.searchTree(term, errorRange));
+//            }
+//        }
+//        return result;
+//    }
 
     /**
      * Retrieves all the Nodes within a certain lD of a word from this (sub)tree.
@@ -131,9 +131,9 @@ public class Node
      */
     protected Map<Node, Integer> searchTreeForNodes(String term, int errorRange) {
         if (term == null) {
-            throw new IllegalArgumentException("Null term in BKTree.searchTreeForNodes.");
+            throw new IllegalArgumentException("Null term in searchTreeForNodes.");
         } else if (errorRange < 0) {
-            throw new IllegalArgumentException("Negative errorRange in BKTree.searchTreeForNodes.");
+            throw new IllegalArgumentException("Negative errorRange in searchTreeForNodes.");
         }
         Map<Node, Integer> result = new HashMap<>();
         int distance = calculateDistance(term, getName());
