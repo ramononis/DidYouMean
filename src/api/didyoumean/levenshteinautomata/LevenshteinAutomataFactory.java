@@ -9,7 +9,7 @@ import static java.util.Collections.max;
 
 /**
  * Definitions that are being reffered to are from:<br>
- * Fast string correction with Levenshtein automata (KU Schulz & S Mihov, 2002)
+ * Fast string correction with Levenshtein automata (KU Schulz {@literal &} S Mihov, 2002)
  *
  * @author Ramon Onis
  * @see <a href="http://goo.gl/v28nA8">Fast string correction with Levenshtein automata</a>

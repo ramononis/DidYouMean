@@ -38,9 +38,9 @@ public class Controller {
      * @return a list of length n with suggested completions.
      */
     public String[] getAdvancedTopN(int n, String searchterm) {
-        String[] r = ac.getTopN(n, searchterm);
+        String[] r = getTopN(n, searchterm);
         if (r.length == 0) {
-            r = ac.getTopN(n, dym.getDYM(searchterm));
+            r = getTopN(n, getDYM(searchterm));
         }
         return r;
     }
