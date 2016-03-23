@@ -124,44 +124,4 @@ public class DFA extends FiniteAutomata{
         }
         return list;
     }
-
-    public static void main(String[] args) {
-        DFA dfa1 = new DFA(new State(0,0));
-        State state2 = dfa1.createState(1,0);
-        State state4 = dfa1.createState(0,1);
-        State state6 = dfa1.createState(1,1);
-        State state8 = dfa1.createState(2,0);
-        State state10 = dfa1.createState(2,1);
-        TransitionSet set = new TransitionSet();
-        set.add(new Transition(dfa1.getInitState(),Token.LETTER,state2,'n'));
-        set.add(new Transition(dfa1.getInitState(),Token.ANY,state4));
-        set.add(new Transition(dfa1.getInitState(),Token.ANY,state6));
-        set.add(new Transition(state2,Token.ANY,state6));
-        set.add(new Transition(state2,Token.ANY,state10));
-        set.add(new Transition(state4,Token.LETTER,state6,'n'));
-        set.add(new Transition(state2,Token.LETTER,state8,'a'));
-        set.add(new Transition(state6,Token.LETTER,state10,'a'));
-        dfa1.setFinalState(state10);
-        dfa1.setFinalState(state8);
-        dfa1.setTransitions(set);
-
-        DFA dfa2 = new DFA(new State(0,0));
-        State state3 = dfa2.createState(1,0);
-        State state5 = dfa2.createState(2,0);
-        State state7 = dfa2.createState(3,0);
-        TransitionSet set2 = new TransitionSet();
-        set2.add(new Transition(dfa2.getInitState(),Token.LETTER,state3,'l'));
-        set2.add(new Transition(state3,Token.LETTER,state5,'a'));
-        //set2.add(new Transition(state5,Token.LETTER,state7,'a'));
-        dfa2.setFinalState(state5);
-        dfa2.setTransitions(set2);
-
-        DidYouMean dym = new DidYouMean();
-//        DFA dfa3 = dym.makeDFAFromNFA(dym.makeNFAFromWord("la",1));
-
-//        for(String s: dfa2.intersect(dfa3)){
-//            System.out.println(s);
-//        }
-
-    }
 }
