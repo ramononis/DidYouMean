@@ -6,6 +6,7 @@ import org.junit.Test;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
+import static matchers.CollectionMatchers.sizeIs;
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 
@@ -44,9 +45,9 @@ public class BKTreeTest {
 
     @Test
     public void testGetters() {
-        assertThat("getName() should equal to the initial value set in setup().", node.getName().equals("setup"));
-        assertThat("getScore() should be equal to the initial value of a node.", node.getScore() == 0);
-        assertThat("getChildren() should be equal to the initial value of a node.", node.getChildren().equals(new ConcurrentHashMap<>()));
+        assertThat("getName() should equal to the initial value set in setup().", node.getName(), equalTo("setup"));
+        assertThat("getScore() should be equal to the initial value of a node.", node.getScore(), is(0));
+        assertThat("getChildren() should be equal to the initial value of a node.", node.getChildren(), equalTo(new ConcurrentHashMap<>()));
     }
 
     // ---- toString() of Node ----
@@ -54,7 +55,7 @@ public class BKTreeTest {
     @Test
     public void testToString() {
         Node testNode = new Node("test", 16);
-        assertThat(testNode.toString().equals("test (16)"), is(true));
+        assertThat(testNode.toString(), equalTo("test (16)"));
     }
 
     // ---- addChild() of Node ----
@@ -103,11 +104,10 @@ public class BKTreeTest {
         root.addChild(child1);
         root.addChild(child2);
         root.addChild(child3);
-        assertThat(root.searchTreeForNodes("child", 1).size() == 3, is(true));
-        assertThat(root.searchTreeForNodes("child12345", 1).isEmpty(), is(true));
-        assertThat(root.searchTreeForNodes("child", 2).size() == 4, is(true));
+        assertThat(root.searchTreeForNodes("child", 1).entrySet(), sizeIs(3));
+        assertThat(root.searchTreeForNodes("child12345", 1).entrySet(), sizeIs(0));
+        assertThat(root.searchTreeForNodes("child", 2).entrySet(), sizeIs(4));
     }
-
 
 
     // ---- BKTree.java tests ----
@@ -115,12 +115,12 @@ public class BKTreeTest {
     // buildTree() test
 
     @Test(expected = IllegalArgumentException.class)
-    public void testBuildTreeInvalidArg() throws Exception{
+    public void testBuildTreeInvalidArg() throws Exception {
         tree.buildTree(null);
     }
 
     @Test
-    public void testBuildTree(){
+    public void testBuildTree() {
         Map<String, Integer> data = new ConcurrentHashMap<>();
         data.put("setup", 10);
         data.put("setup1", 30);
@@ -145,46 +145,46 @@ public class BKTreeTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void testCalculateLDIllegalArgument1(){
+    public void testCalculateLDIllegalArgument1() {
         BKTree.calculateDistance(null, "");
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void testCalculateLDIllegalArgument2(){
+    public void testCalculateLDIllegalArgument2() {
         BKTree.calculateDistance("", null);
     }
 
     @Test
-    public void testCalculateLievenshteinDistance(){
+    public void testCalculateLievenshteinDistance() {
         assertThat("Empty string and any other word should have LD equal to word.length()",
-                BKTree.calculateDistance("","four") == 4);
-        assertThat(BKTree.calculateDistance("","") == 0, is(true));
-        assertThat(BKTree.calculateDistance("food","food") == 0, is(true));
-        assertThat(BKTree.calculateDistance("food","fxod") == 1, is(true));
-        assertThat(BKTree.calculateDistance("fxd","food") == 2, is(true));
-        assertThat(BKTree.calculateDistance("abcfood","food") == 3, is(true));
+                BKTree.calculateDistance("", "four"), is(4));
+        assertThat(BKTree.calculateDistance("", ""), is(0));
+        assertThat(BKTree.calculateDistance("food", "food"), is(0));
+        assertThat(BKTree.calculateDistance("food", "fxod"), is(1));
+        assertThat(BKTree.calculateDistance("fxd", "food"), is(2));
+        assertThat(BKTree.calculateDistance("abcfood", "food"), is(3));
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void testGetDYMIllegalArg(){
+    public void testGetDYMIllegalArg() {
         tree.getDYM(null);
     }
 
     @Test
-    public void testGetDYM(){
+    public void testGetDYM() {
         Map<String, Integer> data = new ConcurrentHashMap<>();
         data.put("setup", 10);
         data.put("setup1", 30);
         data.put("setup12", 50);
         data.put("setup3333", 1000);
-        tree.buildTree( data);
+        tree.buildTree(data);
         assertThat("LD of 1 should be chosen above other ones, as score is not that different",
-                tree.getDYM("setup5").equals("setup1"));
+                tree.getDYM("setup5"), equalTo("setup1"));
         assertThat("Correct word should return the same String.",
-                tree.getDYM("setup").equals("setup"));
+                tree.getDYM("setup"), equalTo("setup"));
         assertThat("Nothing found within the valid error range should return an empty string",
-                tree.getDYM("not within 3 LD").equals(""));
+                tree.getDYM("not within 3 LD"), equalTo(""));
         assertThat("Choice between different Nodes with the same LD",
-                tree.getDYM("setup134").equals("setup3333"));
+                tree.getDYM("setup134"), equalTo("setup3333"));
     }
 }
