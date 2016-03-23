@@ -1,7 +1,9 @@
 package api.didyoumean.bktree;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 
 /**
@@ -18,17 +20,16 @@ public class BKTree {
      * Builds a new api.tree given a list of words and data to fill nodes with. Nodes contain
      * the scores of a word.
      *
-     * @param list The list of words the api.tree should contain.
      * @param data The data (word, score) the api.tree should contain.
-     * @throws IllegalArgumentException if either list or data is null.
+     * @throws IllegalArgumentException if data is null.
      */
-    public void buildTree(List<String> list, Map<String, Integer> data) {
-        if (list == null) {
-            throw new IllegalArgumentException("Tried to make a api.tree from a list that is null.");
-        }
+    public void buildTree(Map<String, Integer> data) {
         if (data == null) {
             throw new IllegalArgumentException("Tried to make a api.tree with a datamap that is null.");
         }
+        Set<String> set = data.keySet();
+        List<String> list = new ArrayList<>();
+        list.addAll(set);
         root = new Node(list.get(0), data.get(list.get(0)));
         for (String s : list) {
             if (list.indexOf(s) != 0) {

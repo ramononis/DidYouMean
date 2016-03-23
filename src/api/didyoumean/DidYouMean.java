@@ -5,9 +5,8 @@ import api.didyoumean.levenshteinautomata.*;
 import api.database.IDBControl;
 import api.tree.Root;
 
-import java.util.*;
-
 /**
+ * The main class that holds all the information about the BK-trees and Levenshtein Automata.
  * Created by Tim on 3/9/2016.
  */
 public class DidYouMean {
@@ -19,6 +18,11 @@ public class DidYouMean {
     private static final int MAX_DISTANCE = 3;
     private LevenshteinAutomataFactory laf;
 
+    /**
+     * Creates a new DidYouMean, with a given database and did-you-mean data structure.
+     * @param idbControl The controller which connects to the database.
+     * @param method The method the DYM should be getting its values with.
+     */
     public DidYouMean(IDBControl idbControl, DYM method) {
         this.databaseController = idbControl;
         this.method = method;
@@ -40,8 +44,7 @@ public class DidYouMean {
                 laf = new LevenshteinAutomataFactory(MAX_DISTANCE);
                 break;
             case BKTREE:
-                List<String> tree = new ArrayList<>(databaseController.getData().keySet());
-                getTree().buildTree(tree, databaseController.getData());
+                getTree().buildTree(databaseController.getData());
                 break;
         }
     }
@@ -65,10 +68,18 @@ public class DidYouMean {
         }
     }
 
+    /**
+     * Sets the current DYM method of this class.
+     * @param method The new DYM method of this class.
+     */
     public void setMethod(DYM method) {
         this.method = method;
     }
 
+    /**
+     * Returns the current main tree of this class.
+     * @return The current tree of this class.
+     */
     public BKTree getTree() {
         return tree;
     }
