@@ -3,6 +3,7 @@ package gui;
 import autocomplete.AutoCompleter;
 import database.CSVControl;
 import didyoumean.DidYouMean;
+import utils.DYM;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -41,7 +42,7 @@ public class GUI {
         frame.setVisible(true);
 
         AC = new AutoCompleter(new CSVControl(FILENAMES));
-        DYM = new DidYouMean();
+        DYM = new DidYouMean(utils.DYM.BKTREE);
 
         frame.dispose();
 
@@ -161,7 +162,7 @@ public class GUI {
      * @param query the {@link String} that is currently in the searchbar
      */
     private void search(String query) {
-        updateOutput(new String[]{DYM.getDYMFromString(query)});
+        updateOutput(new String[]{DYM.getDYM(query)});
     }
 
     /**
