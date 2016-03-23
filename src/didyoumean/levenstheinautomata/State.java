@@ -125,6 +125,11 @@ public class State {
         return null;
     }
 
+    public int getDistance(int w) {
+        return 0;
+    }
+
+
     public String toString(){
         return "(" + getN() + ", " + getE() +")";
     }

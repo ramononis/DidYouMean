@@ -88,17 +88,21 @@ public class DFA extends FiniteAutomata {
         return states;
     }
 
+    public static int getScore(Pair<Element, State> state, int w) {
+        int score = state.getLeft().getWeight();
+        int distance = state.getRight().getDistance(w);
+        return (int) (score / (distance + 1));
+    }
 
     public static String intersect(Root tree, LevenshteinAutomataFactory laf, String word) {
-        PriorityQueue<Pair<Element, State>> queue = new PriorityQueue<>(
-                (o1, o2) -> o2.getLeft().getWeight() - o1.getLeft().getWeight()
-        );
+        int w = word.length();
+        PriorityQueue<Pair<Element, State>> queue = new PriorityQueue<>((p1, p2) -> getScore(p2, w) - getScore(p1, w));
         queue.add(new Pair<>(tree, laf.getInit()));
         Pair<Element, State> state;
         while ((state = queue.poll()) != null) {
             Element e = state.getLeft();
             State s = state.getRight();
-            if(e.isLeaf() && s.isAcceptingState(word.length())) {
+            if(e.isLeaf() && s.isAcceptingState(w)) {
                 return e.getWord().replace("\0", "");
             }
             for (Element child : e.getChildren()) {

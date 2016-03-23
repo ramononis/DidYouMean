@@ -55,12 +55,14 @@ public class LevenshteinAutomataFactory {
             stateReductions.put(pState, o);
             pState.o = o;
             pState.hash = pState.hashCode();
+            pState.maxBase = pState.maxBaseOffset();
         }
 
         transitionTables.values().forEach(t -> t.reduce(stateReductions));
         initState.o = stateReductions.get(initState);
         initState.hash = initState.hashCode();
         initState.positions.clear();
+        initState.maxBase = initState.maxBaseOffset();
         pStates.forEach(p -> p.positions.clear());
         pStates.clear();
         reduced = true;
@@ -141,6 +143,11 @@ public class LevenshteinAutomataFactory {
         }
 
         @Override
+        public int getDistance(int w) {
+            return w - state.getRight() + state.getLeft().maxBaseOffset();
+        }
+
+        @Override
         public boolean isAcceptingState(int w) {
             Pair<Integer, Integer> i = acceptingIntervals.get(state.getLeft());
             return (i.getLeft() + w) <= state.getRight() && state.getRight() <= (i.getRight() + w);
@@ -169,6 +176,7 @@ public class LevenshteinAutomataFactory {
         final Set<ParametricPosition> positions;
         int hash;
         Object o;
+        int maxBase;
 
         ParametricState() {
             positions = new HashSet<>();
@@ -230,6 +238,9 @@ public class LevenshteinAutomataFactory {
         }
 
         int maxBaseOffset() {
+            if(reduced) {
+                return maxBase;
+            }
             if (positions.isEmpty()) {
                 return 0;
             }
@@ -424,6 +435,7 @@ public class LevenshteinAutomataFactory {
                 Object o = mapping.get(pState);
                 pState.o = o;
                 pState.hash = pState.hashCode();
+                pState.maxBase = pState.maxBaseOffset();
                 pState.positions.clear();
             }
         }
