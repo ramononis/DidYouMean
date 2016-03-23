@@ -1,9 +1,13 @@
 package didyoumean.bktree;
 
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+
+import static didyoumean.bktree.BKTree.calculateDistance;
 
 /**
  * Created by Yannick on 10-3-2016.
@@ -37,7 +41,7 @@ public class Node
         }
         this.name = word;
         this.score = score;
-        children = new ConcurrentHashMap<Integer, Node>();
+        children = new ConcurrentHashMap<>();
     }
 
     /**
@@ -49,7 +53,7 @@ public class Node
         if(child == null){
             throw new IllegalArgumentException("Given Node is null in Node.addChild");
         }
-        int distance = BKTree.calculateDistance(child.getName(),name);
+        int distance = calculateDistance(child.getName(),name);
         if(children.get(distance)!=null){
             children.get(distance).addChild(child);
         }
@@ -89,10 +93,58 @@ public class Node
 
     /**
      * Returns the score of this Node.
-     * @return
+     * @return the score of this Node.
      */
     public int getScore() {
         return score;
+    }
+
+    /**
+     * Retrieves all the words within a certain LD of a word from this (sub)tree.
+     *
+     * @param term       The term that words should be compared with.
+     * @param errorRange The maximum LD a word should have compared to {@code term}.
+     * @return The list of words with maximum LD to term.
+     */
+    public List<String> searchTree(String term, int errorRange) {
+        List<String> result = new ArrayList<>();
+        int distance = calculateDistance(term, getName());
+        if (distance <= errorRange) {
+            result.add(getName());
+        }
+
+        for (Node n : getChildren().values()) {
+            if (Math.abs(calculateDistance(n.getName(), getName()) - distance) <= errorRange) {
+                result.addAll(n.searchTree(term, errorRange));
+            }
+        }
+        return result;
+    }
+
+    /**
+     * Retrieves all the Nodes within a certain lD of a word from this (sub)tree.
+     *
+     * @param term       The term that Nodes should be compared with.
+     * @param errorRange The maximum LD a Node should have compared to {#code term}.
+     * @return The list of Nodes with maximum LD to term.
+     * @throws IllegalArgumentException if {@code root} or {@code term} is null, or {@code errorRange} is negative.
+     */
+    protected Map<Node, Integer> searchTreeForNodes(String term, int errorRange) {
+        if (term == null) {
+            throw new IllegalArgumentException("Null term in BKTree.searchTreeForNodes.");
+        } else if (errorRange < 0) {
+            throw new IllegalArgumentException("Negative errorRange in BKTree.searchTreeForNodes.");
+        }
+        Map<Node, Integer> result = new HashMap<>();
+        int distance = calculateDistance(term, getName());
+        if (distance <= errorRange) {
+            result.put(this, distance);
+        }
+        getChildren().values()
+                .parallelStream()
+                .filter(n -> Math.abs(calculateDistance(n.getName(), getName()) - distance) <= errorRange)
+                .forEach(n -> result.putAll(n.searchTreeForNodes(term, errorRange)));
+        return result;
     }
 
     @Override

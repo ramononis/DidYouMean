@@ -17,20 +17,27 @@ public class BKTree {
 
     public static final int MAX_ERROR_RANGE = 3;
 
-    private BKTree(){}
 
     /**
      * Builds a new tree given a list of words and data to fill nodes with. Nodes contain
      * the scores of a word.
+     *
      * @param list The list of words the tree should contain.
      * @param data The data (word, score) the tree should contain.
+     * @throws IllegalArgumentException if either list or data is null.
      */
-    public static void buildTree(List<String> list, Map<String, Integer> data){
+    public static void buildTree(List<String> list, Map<String, Integer> data) {
+        if (list == null) {
+            throw new IllegalArgumentException("Tried to make a tree from a list that is null.");
+        }
+        if (data == null) {
+            throw new IllegalArgumentException("Tried to make a tree with a datamap that is null.");
+        }
         root = new Node(list.get(0), data.get(list.get(0)));
-        for(String s : list){
-            if(list.indexOf(s) != 0){
+        for (String s : list) {
+            if (list.indexOf(s) != 0) {
                 int score = 0;
-                if(data.keySet().contains(s)){
+                if (data.keySet().contains(s)) {
                     score = data.get(s);
                 }
                 root.addChild(new Node(s, score));
@@ -49,13 +56,14 @@ public class BKTree {
 
     /**
      * Calculates the Levenshtein Distance between 2 words.
+     *
      * @param word1 The first word.
      * @param word2 The second word.
      * @return The LD between word1 and word2.
      * @throws IllegalArgumentException if either {@code word1} or {@code word2} is null.
      */
-    public static int calculateDistance(String word1, String word2){
-        if(word1 == null && word2 == null) {
+    public static int calculateDistance(String word1, String word2) {
+        if (word1 == null || word2 == null) {
             throw new IllegalArgumentException("Null argument in BKTree.CalculateDistance.");
         }
         //based on http://rosettacode.org/wiki/Levenshtein_distance#Java
@@ -80,6 +88,7 @@ public class BKTree {
 
     /**
      * Gets the minimum between 3 integers.
+     *
      * @param a The first integer.
      * @param b The second integer.
      * @param c The third integer.
@@ -90,78 +99,30 @@ public class BKTree {
     }
 
     /**
-     * Retrieves all the words within a certain LD of a word.
-     * @param root The root of the tree.
-     * @param term The term that words should be compared with.
-     * @param errorRange The maximum LD a word should have compared to {@code term}.
-     * @return The list of words with maximum LD to term.
-     */
-    public static List<String> searchTree(Node root, String term, int errorRange){
-        List<String> result = new ArrayList<>();
-        int distance = calculateDistance(term, root.getName());
-        if(distance <= errorRange){
-            result.add(root.getName());
-        }
-
-        for(Node n : root.getChildren().values()){
-            if(Math.abs(calculateDistance(n.getName(),root.getName())-distance) <= errorRange){
-                result.addAll(searchTree(n,term,errorRange));
-            }
-        }
-        return result;
-    }
-
-    /**
-     * Retrieves all the Nodes within a certain lD of a word.
-     * @param root The root of the tree.
-     * @param term The term that Nodes should be compared with.
-     * @param errorRange The maximum LD a Node should have compared to {#code term}.
-     * @return The list of Nodes with maximum LD to term.
-     * @throws IllegalArgumentException if {@code root} or {@code term} is null, or {@code errorRange} is negative.
-     */
-    protected static Map<Node, Integer> searchTreeForNodes(Node root, String term, int errorRange){
-        if(root == null){
-            throw new IllegalArgumentException("Null root in BKTree.searchTreeForNodes.");
-        }else if(term == null){
-            throw new IllegalArgumentException("Null term in BKTree.searchTreeForNodes.");
-        }else if(errorRange < 0){
-            throw new IllegalArgumentException("Negative errorRange in BKTree.searchTreeForNodes.");
-        }
-        Map<Node, Integer> result = new HashMap<>();
-        int distance = calculateDistance(term, root.getName());
-        if(distance <= errorRange){
-            result.put(root, distance);
-        }
-        root.getChildren().values()
-                .parallelStream()
-                .filter(n -> Math.abs(calculateDistance(n.getName(),root.getName())-distance) <= errorRange)
-                .forEach(n -> result.putAll(searchTreeForNodes(n, term, errorRange)));
-        return result;
-    }
-
-    /**
      * Gets a 'did-you-mean' suggestion for a word.
+     *
      * @param word The word the user searched for.
      * @return The word the user probably meant when searching for {@code word}. May be the same as {@code word}.
      * @throws IllegalArgumentException if {@code word} is null
      */
-    public static String getDYM(String word){
-        word = word.toLowerCase();
-        if(word == null){
+    public static String getDYM(String word) {
+        if (word == null) {
             throw new IllegalArgumentException("Null word in BKTree.getDYM");
         }
-        Map<Node, Integer> nodeMap = searchTreeForNodes(getRoot(), word, MAX_ERROR_RANGE);
+        word = word.toLowerCase();
+
+        Map<Node, Integer> nodeMap = getRoot().searchTreeForNodes(word, MAX_ERROR_RANGE);
         Node bestNode = null;
         double bestScore = -1;
-        for(Node n : nodeMap.keySet()){
+        for (Node n : nodeMap.keySet()) {
             int levenDis = nodeMap.get(n);
-            double score = n.getScore()/Math.pow(levenDis, 6); //TODO: random formula for now, change to a good one.
-            if(levenDis == 0){
+            double score = n.getScore() / Math.pow(levenDis, 6); //TODO: random formula for now, change to a good one.
+            if (levenDis == 0) {
                 return n.getName();
-            }else{
+            } else {
 
 //                System.out.println("\n" + n.getName() + " (" + score + ")");
-                if(score > bestScore){
+                if (score > bestScore) {
                     bestNode = n;
                     bestScore = score;
                 }
@@ -193,9 +154,10 @@ public class BKTree {
 
     /**
      * Gets the root of this tree.
+     *
      * @return The root of this tree.
      */
-    public static Node getRoot(){
+    public static Node getRoot() {
         return root;
     }
 
