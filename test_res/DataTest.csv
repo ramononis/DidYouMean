@@ -1,0 +1,22 @@
+1,2,3,4,5,6,7
+
+a,b,c,d,e,f,g
+
+one,"2",error,error,100%,error,error
+two,"1337",error,error,80.4%,error,error
+three,"2,048",error,error,64.64%,error,error
+
+this is no valid csv stuff and should be skipped.
+this is also not good.
+
+# lines that start with '#' also occur in csv files.
+
+four,"2,296,222",error,error,43.98%,error,error
+"five,six","2,296546",error,error,1.88%,error,error
+"inch"","2,296",error,error,0%,error,error
+errors 'n exceptions
+
+in the end only 6 lines of this should be processed.
+
+double,"1",error,error,0%,error,error
+double,"3",error,error,0%,error,error
