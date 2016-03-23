@@ -2,6 +2,7 @@ package api.controller;
 
 import api.autocomplete.AutoCompleter;
 import api.database.IDBControl;
+import api.didyoumean.DYM;
 import api.didyoumean.DidYouMean;
 
 /**
