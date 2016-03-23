@@ -129,7 +129,7 @@ public class DidYouMean {
         } else if (method == DYM.BKTREE) {
             return getTree().getDYM(searchString);
         } else if (method == DYM.LEVENSHTEIN) {
-            return DFA.intersect(root, laf, searchString);
+            return DFA.intersect(root, laf, searchString, 1).get(0);
         } else {
             return null;
         }

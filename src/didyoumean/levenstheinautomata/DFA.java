@@ -94,24 +94,28 @@ public class DFA extends FiniteAutomata {
         return (int) (score / (distance + 1));
     }
 
-    public static String intersect(Root tree, LevenshteinAutomataFactory laf, String word) {
+    public static List<String> intersect(Root tree, LevenshteinAutomataFactory laf, String word, int n) {
         int w = word.length();
+        List<String> result = new ArrayList<>(n);
         PriorityQueue<Pair<Element, State>> queue = new PriorityQueue<>((p1, p2) -> getScore(p2, w) - getScore(p1, w));
         queue.add(new Pair<>(tree, laf.getInit()));
         Pair<Element, State> state;
-        while ((state = queue.poll()) != null) {
+        while ((state = queue.poll()) != null && result.size() < n) {
             Element e = state.getLeft();
             State s = state.getRight();
-            if(e.isLeaf() && s.isAcceptingState(w)) {
-                return e.getWord().replace("\0", "");
-            }
-            for (Element child : e.getChildren()) {
-                State out = child.isLeaf() ?  s : s.outState(child.getLetter(), word);
-                if(out != null) {
-                    queue.add(new Pair<>(child, out));
+            if (e.isLeaf()) {
+                if (s.isAcceptingState(w)) {
+                    result.add(e.getWord().replace("\0", ""));
+                }
+            } else {
+                for (Element child : e.getChildren()) {
+                    State out = child.isLeaf() ? s : s.outState(child.getLetter(), word);
+                    if (out != null) {
+                        queue.add(new Pair<>(child, out));
+                    }
                 }
             }
         }
-        return "";
+        return result;
     }
 }
