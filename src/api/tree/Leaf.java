@@ -27,8 +27,8 @@ public class Leaf extends Element {
         return true;
     }
 
-//    @Override
-//    public String toString() {
-//        return "Leaf(" + getWeight() + ")";
-//    }
+    @Override
+    public String toString() {
+        return "Leaf(" + getWeight() + ")";
+    }
 }

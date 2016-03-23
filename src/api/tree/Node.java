@@ -79,8 +79,8 @@ public class Node extends Element {
         return result;
     }
 
-//    @Override
-//    public String toString() {
-//        return "Node(" + getLetter() + ", " + getWeight() + ")";
-//    }
+    @Override
+    public String toString() {
+        return "Node(" + getLetter() + ", " + getWeight() + ")";
+    }
 }

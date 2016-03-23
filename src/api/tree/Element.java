@@ -161,10 +161,4 @@ public abstract class Element {
     public boolean isRoot() {
         return false;
     }
-
-
-    @Override
-    public String toString() {
-        return getWord() + "(" + getWeight() + ")";
-    }
 }
