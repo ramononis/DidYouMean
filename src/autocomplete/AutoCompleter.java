@@ -20,6 +20,7 @@ public class AutoCompleter {
 
     /**
      * Initializes new AutoCompleter
+     *
      * @param idb the database control.
      */
     public AutoCompleter(IDBControl idb) {
@@ -30,7 +31,7 @@ public class AutoCompleter {
     /**
      * Rebuilds the tree from scratch, also putting in any new data from the database control.
      */
-    public void resetTree(){
+    public void resetTree() {
         makeTree();
     }
 
@@ -51,22 +52,31 @@ public class AutoCompleter {
 
     /**
      * Learns a keyword: adds the keyword to the tree if it doesn't exist yet, or increments the weight if it already exists.
+     *
      * @param keyword the keyword that should be learned.
-     * @param weight the amount the weight of the keyword will be incremented.
+     * @param weight  the amount the weight of the keyword will be incremented.
      */
-    public void learn(String keyword, int weight){
+    public void learn(String keyword, int weight) {
         tree.addOrIncrementWord(keyword, weight);
     }
 
     /**
-     * The public method for requesting a top N best completions.
+     * The public method for requesting a top n best completions.
      *
-     * @param k     the number of completions that are requested.
+     * @param n     the number of completions that are requested.
      * @param query the prefix that is currently in the search bar.
      * @return a String Array of length k with the best suggestions for the prefix query.
      */
-    public String[] getTopN(int k, String query) {
-        List<String> top = getTopKeywords(tree, k, query);
+    public String[] getTopN(int n, String query) {
+        List<String> top = getTopKeywords(tree, n, query);
         return top.toArray(new String[top.size()]);
+    }
+
+    /**
+     * Sets the DB.
+     * @param idb the IDBControl that should be used now.
+     */
+    public void setDB(IDBControl idb) {
+        this.DB = idb;
     }
 }

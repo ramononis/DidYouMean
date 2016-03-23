@@ -2,6 +2,7 @@ package gui;
 
 import autocomplete.AutoCompleter;
 import database.CSVControl;
+import database.IDBControl;
 import didyoumean.DidYouMean;
 import didyoumean.DYM;
 
@@ -21,6 +22,7 @@ public class GUI {
 
     private static final String[] FILENAMES = {"./csv/Data1.csv", "./csv/Data2.csv", "./csv/Data3.csv", "./csv/Data4.csv"};
 
+    private IDBControl DB;
     private AutoCompleter AC;
     private DidYouMean DYM;
     private DYM method = didyoumean.DYM.BKTREE;
@@ -41,8 +43,9 @@ public class GUI {
         frame.setSize(400, 300);
         frame.setVisible(true);
 
-        AC = new AutoCompleter(new CSVControl(FILENAMES));
-        DYM = new DidYouMean(didyoumean.DYM.LEVENSHTEIN);
+        DB = new CSVControl(FILENAMES);
+        AC = new AutoCompleter(DB);
+        DYM = new DidYouMean(DB, didyoumean.DYM.LEVENSHTEIN);
 
         frame.dispose();
 

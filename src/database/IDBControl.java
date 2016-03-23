@@ -15,6 +15,20 @@ public interface IDBControl {
      */
     Map<String, Integer> getData();
 
+//    static HashMap<String, Integer> optionize(HashMap<String, Integer> singleData) { // TODO: check if scores are still realistic after this
+//        HashMap<String, Integer> optionizedData = new HashMap<>();
+//        for (String s : singleData.keySet()) {
+//            String[] words = s.split(" ");
+//            String[][] temp = {};
+//            for (int i = 0; i < words.length; i++){
+//                for (int j = 0; i < words.length; i++){
+//
+//                }
+//            }
+//
+//        }
+//    }
+
     /**
      * Calculates the weight that a search term should have.
      * This weight is calculated as the number of times a search term has been used multiplied by the percentage that that search term was successful.
@@ -26,4 +40,5 @@ public interface IDBControl {
     static int calcWeight(int n, double p) {
         return (int) (n * p);
     }
+
 }

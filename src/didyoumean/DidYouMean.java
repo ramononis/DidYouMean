@@ -12,17 +12,16 @@ import java.util.*;
  * Created by Tim on 3/9/2016.
  */
 public class DidYouMean {
-
-    public static final String[] FILENAMES = {"./csv/Data1.csv", "./csv/Data2.csv", "./csv/Data3.csv", "./csv/Data4.csv"};
-
-    private IDBControl databaseController = new CSVControl(FILENAMES);
+    private IDBControl databaseController;
     private BKTree tree;
 
     private DYM method;
     private Root root;
     private static final int MAX_DISTANCE = 3;
     private LevenshteinAutomataFactory laf;
-    public DidYouMean(DYM method) {
+
+    public DidYouMean(IDBControl idbControl, DYM method) {
+        this.databaseController = idbControl;
         this.method = method;
         tree = new BKTree();
         setup();
@@ -65,6 +64,10 @@ public class DidYouMean {
         } else {
             return null;
         }
+    }
+
+    public void setMethod(DYM method) {
+        this.method = method;
     }
 
     public BKTree getTree() {
