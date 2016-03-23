@@ -1,9 +1,11 @@
 package api.didyoumean.bktree;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import api.utils.Pair;
+
+import java.util.*;
+import java.util.stream.Collectors;
+
+import static java.lang.Math.min;
 
 
 /**
@@ -65,7 +67,7 @@ public class BKTree {
             costs[0] = i;
             int nw = i - 1;
             for (int j = 1; j <= word2.length(); j++) {
-                int costj = Math.min(1 + Math.min(costs[j], costs[j - 1]),
+                int costj = min(1 + min(costs[j], costs[j - 1]),
                         word1.charAt(i - 1) == word2.charAt(j - 1) ? nw : nw + 1);
                 nw = costs[j];
                 costs[j] = costj;
@@ -82,28 +84,33 @@ public class BKTree {
      * @throws IllegalArgumentException if {@code word} is null
      */
     public String getDYM(String word) {
+        List<String> result = getDYM_N(word, 1);
+        return result.isEmpty() ? "" : result.get(0);
+    }
+
+    /**
+     * Gets a list of n 'did-you-mean' suggestions for a word.
+     *
+     * @param word The word the user searched for.
+     * @param n    The maximum number of suggestions to return.
+     * @return A list with at most n words the user probably meant when searching for {@code word}.
+     * Sorted from most likely to least likely. May include {@code word}, if so this will be the first one.
+     * @throws IllegalArgumentException if {@code word} is null
+     */
+    public List<String> getDYM_N(String word, int n) {
         if (word == null) {
             throw new IllegalArgumentException("Null word in BKTree.getDYM");
         }
-        word = word.toLowerCase();
 
-        Map<Node, Integer> nodeMap = getRoot().searchTreeForNodes(word, MAX_ERROR_RANGE);
-        Node bestNode = null;
-        double bestScore = -1;
-        for (Node n : nodeMap.keySet()) {
-            int levenDis = nodeMap.get(n);
-            double score = n.getScore() / Math.pow(levenDis, 6);
-            if (levenDis == 0) {
-                return n.getName();
-            } else {
-                if (score > bestScore) {
-                    bestNode = n;
-                    bestScore = score;
-                }
-            }
-        }
-        return bestNode == null ? "" : bestNode.getName();
+        //TODO: change 6, in Math.pow, to constant or better yet a variable
+        return getRoot().searchTreeForNodes(word.toLowerCase(), MAX_ERROR_RANGE).entrySet().parallelStream()
+                .map(e -> new Pair<>(e.getKey().getScore() / Math.pow(e.getValue(), 6), e.getKey()))
+                .sorted((p1, p2) -> p2.getLeft().compareTo(p1.getLeft()))
+                .limit(n)
+                .map(p -> p.getRight().getName())
+                .collect(Collectors.toList());
     }
+
     /**
      * Gets the root of this api.tree.
      *
