@@ -36,7 +36,7 @@ public class GUI {
         ImageIcon loading = new ImageIcon(getClass().getResource("/ajax-loader.gif"));
         frame.add(new JLabel("loading... ", loading, JLabel.CENTER));
 
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.setSize(400, 300);
         frame.setVisible(true);
 
@@ -121,7 +121,7 @@ public class GUI {
             public void changedUpdate(DocumentEvent e) {
                 String[] completions = AC.getTopN(NSUGGESTIONS, searchbar.getText());
                 updateOutput(completions);
-                if (frame.getTitle() != "Autocomplete") {
+                if (!frame.getTitle().equals("Autocomplete")) {
                     frame.setTitle("Autocomplete");
                 }
             }
@@ -141,10 +141,10 @@ public class GUI {
 
                 // Double-click detected
                 int index = list.locationToIndex(evt.getPoint());
-                if(index >= outputList.length || index == -1) return;
+                if (index >= outputList.length || index == -1) return;
 
                 String clicked = outputList[index];
-                if(clicked == null) return;
+                if (clicked == null) return;
 
                 searchbar.setText(clicked);
             }
@@ -157,6 +157,7 @@ public class GUI {
 
     /**
      * Searches for the word that is currently in the searchbar.
+     *
      * @param query the {@link String} that is currently in the searchbar
      */
     private void search(String query) {
@@ -165,6 +166,7 @@ public class GUI {
 
     /**
      * Updates the output list and the output on the screen
+     *
      * @param newoutput the new {@link String[]} that should be displayed.
      */
     private void updateOutput(String[] newoutput) {
