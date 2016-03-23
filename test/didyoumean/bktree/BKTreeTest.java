@@ -5,12 +5,12 @@ import org.junit.Test;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 /**
+ * The Class that tests everything in the bktree package.
  * Created by Tim on 3/21/2016.
  */
 public class BKTreeTest {
@@ -147,7 +147,7 @@ public class BKTreeTest {
                 tree.getRoot().getChildren().containsValue(setup12) &&
                 tree.getRoot().getChildren().containsValue(setup1));
         assertThat("setup1 has child setup3", tree.getRoot().getChildren().get(1).getChildren().containsValue(setup3));
-        //TODO: assertThat("Tree should look like expected", );
+        assertThat("setup12 has no children", tree.getRoot().getChildren().get(2).getChildren().isEmpty());
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -178,6 +178,22 @@ public class BKTreeTest {
 
     @Test
     public void testGetDYM(){
-        
+        ArrayList<String> wordList = new ArrayList<>();
+        String[] wordArray = {"setup", "setup1", "setup12", "setup3333"};
+        Collections.addAll(wordList, wordArray);
+        Map<String, Integer> data = new ConcurrentHashMap<>();
+        data.put("setup", 10);
+        data.put("setup1", 30);
+        data.put("setup12", 50);
+        data.put("setup3333", 1000);
+        tree.buildTree(wordList, data);
+        assertThat("LD of 1 should be chosen above other ones, as score is not that different",
+                tree.getDYM("setup5").equals("setup1"));
+        assertThat("Correct word should return the same String.",
+                tree.getDYM("setup").equals("setup"));
+        assertThat("Nothing found within the valid error range should return an empty string",
+                tree.getDYM("not within 3 LD").equals(""));
+        assertThat("Choice between different Nodes with the same LD",
+                tree.getDYM("setup134").equals("setup3333"));
     }
 }

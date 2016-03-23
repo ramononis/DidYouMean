@@ -1,15 +1,11 @@
 package didyoumean.bktree;
 
-import database.CSVControl;
-
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 
 /**
+ * The Class that handles all the logic behind its own tree. One class corresponds to one tree.
  * Created by Yannick on 10-3-2016.
  */
 public class BKTree {
@@ -145,7 +141,7 @@ public class BKTree {
      *
      * @return The root of this tree.
      */
-    public static Node getRoot() {
+    public Node getRoot() {
         return root;
     }
 

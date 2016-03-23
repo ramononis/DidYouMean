@@ -1,15 +1,14 @@
 package didyoumean.bktree;
 
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import static didyoumean.bktree.BKTree.calculateDistance;
 
 /**
+ * The Class representing a Node in a BKtree.
  * Created by Yannick on 10-3-2016.
  */
 public class Node
