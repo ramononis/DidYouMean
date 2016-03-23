@@ -1,16 +1,16 @@
 package gui;
 
-import api.autocomplete.AutoCompleter;
+import api.controller.Controller;
 import api.database.CSVControl;
 import api.database.IDBControl;
-import api.didyoumean.DidYouMean;
 import api.didyoumean.DYM;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 /**
  * Displays a GUI and requests suggestions from AutoCompleter class. Also contains the main function to start the program.
@@ -22,14 +22,11 @@ public class GUI {
 
     private static final String[] FILENAMES = {"./csv/Data1.csv", "./csv/Data2.csv", "./csv/Data3.csv", "./csv/Data4.csv"};
 
-    private IDBControl DB;
-    private AutoCompleter AC;
-    private DidYouMean DYM;
-    private DYM method = api.didyoumean.DYM.BKTREE;
+    private Controller CT;
 
-    JFrame frame;
-    String[] outputList;
-    JList<String> output;
+    private JFrame frame;
+    private String[] outputList;
+    private JList<String> output;
 
     /**
      * Initializes new GUI.
@@ -43,9 +40,8 @@ public class GUI {
         frame.setSize(400, 300);
         frame.setVisible(true);
 
-        DB = new CSVControl(FILENAMES);
-        AC = new AutoCompleter(DB);
-        DYM = new DidYouMean(DB, api.didyoumean.DYM.LEVENSHTEIN);
+        IDBControl DB = new CSVControl(FILENAMES);
+        CT = new Controller(DB);
 
         frame.dispose();
 
@@ -140,7 +136,7 @@ public class GUI {
 
             @Override
             public void changedUpdate(DocumentEvent e) {
-                String[] completions = AC.getTopN(NSUGGESTIONS, searchbar.getText());
+                String[] completions = CT.getAdvancedTopN(NSUGGESTIONS, searchbar.getText());
                 updateOutput(completions);
                 if (!frame.getTitle().equals("Autocomplete")) {
                     frame.setTitle("Autocomplete");
@@ -148,9 +144,9 @@ public class GUI {
             }
         });
 
-        BK.addActionListener(e -> method = api.didyoumean.DYM.BKTREE);
+        BK.addActionListener(e -> CT.setDYMMethod(DYM.BKTREE));
 
-        LA.addActionListener(e -> method = api.didyoumean.DYM.LEVENSHTEIN);
+        LA.addActionListener(e -> CT.setDYMMethod(DYM.LEVENSHTEIN));
 
         searchbar.addActionListener(e -> {
             if (e.getID() == 1001) {
@@ -186,7 +182,7 @@ public class GUI {
      * @param query the {@link String} that is currently in the searchbar
      */
     private void search(String query) {
-        updateOutput(new String[]{DYM.getDYM(query)});
+        updateOutput(new String[]{CT.getDYM(query)});
     }
 
     /**
