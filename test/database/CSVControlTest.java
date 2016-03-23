@@ -20,7 +20,7 @@ public class CSVControlTest {
     @Before
     public void setUp() throws Exception {
         c = new CSVControl(new String[]{"./test_res/DataTest.csv"});
-        deadc = new CSVControl(new String[]{"je moeder"});
+        deadc = new CSVControl(new String[]{"nope"});
     }
 
     @Test
