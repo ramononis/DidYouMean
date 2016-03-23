@@ -1,4 +1,4 @@
-package autocomplete.tree;
+package tree;
 
 /**
  * This class models the root of the tree.
@@ -65,4 +65,6 @@ public class Root extends Node {
     public String toString() {
         return "Root(" + getWeight() + ")";
     }
+
+
 }

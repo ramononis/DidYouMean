@@ -1,4 +1,4 @@
-package autocomplete.tree;
+package tree;
 
 /**
  * This class models a leaf in the tree.
@@ -27,8 +27,8 @@ public class Leaf extends Element {
         return true;
     }
 
-    @Override
-    public String toString() {
-        return "Leaf(" + getWeight() + ")";
-    }
+//    @Override
+//    public String toString() {
+//        return "Leaf(" + getWeight() + ")";
+//    }
 }

@@ -26,6 +26,7 @@ public class LevenshteinAutomataFactory {
     private Map<ParametricState, Pair<Integer, Integer>> acceptingIntervals;
     private Map<Integer, TransitionTable> transitionTables;
     private ParametricState initState;
+
     public State getInit() {
         return new StateWrapper(new Pair<>(initState, 0));
     }
@@ -39,12 +40,11 @@ public class LevenshteinAutomataFactory {
     }
 
 
-
     private void precalculate() {
         calculateParametricStates();
         calculateFinalStates();
         calculateTransitionTables();
-        reduceStates();
+        reduceStates();//skip line this to make debugging easier
     }
 
     private void reduceStates() {
@@ -156,7 +156,7 @@ public class LevenshteinAutomataFactory {
 
         @Override
         public String toString() {
-            if(reduced) {
+            if (reduced) {
                 return state.toString();
             } else {
                 return state.getLeft().toString(state.getRight());
@@ -219,6 +219,7 @@ public class LevenshteinAutomataFactory {
             return result;
         }
 
+
         boolean subsumes(ParametricPosition p) {
             for (ParametricPosition p2 : positions) {
                 if (p2.subsumes(p)) {
@@ -259,7 +260,7 @@ public class LevenshteinAutomataFactory {
 
         public boolean equals(Object o) {
             if (o instanceof ParametricState) {
-                if(reduced){
+                if (reduced) {
                     return ((ParametricState) o).o == this.o;
                 } else {
                     return ((ParametricState) o).positions.equals(positions);
@@ -449,10 +450,6 @@ public class LevenshteinAutomataFactory {
                     }
                     int offset = out.minOffset();// offset >= 0?
                     out = out.reduce();
-                    if (!pStates.contains(out)) {
-                        p.applyVector(v, -l);
-                        throw new RuntimeException("omg");
-                    }
                     table.put(new Pair<>(p, v), new Pair<>(out, offset));
                 }
             }

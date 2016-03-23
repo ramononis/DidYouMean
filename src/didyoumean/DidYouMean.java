@@ -4,6 +4,7 @@ import didyoumean.bktree.BKTree;
 import didyoumean.levenstheinautomata.*;
 import database.CSVControl;
 import database.IDBControl;
+import tree.Root;
 import utils.DYM;
 
 import java.util.*;
@@ -13,13 +14,15 @@ import java.util.*;
  */
 public class DidYouMean {
 
-    private static final String[] FILENAMES = {"./csv/Data1.csv", "./csv/Data2.csv", "./csv/Data3.csv", "./csv/Data4.csv"};
+    public static final String[] FILENAMES = {"./csv/Data1.csv", "./csv/Data2.csv", "./csv/Data3.csv", "./csv/Data4.csv"};
 
     private IDBControl databaseController = new CSVControl(FILENAMES);
     private BKTree tree;
 
     private DYM method;
-
+    private Root root;
+    private static final int MAX_DISTANCE = 3;
+    private LevenshteinAutomataFactory laf;
     public DidYouMean(DYM method) {
         this.method = method;
         tree = new BKTree();
@@ -77,8 +80,19 @@ public class DidYouMean {
      * Also creates a new tree from the data (takes a few seconds).
      */
     public void setup() {
-        List<String> tree = new ArrayList<>(databaseController.getData().keySet());
-        getTree().buildTree(tree, databaseController.getData());
+        switch(method) {
+            case LEVENSHTEIN:
+                root = new Root();
+                databaseController.getData().entrySet().forEach(
+                        entry -> root.addOrIncrementWord(entry.getKey(), entry.getValue())
+                );
+                laf = new LevenshteinAutomataFactory(MAX_DISTANCE);
+                break;
+            case BKTREE:
+                List<String> tree = new ArrayList<>(databaseController.getData().keySet());
+                getTree().buildTree(tree, databaseController.getData());
+                break;
+        }
     }
 
     /**
@@ -115,8 +129,7 @@ public class DidYouMean {
         } else if (method == DYM.BKTREE) {
             return getTree().getDYM(searchString);
         } else if (method == DYM.LEVENSHTEIN) {
-            System.out.println("Ramon aan maken met die functie");
-            return null;
+            return DFA.intersect(root, laf, searchString);
         } else {
             return null;
         }

@@ -1,4 +1,4 @@
-package autocomplete.tree;
+package tree;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -160,5 +160,11 @@ public abstract class Element {
      */
     public boolean isRoot() {
         return false;
+    }
+
+
+    @Override
+    public String toString() {
+        return getWord() + "(" + getWeight() + ")";
     }
 }

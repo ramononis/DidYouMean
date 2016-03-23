@@ -1,4 +1,4 @@
-package didyoumean.automata;
+ package didyoumean.automata;
 
 import didyoumean.levenstheinautomata.*;
 import org.junit.Before;

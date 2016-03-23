@@ -1,6 +1,6 @@
 package matchers;
 
-import autocomplete.tree.Element;
+import tree.Element;
 import org.hamcrest.*;
 
 import java.util.Collection;

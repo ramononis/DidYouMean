@@ -43,7 +43,7 @@ public class GUI {
         frame.setVisible(true);
 
         AC = new AutoCompleter(new CSVControl(FILENAMES));
-        DYM = new DidYouMean(utils.DYM.BKTREE);
+        DYM = new DidYouMean(utils.DYM.LEVENSHTEIN);
 
         frame.dispose();
 

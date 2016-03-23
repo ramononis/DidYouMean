@@ -1,4 +1,4 @@
-package autocomplete.tree;
+package tree;
 
 import org.junit.Before;
 import org.junit.Test;

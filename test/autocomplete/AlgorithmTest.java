@@ -1,7 +1,7 @@
 package autocomplete;
 
-import autocomplete.tree.Element;
-import autocomplete.tree.Root;
+import tree.Element;
+import tree.Root;
 import org.junit.Before;
 import org.junit.Test;
 

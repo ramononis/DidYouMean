@@ -1,4 +1,4 @@
-package autocomplete.tree;
+package tree;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -79,8 +79,8 @@ public class Node extends Element {
         return result;
     }
 
-    @Override
-    public String toString() {
-        return "Node(" + getLetter() + ", " + getWeight() + ")";
-    }
+//    @Override
+//    public String toString() {
+//        return "Node(" + getLetter() + ", " + getWeight() + ")";
+//    }
 }

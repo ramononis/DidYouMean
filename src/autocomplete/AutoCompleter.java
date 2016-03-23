@@ -1,6 +1,6 @@
 package autocomplete;
 
-import autocomplete.tree.Root;
+import tree.Root;
 import database.IDBControl;
 
 import java.util.HashMap;
