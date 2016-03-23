@@ -115,21 +115,12 @@ public class BKTreeTest {
     // buildTree() test
 
     @Test(expected = IllegalArgumentException.class)
-    public void testBuildTreeInvalidArg1() throws Exception{
-        tree.buildTree(null, new ConcurrentHashMap<>());
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void testBuildTreeInvalidArg2() throws Exception{
-        tree.buildTree(new ArrayList<>(), null);
+    public void testBuildTreeInvalidArg() throws Exception{
+        tree.buildTree(null);
     }
 
     @Test
     public void testBuildTree(){
-        // same structure as the addChild test
-        List<String> wordList = new ArrayList<>();
-        String[] wordArray = {"setup", "setup1", "setup12", "setup3"};
-        Collections.addAll(wordList, wordArray);
         Map<String, Integer> data = new ConcurrentHashMap<>();
         data.put("setup", 10);
         data.put("setup1", 30);
@@ -139,7 +130,7 @@ public class BKTreeTest {
         Node setup1 = new Node("setup1");
         Node setup12 = new Node("setup12");
         Node setup3 = new Node("setup3");
-        tree.buildTree(wordList, data);
+        tree.buildTree(data);
         //api.tree looks like this: setup is the root, with children 1 and 12. setup1 has 1 child, namely setup3.
         //setup12 has no children.
         assertThat("setup is the root", tree.getRoot().equals(setup));
@@ -178,15 +169,12 @@ public class BKTreeTest {
 
     @Test
     public void testGetDYM(){
-        ArrayList<String> wordList = new ArrayList<>();
-        String[] wordArray = {"setup", "setup1", "setup12", "setup3333"};
-        Collections.addAll(wordList, wordArray);
         Map<String, Integer> data = new ConcurrentHashMap<>();
         data.put("setup", 10);
         data.put("setup1", 30);
         data.put("setup12", 50);
         data.put("setup3333", 1000);
-        tree.buildTree(wordList, data);
+        tree.buildTree( data);
         assertThat("LD of 1 should be chosen above other ones, as score is not that different",
                 tree.getDYM("setup5").equals("setup1"));
         assertThat("Correct word should return the same String.",
