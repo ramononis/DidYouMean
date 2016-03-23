@@ -1,10 +1,10 @@
 package gui;
 
-import autocomplete.AutoCompleter;
-import database.CSVControl;
-import database.IDBControl;
-import didyoumean.DidYouMean;
-import didyoumean.DYM;
+import api.autocomplete.AutoCompleter;
+import api.database.CSVControl;
+import api.database.IDBControl;
+import api.didyoumean.DidYouMean;
+import api.didyoumean.DYM;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -25,7 +25,7 @@ public class GUI {
     private IDBControl DB;
     private AutoCompleter AC;
     private DidYouMean DYM;
-    private DYM method = didyoumean.DYM.BKTREE;
+    private DYM method = api.didyoumean.DYM.BKTREE;
 
     JFrame frame;
     String[] outputList;
@@ -45,7 +45,7 @@ public class GUI {
 
         DB = new CSVControl(FILENAMES);
         AC = new AutoCompleter(DB);
-        DYM = new DidYouMean(DB, didyoumean.DYM.LEVENSHTEIN);
+        DYM = new DidYouMean(DB, api.didyoumean.DYM.LEVENSHTEIN);
 
         frame.dispose();
 
@@ -148,9 +148,9 @@ public class GUI {
             }
         });
 
-        BK.addActionListener(e -> method = didyoumean.DYM.BKTREE);
+        BK.addActionListener(e -> method = api.didyoumean.DYM.BKTREE);
 
-        LA.addActionListener(e -> method = didyoumean.DYM.LEVENSHTEIN);
+        LA.addActionListener(e -> method = api.didyoumean.DYM.LEVENSHTEIN);
 
         searchbar.addActionListener(e -> {
             if (e.getID() == 1001) {

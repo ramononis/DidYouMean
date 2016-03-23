@@ -1,6 +1,6 @@
 package matchers;
 
-import tree.Element;
+import api.tree.Element;
 import org.hamcrest.*;
 
 import java.util.Collection;
@@ -9,7 +9,7 @@ import static matchers.CollectionMatchers.sizeIs;
 import static org.hamcrest.CoreMatchers.equalTo;
 
 /**
- * Contains hamcrest matchers for machting some auto complete tree properties
+ * Contains hamcrest matchers for machting some auto complete api.tree properties
  *
  * @author Frans
  */
