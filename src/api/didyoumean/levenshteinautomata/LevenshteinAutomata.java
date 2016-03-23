@@ -19,7 +19,11 @@ public class LevenshteinAutomata {
         return score / (distance + 1);
     }
 
-    public static List<String> intersect(Root tree, LevenshteinAutomataFactory laf, String word, int n) {
+    public static String intersect(Root tree, LevenshteinAutomataFactory laf, String word) {
+        return intersectN(tree, laf, word, 1).get(0);
+    }
+
+    public static List<String> intersectN(Root tree, LevenshteinAutomataFactory laf, String word, int n) {
         int w = word.length();
         List<String> result = new ArrayList<>(n);
         PriorityQueue<Pair<Element, State>> queue = new PriorityQueue<>((p1, p2) -> getScore(p2, w) - getScore(p1, w));

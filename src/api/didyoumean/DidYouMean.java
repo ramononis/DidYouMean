@@ -57,7 +57,7 @@ public class DidYouMean {
         } else if (method == DYM.BKTREE) {
             return getTree().getDYM(searchString);
         } else if (method == DYM.LEVENSHTEIN) {
-            return LevenshteinAutomata.intersect(root, laf, searchString, 1).get(0);
+            return LevenshteinAutomata.intersect(root, laf, searchString);
         } else {
             return null;
         }
