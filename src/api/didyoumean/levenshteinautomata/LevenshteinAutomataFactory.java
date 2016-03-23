@@ -8,38 +8,65 @@ import java.util.stream.Collectors;
 import static java.util.Collections.max;
 
 /**
- * Definitions that are being reffered to are from:<br>
- * Fast string correction with Levenshtein automata (KU Schulz {@literal &} S Mihov, 2002)
+ * A class for simulating a Levenshtein automata.<br>
+ * The Levenshtein automata factory(LAF) precalculates a parametric list of states and a transition table
+ * in order to provide simulation of Levenshtein automata, able to calculate Levenshtein distance(up to a given maximum)
+ * of a word W in linear time in |W|.<p>
+ *
+ * After providing the {@link #getInit() initial state}, succesive states can be determine in constant time.<p>
+ *
+ * The approach used in this class is based on:<br>
+ * <i>Fast string correction with Levenshtein automata (KU Schulz {@literal &} S Mihov, 2002)</i><br>
+ * Definitions that are being referred to are from this paper.
+ *
  *
  * @author Ramon Onis
  * @see <a href="http://goo.gl/v28nA8">Fast string correction with Levenshtein automata</a>
  */
 public class LevenshteinAutomataFactory {
     /**
-     * Maximal alowed single-character edits
+     * Maximal allowed Levenshtein distance
      */
     private final int maxN;
     /**
-     * Set of possible parametric states
+     * Parametric list of states
      */
     private Set<ParametricState> pStates;
+    /**
+     * Parametric list of final states
+     */
     private Map<ParametricState, Pair<Integer, Integer>> acceptingIntervals;
+    /**
+     * Transition tables containing parametric description of the transition function.
+     */
     private Map<Integer, TransitionTable> transitionTables;
     private ParametricState initState;
+    private boolean reduced = false;
 
+    /**
+     * Return the universal initial state of any word with any length.
+     * @return the initial state of any Levenshtein automata for the given max distance.
+     */
     public State getInit() {
         return new StateWrapper(new Pair<>(initState, 0));
     }
 
-    private boolean reduced = false;
 
-
+    /**
+     * Initializes a new {@link LevenshteinAutomataFactory} using a given maximal distance.<br>
+     * Upon initialisation the precalculations are done which, depending on {@code n}, take a lot of time.<br>
+     * Note that memory usage grows extremely fast when increasing {@code n}. It is not recommended to use values
+     * greater than 4.
+     * @param n The maximal distance that the simulated automata accept.
+     */
     public LevenshteinAutomataFactory(int n) {
         maxN = n;
         precalculate();
     }
 
-
+    /**
+     * Perform precalculations as described in 5.2 with an additional reduction stage to clear redundant data.
+     */
     private void precalculate() {
         calculateParametricStates();
         calculateFinalStates();
@@ -47,6 +74,14 @@ public class LevenshteinAutomataFactory {
         reduceStates();//skip line this to make debugging easier
     }
 
+    /**
+     * Reduces the information that is stored in {@link ParametricState}.<br>
+     * Specifically, {@link ParametricState#positions} is cleared as it is redundant after the transition tables
+     * are computed.
+     * Before clearing, information that is needed afterwards is calculated and stored(hashCode, maxBaseIndex)<br>
+     * To keep {@link Object#equals(Object) equals()} correct, each {@link ParametricState} is given a {@link Object}
+     * which will serve as its identity.
+     */
     private void reduceStates() {
         Map<ParametricState, Object> stateReductions = new HashMap<>();
         Integer i = 0;
@@ -68,6 +103,9 @@ public class LevenshteinAutomataFactory {
         reduced = true;
     }
 
+    /**
+     * Calculate the transition tables for every possible length of relevant subwords(see 4.0.33)
+     */
     private void calculateTransitionTables() {
         transitionTables = new HashMap<>();
         for (int l = 0; l <= maxN * 2 + 1; l++) {
@@ -75,6 +113,9 @@ public class LevenshteinAutomataFactory {
         }
     }
 
+    /**
+     * Precalculates the interval(relative to the word length) in which the index of a state is accepting.
+     */
     private void calculateFinalStates() {
         if (pStates == null) {
             return;
@@ -83,6 +124,9 @@ public class LevenshteinAutomataFactory {
         pStates.stream().filter(p -> !p.positions.isEmpty()).forEach(p -> acceptingIntervals.put(p, p.acceptingInterval()));
     }
 
+    /**
+     * Calculates all possible parametric states with accordance to definition 4.0.18.
+     */
     private void calculateParametricStates() {
         ParametricPosition init = new ParametricPosition(0, 0);
         initState = new ParametricState();
@@ -91,10 +135,17 @@ public class LevenshteinAutomataFactory {
         pStates = calculateParametricStates(new ParametricState(), triangle);
     }
 
+
+    /**
+     * Recursively calcualtes the set of possible parametric states.
+     * @param state the base state to add in more positions
+     * @param ps the remaining positions to add
+     * @return a {@link Set} of possible parametric states
+     */
     private Set<ParametricState> calculateParametricStates(ParametricState state, List<ParametricPosition> ps) {
         if (ps.isEmpty()) {
             Set<ParametricState> result = new HashSet<>();
-            result.add(state.reduce());
+            result.add(state.shiftToLeft());
             return result;
         }
         List<ParametricPosition> ps2 = new ArrayList<>(ps);
@@ -111,10 +162,17 @@ public class LevenshteinAutomataFactory {
     }
 
 
+    /**
+     * A helper function to create a set of positions in a convenient way.<br>
+     * Every element in {@code data} is interpreted as: [index offset, number of edits]
+     * @param data A array containing arrays of size 2.
+     * @return A set of parametric positions with offsets/edits according to {@code data}.
+     * @throws IllegalArgumentException if data contains a element without length 2.
+     */
     private Set<ParametricPosition> constructPositions(int[][] data) {
         Set<ParametricPosition> result = new HashSet<>();
         for (int[] ie : data) {
-            if (ie.length < 2) {
+            if (ie.length != 2) {
                 throw new IllegalArgumentException("data must contain elements of arrays of at least size 2");
             }
             result.add(new ParametricPosition(ie[0], ie[1]));
@@ -122,6 +180,13 @@ public class LevenshteinAutomataFactory {
         return result;
     }
 
+
+    /**
+     * Returns all possible characteristic vectors with length {@code l}.<br>
+     * Note that this results in {@code 2^l} results.
+     * @param l The length of the vectors
+     * @return All possible vectors with length {@code l}.
+     */
     private Set<CharacteristicVector> vectorCombinations(int l) {
         Set<CharacteristicVector> result = new HashSet<>(1 << l);
         int i = -1;
@@ -135,24 +200,47 @@ public class LevenshteinAutomataFactory {
         return result;
     }
 
+    /**
+     * A class corresponding to a state in a deterministic Levenshtein automata.
+     */
     private class StateWrapper extends State {
         Pair<ParametricState, Integer> state;
 
+        /**
+         * Initializes a new state.
+         * @param s the parametric state, along with an index defining this state.
+         */
         StateWrapper(Pair<ParametricState, Integer> s) {
             state = s;
         }
 
+        /**
+         * Gets the Levenshtein distance corresponding to this state and a given word length
+         * @param w the length of the wordt corresponding to the Levenshtein-automata
+         * @return The calculated Levenshtein distance.
+         */
         @Override
         public int getDistance(int w) {
             return w - state.getRight() + state.getLeft().maxBaseOffset();
         }
 
+        /**
+         * Indicates whether or not this is a accepting state.
+         * @param w The length of the word of the DFA
+         * @return {@code true} if accepting, otherwise {@code} false
+         */
         @Override
         public boolean isAcceptingState(int w) {
             Pair<Integer, Integer> i = acceptingIntervals.get(state.getLeft());
             return (i.getLeft() + w) <= state.getRight() && state.getRight() <= (i.getRight() + w);
         }
 
+        /**
+         * Determines(in near constant time) the next state, given a symbol and the word of the simulated automata.
+         * @param c the next symbol
+         * @param w the word length
+         * @return The next state, or {@code null} if this transition results in a failure state.
+         */
         @Override
         public State outState(char c, String w) {
             int l = Math.min(w.length() - state.getRight(), 2 * maxN + 1);
@@ -171,6 +259,9 @@ public class LevenshteinAutomataFactory {
         }
     }
 
+    /**
+     * A parametric description of a set of possible states.
+     */
     private class ParametricState {
 
         private final Set<ParametricPosition> positions;
@@ -178,14 +269,28 @@ public class LevenshteinAutomataFactory {
         Object o;
         int maxBase;
 
+        /**
+         * Creates a empty state.
+         */
         ParametricState() {
             positions = new HashSet<>();
         }
 
+        /**
+         * Creates a states with positions {@code ps}.
+         * @param ps The positions to include.
+         */
         private ParametricState(Set<ParametricPosition> ps) {
             this(ps, true);
         }
 
+        /**
+         * Creates a states with positions {@code ps}.<br>
+         * If {@code isChecked} is false, the positions are only added
+         * if they are not subsumed by any other position in {@code ps}.
+         * @param parametricPositions The positions to include
+         * @param isChecked If {@code true}, the positions are only added if they are not subsumed by others.
+         */
         public ParametricState(Set<ParametricPosition> parametricPositions, boolean isChecked) {
             if (!isChecked) {
                 positions = new HashSet<>();
@@ -199,10 +304,19 @@ public class LevenshteinAutomataFactory {
             }
         }
 
+        /**
+         * Adds a position to this state.<br>
+         * Note that it is not checked if this position is subsumed by this state.
+         * @param p The position to add
+         */
         void addPosition(ParametricPosition p) {
             positions.add(p);
         }
 
+
+        /**
+         * Calculates the biggest offset in this state.
+         */
         int maxOffset() {
             if (positions.isEmpty()) {
                 return 0;
@@ -210,6 +324,9 @@ public class LevenshteinAutomataFactory {
             return max(positions, (o1, o2) -> o1.indexOffset - o2.indexOffset).indexOffset;
         }
 
+        /**
+         * Calculates the biggest offset in this state.
+         */
         int minOffset() {
             if (positions.isEmpty()) {
                 return 0;
@@ -217,7 +334,11 @@ public class LevenshteinAutomataFactory {
             return Collections.min(positions, (o1, o2) -> o1.indexOffset - o2.indexOffset).indexOffset;
         }
 
-        ParametricState reduce() {
+        /**
+         * Shifts the whole state to the left so that {@code minOffset} equals {@code 0}.
+         * @return The resulting state after the shift.
+         */
+        ParametricState shiftToLeft() {
             int min = minOffset();
             ParametricState result = new ParametricState();
             result.positions.addAll(positions
@@ -228,7 +349,11 @@ public class LevenshteinAutomataFactory {
         }
 
 
-        @SuppressWarnings("BooleanMethodIsAlwaysInverted")
+        /**
+         * Checks whether or not the position {@code p} is subsumed by a position in this state.
+         * @param p the position to check.
+         * @return True if {@code p} is subsumed by a position in this state.
+         */
         boolean subsumes(ParametricPosition p) {
             for (ParametricPosition p2 : positions) {
                 if (p2.subsumes(p)) {
@@ -238,6 +363,10 @@ public class LevenshteinAutomataFactory {
             return false;
         }
 
+        /**
+         * Returns the maximal possible base position(see 4.0.18) for this state.
+         * @return the maximal possible base position.
+         */
         int maxBaseOffset() {
             if(reduced) {
                 return maxBase;
@@ -269,7 +398,7 @@ public class LevenshteinAutomataFactory {
             return positions.hashCode();
         }
 
-
+        @Override
         public boolean equals(Object o) {
             if (o instanceof ParametricState) {
                 if (reduced) {
@@ -321,6 +450,12 @@ public class LevenshteinAutomataFactory {
             return result;
         }
 
+        /**
+         * Applies a characteristic vector to this state, given the offset of this state relative to the word length.
+         * @param v the vector to apply.
+         * @param wordOffset Offset relative to the word length.
+         * @return the resulting state.
+         */
         ParametricState applyVector(CharacteristicVector v, int wordOffset) {
             List<ParametricPosition> ps = new ArrayList<>();
             positions.forEach(p -> ps.addAll(p.applyVector(v, wordOffset)));
@@ -332,10 +467,21 @@ public class LevenshteinAutomataFactory {
         }
     }
 
+    /**
+     * A parametric description of position(see 4.0.12).<br>
+     * The {@code edits} field stands for the amount of edits up to this position(as for normal positions).<br>
+     * The offset denotes the shift that is applied to a (unknown) base index {@code i}.<br>
+     * Example: {@code new ParametricPosition(3, 1)} represents a position (i+3)<sup>#1</sup>.
+     */
     private class ParametricPosition implements Comparable<ParametricPosition> {
         final int edits;
         final int indexOffset;
 
+        /**
+         * Creates a new parametric position.
+         * @param i it's index offset
+         * @param e it's amount of edits
+         */
         ParametricPosition(int i, int e) {
             edits = e;
             indexOffset = i;
@@ -354,6 +500,11 @@ public class LevenshteinAutomataFactory {
                     && indexOffset == ((ParametricPosition) o).indexOffset;
         }
 
+        /**
+         * Generates the subsumption triangle for this position(see 4.0.15).<br>
+         * Note that, contrary to the referred definition, this method includes this position in the result.
+         * @return The subusumption triangle, plus this position, sorted by amount of edits.
+         */
         List<ParametricPosition> subsumptionTriangle() {
             List<ParametricPosition> result = new ArrayList<>();
             for (int e = 0; e <= maxN - edits; e++) {
@@ -365,10 +516,10 @@ public class LevenshteinAutomataFactory {
         }
 
         /**
-         * As defined in 4.0.15
+         * Checks whether of not a this position subsumes an other position(see 4.0.15)
          *
-         * @param o
-         * @return
+         * @param o the position to check
+         * @return {@code true} if {@code o} is subsumed by {@code this}
          */
         boolean subsumes(ParametricPosition o) {
             return edits < o.edits
@@ -381,6 +532,14 @@ public class LevenshteinAutomataFactory {
             return i + "#" + edits;
         }
 
+        /**
+         * Applies a vector to this position. <br>
+         * Specifically, it applies a elementary transition(as defined in 4.0.24 and specified in table 4.1) to assign
+         * a state to this position/vector.<br>
+         * @param v the vector to apply
+         * @param offset the offset of the containing {@link ParametricState} relative to the word length.
+         * @return the assigned state, in the form of a {@link Set} of positions.
+         */
         public Set<ParametricPosition> applyVector(CharacteristicVector v, int offset) {
             offset += indexOffset;
             Set<ParametricPosition> result = new HashSet<>();
@@ -423,13 +582,24 @@ public class LevenshteinAutomataFactory {
         }
     }
 
+    /**
+     * A transition table for a particular length of the relative subword.
+     */
     private class TransitionTable {
         Map<Pair<ParametricState, CharacteristicVector>, Pair<ParametricState, Integer>> table;
 
+        /**
+         * Constructs a transition table for a given vector length
+         * @param l the given vector length.
+         */
         TransitionTable(int l) {
             constructTable(l);
         }
 
+        /**
+         * Reduces the states in this table.
+         * @param mapping object mapping to be used.
+         */
         void reduce(Map<ParametricState, Object> mapping) {
             for (Pair<ParametricState, Integer> pair : table.values()) {
                 ParametricState pState = pair.getLeft();
@@ -440,6 +610,12 @@ public class LevenshteinAutomataFactory {
             }
         }
 
+        /**
+         * Applies the transition function to retrieve the next state.
+         * @param s The previous state
+         * @param cv the vector to apply
+         * @return the next state
+         */
         State get(StateWrapper s, CharacteristicVector cv) {
             Pair<ParametricState, Integer> value = table.get(new Pair<>(s.state.getLeft(), cv));
             if (value == null) {
@@ -448,6 +624,10 @@ public class LevenshteinAutomataFactory {
             return new StateWrapper(new Pair<>(value.getLeft(), value.getRight() + s.state.getRight()));
         }
 
+        /**
+         * Constructs this transtition table
+         * @param l the length of characteristic vector to include
+         */
         void constructTable(int l) {
             Set<CharacteristicVector> vectors = vectorCombinations(l);
             table = new HashMap<>();
@@ -461,7 +641,7 @@ public class LevenshteinAutomataFactory {
                         continue;
                     }
                     int offset = out.minOffset();// offset >= 0?
-                    out = out.reduce();
+                    out = out.shiftToLeft();
                     table.put(new Pair<>(p, v), new Pair<>(out, offset));
                 }
             }
@@ -469,22 +649,40 @@ public class LevenshteinAutomataFactory {
 
     }
 
+    /**
+     * Represents a characteristic vector as defined in 4.0.10
+     */
     private class CharacteristicVector {
         Boolean[] value;
 
+        /**
+         * Creates the characteristic vector for a given string and character.<br>
+         * According to 4.0.10, the resulting instance represents χ(x,w).
+         * @param x the char to use
+         * @param w the string to use
+         */
         CharacteristicVector(char x, String w) {
             value = w.chars().mapToObj(i -> (char) i == x).toArray(Boolean[]::new);
         }
 
+        /**
+         * Creates a vector with a given value.
+         * @param v the given value
+         */
         CharacteristicVector(Boolean[] v) {
             value = v;
         }
 
 
-        int minimalIndex(int startAt) {
-            for (int i = startAt; i < value.length; i++) {
+        /**
+         * Starting at the specified starting index, this method returns the value {@code j}
+         * in the notation(as specified in 4.0.24): &lt;b<sub>k</sub>, b<sub>k+1</sub>...&gt; : j, or 0 if this vector
+         * doesn't contain a 1.
+         */
+        int minimalIndex(int k) {
+            for (int i = k; i < value.length; i++) {
                 if (value[i]) {
-                    return i - startAt;
+                    return i - k;
                 }
             }
             return -1;
