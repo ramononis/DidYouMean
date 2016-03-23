@@ -20,8 +20,9 @@ public class DidYouMean {
 
     /**
      * Creates a new DidYouMean, with a given database and did-you-mean data structure.
+     *
      * @param idbControl The controller which connects to the database.
-     * @param method The method the DYM should be getting its values with.
+     * @param method     The method the DYM should be getting its values with.
      */
     public DidYouMean(IDBControl idbControl, DYM method) {
         this.databaseController = idbControl;
@@ -35,18 +36,12 @@ public class DidYouMean {
      * Also creates a new api.tree from the data (takes a few seconds).
      */
     public void setup() {
-        switch(method) {
-            case LEVENSHTEIN:
-                root = new Root();
-                databaseController.getData().entrySet().forEach(
-                        entry -> root.addOrIncrementWord(entry.getKey(), entry.getValue())
-                );
-                laf = new LevenshteinAutomataFactory(MAX_DISTANCE);
-                break;
-            case BKTREE:
-                getTree().buildTree(databaseController.getData());
-                break;
-        }
+        root = new Root();
+        databaseController.getData().entrySet().forEach(
+                entry -> root.addOrIncrementWord(entry.getKey(), entry.getValue())
+        );
+        laf = new LevenshteinAutomataFactory(MAX_DISTANCE);
+        getTree().buildTree(databaseController.getData());
     }
 
     /**
@@ -70,6 +65,7 @@ public class DidYouMean {
 
     /**
      * Sets the current DYM method of this class.
+     *
      * @param method The new DYM method of this class.
      */
     public void setMethod(DYM method) {
@@ -78,6 +74,7 @@ public class DidYouMean {
 
     /**
      * Returns the current main tree of this class.
+     *
      * @return The current tree of this class.
      */
     public BKTree getTree() {
