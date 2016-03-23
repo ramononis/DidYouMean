@@ -33,7 +33,7 @@ public class GUI {
      */
     public GUI() {
         frame = new JFrame("Autocomplete");
-        ImageIcon loading = new ImageIcon("./res/ajax-loader.gif");
+        ImageIcon loading = new ImageIcon(getClass().getResource("/ajax-loader.gif"));
         frame.add(new JLabel("loading... ", loading, JLabel.CENTER));
 
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
