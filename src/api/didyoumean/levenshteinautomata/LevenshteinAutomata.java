@@ -8,6 +8,7 @@ import api.utils.Pair;
 import java.util.*;
 
 /**
+ * The Class that is used to get the score of a state and get an intersect between 2 DFAs.
  * Created by Tim on 3/9/2016.
  */
 public class LevenshteinAutomata {

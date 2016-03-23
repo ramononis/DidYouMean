@@ -4,9 +4,8 @@ import api.database.CSVControl;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
-
 /**
+ * A test class for the api.controller.Controller class.
  * Created by Tim on 23-3-2016.
  */
 public class ControllerTest {

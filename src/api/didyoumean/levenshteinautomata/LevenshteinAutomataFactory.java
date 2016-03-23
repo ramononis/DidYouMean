@@ -173,7 +173,7 @@ public class LevenshteinAutomataFactory {
 
     private class ParametricState {
 
-        final Set<ParametricPosition> positions;
+        private final Set<ParametricPosition> positions;
         int hash;
         Object o;
         int maxBase;

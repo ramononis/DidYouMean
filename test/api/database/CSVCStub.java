@@ -3,6 +3,7 @@ package api.database;
 import java.util.Map;
 
 /**
+ * A stub class that implements IDBControl.
  * Created by Tim on 15-3-2016.
  */
 public class CSVCStub implements IDBControl{

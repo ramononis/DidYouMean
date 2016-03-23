@@ -10,6 +10,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
 /**
+ * A test class for the api.autocomplete.AutoCompleter class.
  * Created by Tim on 15-3-2016.
  */
 public class AutoCompleterTest {

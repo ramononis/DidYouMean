@@ -14,7 +14,6 @@ import api.didyoumean.DidYouMean;
 public class Controller {
     private final AutoCompleter ac;
     private final DidYouMean dym;
-    private final IDBControl db;
 
     /**
      * Initializes a new Controller
@@ -22,9 +21,8 @@ public class Controller {
      * @param dbController the dbController that should be used.
      */
     public Controller(IDBControl dbController) {
-        db = dbController;
-        dym = new DidYouMean(db, api.didyoumean.DYM.BKTREE);
-        ac = new AutoCompleter(db);
+        dym = new DidYouMean(dbController, api.didyoumean.DYM.BKTREE);
+        ac = new AutoCompleter(dbController);
     }
 
     // ac functions
