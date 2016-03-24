@@ -43,10 +43,19 @@ public class Controller {
     public String[] getAdvancedTopN(int n, String searchterm) {
         String[] r = getTopN(n, searchterm);
         if (r.length < n) {
-            String[] r2 = getDYM_N(searchterm, n - r.length);
+            String d = getDYM(searchterm);
             String[] rnew = new String[n];
             System.arraycopy(r, 0, rnew, 0, r.length);
-            System.arraycopy(r2, 0, rnew, r.length, r2.length);
+            rnew[r.length] = d;
+
+            if (r.length < n - 1) {
+                String[] r2 = getTopN(n - (r.length), d);
+                for (int i = 0; i < r2.length; i++) {
+                    if (r.length + 1 + i < n && !r2[i].equals(d)) {
+                        rnew[r.length + 1 + i] = r2[i];
+                    }
+                }
+            }
             r = rnew;
         }
         return r;
