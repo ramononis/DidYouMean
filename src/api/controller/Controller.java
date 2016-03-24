@@ -18,6 +18,7 @@ import java.util.List;
 public class Controller {
     private final AutoCompleter ac;
     private final DidYouMean dym;
+    private final int DEFAULT_LD_WEIGHT = 6;
 
     /**
      * Initializes a new Controller
@@ -25,7 +26,7 @@ public class Controller {
      * @param dbController the dbController that should be used.
      */
     public Controller(IDBControl dbController) {
-        dym = new DidYouMean(dbController, api.didyoumean.DYM.BKTREE);
+        dym = new DidYouMean(dbController, api.didyoumean.DYM.BKTREE, DEFAULT_LD_WEIGHT);
         ac = new AutoCompleter(dbController);
     }
 

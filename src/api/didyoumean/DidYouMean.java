@@ -27,10 +27,10 @@ public class DidYouMean {
      * @param idbControl The controller which connects to the database.
      * @param method     The method the DYM should be getting its values with.
      */
-    public DidYouMean(IDBControl idbControl, DYM method) {
+    public DidYouMean(IDBControl idbControl, DYM method, int ldWeight) {
         this.databaseController = idbControl;
         this.method = method;
-        tree = new BKTree();
+        tree = new BKTree(ldWeight);
         setup();
     }
 

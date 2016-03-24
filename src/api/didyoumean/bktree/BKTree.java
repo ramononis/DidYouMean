@@ -15,8 +15,12 @@ import static java.lang.Math.min;
 public class BKTree {
     private static Node root;
 
+    private int ldWeight;
     public static final int MAX_ERROR_RANGE = 3;
 
+    public BKTree(int ldWeight){
+        this.ldWeight = ldWeight;
+    }
 
     /**
      * Builds a new api.tree given a list of words and data to fill nodes with. Nodes contain
@@ -104,7 +108,7 @@ public class BKTree {
 
         //TODO: change 6, in Math.pow, to constant or better yet a variable
         return getRoot().searchTreeForNodes(word.toLowerCase(), MAX_ERROR_RANGE).entrySet().parallelStream()
-                .map(e -> new Pair<>(e.getKey().getScore() / Math.pow(e.getValue(), 6), e.getKey()))
+                .map(e -> new Pair<>(e.getKey().getScore() / Math.pow(e.getValue(), ldWeight), e.getKey()))
                 .sorted((p1, p2) -> p2.getLeft().compareTo(p1.getLeft()))
                 .limit(n)
                 .map(p -> p.getRight().getName())
@@ -118,6 +122,23 @@ public class BKTree {
      */
     public Node getRoot() {
         return root;
+    }
+
+    /**
+     * Changes the current {@code ldWeight} to another value. Higher values mean that words with a small LD to a search term
+     * get more priority compared to words that have a bigger LD.
+     * @param weight The new value of ldWeight.
+     */
+    public void setLdWeight(int weight){
+        ldWeight = weight;
+    }
+
+    /**
+     * Returns the current {@code ldWeight}.
+     * @return the current {@code ldWeight}.
+     */
+    public int getLdWeight(){
+        return ldWeight;
     }
 
 }

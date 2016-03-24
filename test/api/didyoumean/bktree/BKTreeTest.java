@@ -22,7 +22,7 @@ public class BKTreeTest {
     @Before
     public void setup() {
         node = new Node("setup");
-        tree = new BKTree();
+        tree = new BKTree(6);
     }
 
     // ---- Node.java test, 87% coverage. ----

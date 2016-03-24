@@ -22,6 +22,9 @@ public class LevenshteinAutomata {
     public static int getScore(Pair<Element, State> state, int w) {
         int score = state.getLeft().getWeight();
         int distance = state.getRight().getDistance(w);
+        if(distance <= 0){
+            int i = 0;
+        }
         return score / (distance + 1);
     }
     /**
@@ -34,7 +37,8 @@ public class LevenshteinAutomata {
      * @return A string similar to {@code word}, or an empty string if no result could be found
      */
     public static String intersect(Root tree, LevenshteinAutomataFactory laf, String word) {
-        return intersectN(tree, laf, word, 1).get(0);
+        List<String> result = intersectN(tree, laf, word, 1);
+        return result.size() == 0 ? "" : result.get(0);
     }
 
     /**
