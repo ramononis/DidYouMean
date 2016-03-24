@@ -18,7 +18,8 @@ import java.util.List;
 public class Controller {
     private final AutoCompleter ac;
     private final DidYouMean dym;
-    public final int DEFAULT_LD_WEIGHT = 6;
+
+    private static final int DEFAULT_LD_WEIGHT = 6;
 
     /**
      * Initializes a new Controller
@@ -50,9 +51,11 @@ public class Controller {
 
             if (r.length < n - 1) {
                 String[] r2 = getTopN(n - (r.length), d);
+                int j = 0;
                 for (int i = 0; i < r2.length; i++) {
-                    if (r.length + 1 + i < n && !r2[i].equals(d)) {
-                        rnew[r.length + 1 + i] = r2[i];
+                    if (r.length + i < n && !r2[i].equals(d)) {
+                        rnew[r.length + 1 + j] = r2[i];
+                        j++;
                     }
                 }
             }
@@ -122,5 +125,15 @@ public class Controller {
      */
     public void setDYMMethod(DYM method) {
         dym.setMethod(method);
+    }
+
+    /**
+     * Calls {@link DidYouMean#setLdWeight(int)}
+     *
+     * @param weight The new LD weight.
+     * @throws IllegalArgumentException if weight is negative.
+     */
+    public void setDYMWeight(int weight) {
+        dym.setLdWeight(weight);
     }
 }
