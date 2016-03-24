@@ -3,11 +3,14 @@ package api.didyoumean.bktree;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import static api.didyoumean.bktree.BKTree.calculateDistance;
 import static matchers.CollectionMatchers.sizeIs;
-import static org.hamcrest.CoreMatchers.*;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 /**
@@ -132,37 +135,41 @@ public class BKTreeTest {
         Node setup3 = new Node("setup3");
         tree.buildTree(data);
 
-        //TODO: fix this test, the root element is not always the same because the first element from a (unordered!) set is used as root.
+        assertThat(verifyTree(tree.getRoot()), equalTo(data));
+    }
 
-//        //tree looks like this: setup is the root, with children 1 and 12. setup1 has 1 child, namely setup3.
-//        //setup12 has no children.
-//        assertThat("setup is the root", tree.getRoot(), equalTo(setup));
-//        assertThat("root has 2 children, setup1 and setup12",
-//                tree.getRoot().getChildren().containsValue(setup12) &&
-//                tree.getRoot().getChildren().containsValue(setup1));
-//        assertThat("setup1 has child setup3", tree.getRoot().getChildren().get(1).getChildren().containsValue(setup3));
-//        assertThat("setup12 has no children", tree.getRoot().getChildren().get(2).getChildren().isEmpty());
+    private Map<String, Integer> verifyTree(Node n) {
+        Map<String, Integer> result = new HashMap<>();
+
+        for(Map.Entry<Integer, Node> c : n.getChildren().entrySet()) {
+            assertThat("Levenshtein distance", calculateDistance(n.getName(), c.getValue().getName()), is(c.getKey()));
+            result.putAll(verifyTree(c.getValue()));
+        }
+
+        result.put(n.getName(), n.getScore());
+
+        return result;
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testCalculateLDIllegalArgument1() {
-        BKTree.calculateDistance(null, "");
+        calculateDistance(null, "");
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testCalculateLDIllegalArgument2() {
-        BKTree.calculateDistance("", null);
+        calculateDistance("", null);
     }
 
     @Test
     public void testCalculateLievenshteinDistance() {
         assertThat("Empty string and any other word should have LD equal to word.length()",
-                BKTree.calculateDistance("", "four"), is(4));
-        assertThat(BKTree.calculateDistance("", ""), is(0));
-        assertThat(BKTree.calculateDistance("food", "food"), is(0));
-        assertThat(BKTree.calculateDistance("food", "fxod"), is(1));
-        assertThat(BKTree.calculateDistance("fxd", "food"), is(2));
-        assertThat(BKTree.calculateDistance("abcfood", "food"), is(3));
+                calculateDistance("", "four"), is(4));
+        assertThat(calculateDistance("", ""), is(0));
+        assertThat(calculateDistance("food", "food"), is(0));
+        assertThat(calculateDistance("food", "fxod"), is(1));
+        assertThat(calculateDistance("fxd", "food"), is(2));
+        assertThat(calculateDistance("abcfood", "food"), is(3));
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -170,14 +177,20 @@ public class BKTreeTest {
         tree.getDYM(null);
     }
 
-    @Test
-    public void testGetDYM() {
+    private Map<String, Integer> testData() {
         Map<String, Integer> data = new ConcurrentHashMap<>();
         data.put("setup", 10);
         data.put("setup1", 30);
         data.put("setup12", 50);
         data.put("setup3333", 1000);
-        tree.buildTree(data);
+
+        return data;
+    }
+
+    @Test
+    public void testGetDYM() {
+        tree.buildTree(testData());
+
         assertThat("LD of 1 should be chosen above other ones, as score is not that different",
                 tree.getDYM("setup5"), equalTo("setup1"));
         assertThat("Correct word should return the same String.",
