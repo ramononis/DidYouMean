@@ -1,5 +1,6 @@
 package api.didyoumean;
 
+import api.controller.Controller;
 import api.database.IDBControl;
 import api.didyoumean.bktree.BKTree;
 import api.didyoumean.levenshteinautomata.LevenshteinAutomata;
@@ -16,6 +17,7 @@ public class DidYouMean {
     private IDBControl databaseController;
     private BKTree tree;
 
+    private int ldWeight;
     private DYM method;
     private Root root;
     private static final int MAX_DISTANCE = 3;
@@ -30,7 +32,8 @@ public class DidYouMean {
     public DidYouMean(IDBControl idbControl, DYM method, int ldWeight) {
         this.databaseController = idbControl;
         this.method = method;
-        tree = new BKTree(ldWeight);
+        this.ldWeight = ldWeight;
+        tree = new BKTree();
         setup();
     }
 
@@ -58,9 +61,9 @@ public class DidYouMean {
         if (searchString == null) {
             throw new IllegalArgumentException("Search string is null in DidYouMean.getDYMFromString.");
         } else if (method == DYM.BKTREE) {
-            return getTree().getDYM(searchString);
+            return getTree().getDYM(searchString, getLdWeight());
         } else if (method == DYM.LEVENSHTEIN) {
-            return LevenshteinAutomata.intersect(root, laf, searchString);
+            return LevenshteinAutomata.intersect(root, laf, searchString, getLdWeight());
         } else {
             return null;
         }
@@ -79,9 +82,9 @@ public class DidYouMean {
         if (searchString == null) {
             throw new IllegalArgumentException("Search string is null in DidYouMean.getDYMFromString.");
         } else if (method == DYM.BKTREE) {
-            return getTree().getDYM_N(searchString, n);
+            return getTree().getDYM_N(searchString, n, getLdWeight());
         } else if (method == DYM.LEVENSHTEIN) {
-            return LevenshteinAutomata.intersectN(root, laf, searchString, n);
+            return LevenshteinAutomata.intersectN(root, laf, searchString, n, getLdWeight());
         } else {
             return null;
         }
@@ -105,16 +108,26 @@ public class DidYouMean {
         return tree;
     }
 
+
     /**
-     * Sets the LD weight of the data structures that this DidYouMean manages.
-     * @param weight The new LD weight.
+     * Changes the current {@code ldWeight} to another value. Higher values mean that words with a small LD to a search term
+     * get more priority compared to words that have a bigger LD.
+     *
      * @throws IllegalArgumentException if weight is negative.
      */
     public void setLdWeight(int weight){
         if(weight < 0){
             throw new IllegalArgumentException("Tried to set a negative LD-weight.");
         }
-        getTree().setLdWeight(weight);
-        LevenshteinAutomata.setLdWeight(weight);
+        this.ldWeight = weight;
+    }
+
+    /**
+     * Returns the current {@code ldWeight}.
+     *
+     * @return the current {@code ldWeight}.
+     */
+    public int getLdWeight() {
+        return ldWeight;
     }
 }

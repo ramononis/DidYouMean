@@ -25,7 +25,7 @@ public class BKTreeTest {
     @Before
     public void setup() {
         node = new Node("setup");
-        tree = new BKTree(6);
+        tree = new BKTree();
     }
 
     // ---- Node.java test, 87% coverage. ----
@@ -123,23 +123,12 @@ public class BKTreeTest {
     }
 
     @Test
-    public void testGetSetLDWeight(){
-        assertThat("getLdWeight() should be equal to the default LD value (6)", tree.getLdWeight(), is(6));
-        tree.setLdWeight(10);
-        assertThat("setLdWeight() should set the value to the given setting.", tree.getLdWeight(), is(10));
-    }
-
-    @Test
     public void testBuildTree() {
         Map<String, Integer> data = new ConcurrentHashMap<>();
         data.put("setup", 10);
         data.put("setup1", 30);
         data.put("setup12", 50);
         data.put("setup3", 100);
-        Node setup = new Node("setup");
-        Node setup1 = new Node("setup1");
-        Node setup12 = new Node("setup12");
-        Node setup3 = new Node("setup3");
         tree.buildTree(data);
 
         assertThat(verifyTree(tree.getRoot()), equalTo(data));
@@ -181,7 +170,7 @@ public class BKTreeTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void testGetDYMIllegalArg() {
-        tree.getDYM(null);
+        tree.getDYM(null, 6);
     }
 
     private Map<String, Integer> testData() {
@@ -199,12 +188,12 @@ public class BKTreeTest {
         tree.buildTree(testData());
 
         assertThat("LD of 1 should be chosen above other ones, as score is not that different",
-                tree.getDYM("setup5"), equalTo("setup1"));
+                tree.getDYM("setup5", 6), equalTo("setup1"));
         assertThat("Correct word should return the same String.",
-                tree.getDYM("setup"), equalTo("setup"));
+                tree.getDYM("setup", 6), equalTo("setup"));
         assertThat("Nothing found within the valid error range should return an empty string",
-                tree.getDYM("not within 3 LD"), equalTo(""));
+                tree.getDYM("not within 3 LD", 6), equalTo(""));
         assertThat("Choice between different Nodes with the same LD",
-                tree.getDYM("setup134"), equalTo("setup3333"));
+                tree.getDYM("setup134", 6), equalTo("setup3333"));
     }
 }

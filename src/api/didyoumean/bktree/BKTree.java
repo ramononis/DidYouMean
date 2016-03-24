@@ -15,12 +15,7 @@ import static java.lang.Math.min;
 public class BKTree {
     private static Node root;
 
-    private int ldWeight;
     public static final int MAX_ERROR_RANGE = 3;
-
-    public BKTree(int ldWeight){
-        this.ldWeight = ldWeight;
-    }
 
     /**
      * Builds a new api.tree given a list of words and data to fill nodes with. Nodes contain
@@ -83,12 +78,13 @@ public class BKTree {
     /**
      * Gets a 'did-you-mean' suggestion for a word.
      *
-     * @param word The word the user searched for.
+     * @param word     The word the user searched for.
+     * @param ldWeight The weight of the LD.
      * @return The word the user probably meant when searching for {@code word}. May be the same as {@code word}.
      * @throws IllegalArgumentException if {@code word} is null
      */
-    public String getDYM(String word) {
-        List<String> result = getDYM_N(word, 1);
+    public String getDYM(String word, int ldWeight) {
+        List<String> result = getDYM_N(word, 1, ldWeight);
         return result.isEmpty() ? "" : result.get(0);
     }
 
@@ -97,16 +93,15 @@ public class BKTree {
      *
      * @param word The word the user searched for.
      * @param n    The maximum number of suggestions to return.
+     * @param ldWeight The weight of the LD.
      * @return A list with at most n words the user probably meant when searching for {@code word}.
      * Sorted from most likely to least likely. May include {@code word}, if so this will be the first one.
      * @throws IllegalArgumentException if {@code word} is null
      */
-    public List<String> getDYM_N(String word, int n) {
+    public List<String> getDYM_N(String word, int n, int ldWeight) {
         if (word == null) {
             throw new IllegalArgumentException("Null word in BKTree.getDYM");
         }
-
-        //TODO: change 6, in Math.pow, to constant or better yet a variable
         return getRoot().searchTreeForNodes(word.toLowerCase(), MAX_ERROR_RANGE).entrySet().parallelStream()
                 .map(e -> new Pair<>(e.getKey().getScore() / Math.pow(e.getValue(), ldWeight), e.getKey()))
                 .sorted((p1, p2) -> p2.getLeft().compareTo(p1.getLeft()))
@@ -122,23 +117,6 @@ public class BKTree {
      */
     public Node getRoot() {
         return root;
-    }
-
-    /**
-     * Changes the current {@code ldWeight} to another value. Higher values mean that words with a small LD to a search term
-     * get more priority compared to words that have a bigger LD.
-     * @param weight The new value of ldWeight.
-     */
-    public void setLdWeight(int weight){
-        ldWeight = weight;
-    }
-
-    /**
-     * Returns the current {@code ldWeight}.
-     * @return the current {@code ldWeight}.
-     */
-    public int getLdWeight(){
-        return ldWeight;
     }
 
 }
