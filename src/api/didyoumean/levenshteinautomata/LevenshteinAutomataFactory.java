@@ -221,7 +221,7 @@ public class LevenshteinAutomataFactory {
          */
         @Override
         public int getDistance(int w) {
-            return w - state.getRight() + state.getLeft().maxBaseOffset();
+            return w - state.getRight() - state.getLeft().maxBaseOffset();
         }
 
         /**
