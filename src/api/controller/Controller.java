@@ -49,17 +49,18 @@ public class Controller {
             System.arraycopy(r, 0, rnew, 0, r.length);
             rnew[r.length] = d;
 
+            int j = r.length + 1;
             if (r.length < n - 1) {
                 String[] r2 = getTopN(n - (r.length), d);
-                int j = 0;
                 for (int i = 0; i < r2.length; i++) {
                     if (r.length + i < n && !r2[i].equals(d)) {
-                        rnew[r.length + 1 + j] = r2[i];
+                        rnew[j] = r2[i];
                         j++;
                     }
                 }
             }
-            r = rnew;
+            r = new String[j];
+            System.arraycopy(rnew, 0, r, 0, j);
         }
         return r;
     }
