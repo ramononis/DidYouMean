@@ -5,6 +5,10 @@ import api.database.IDBControl;
 import api.didyoumean.DYM;
 import api.didyoumean.DidYouMean;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * Main api.controller of the API.
  * Contains all accessable functions of AutoCompleter and DidYouMean.
@@ -37,8 +41,12 @@ public class Controller {
      */
     public String[] getAdvancedTopN(int n, String searchterm) {
         String[] r = getTopN(n, searchterm);
-        if (r.length == 0) {
-            r = getTopN(n, getDYM(searchterm));
+        if (r.length < n) {
+            String[] r2 = getDYM_N(searchterm, n - r.length);
+            String[] rnew = new String[n];
+            System.arraycopy(r, 0, rnew, 0, r.length);
+            System.arraycopy(r2, 0, rnew, r.length, r2.length);
+            r = rnew;
         }
         return r;
     }
@@ -82,6 +90,19 @@ public class Controller {
      */
     public String getDYM(String searchstring) {
         return dym.getDYM(searchstring);
+    }
+
+    /**
+     * Calls {@link DidYouMean#getDYM_N(String, int)}
+     *
+     * @param searchstring The user's search string.
+     * @param n            The maximum number of suggestions to return.
+     * @return A list with at most n words the user probably meant when searching for {@code word}.
+     * Sorted from most likely to least likely. May include {@code word}, if so this will be the first one.
+     * @throws IllegalArgumentException if {@code searchString} is {@code null}.
+     */
+    public String[] getDYM_N(String searchstring, int n) {
+        return dym.getDYM_N(searchstring, n).toArray(new String[]{});
     }
 
     /**
