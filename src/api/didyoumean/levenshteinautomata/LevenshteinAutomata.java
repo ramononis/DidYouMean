@@ -7,10 +7,15 @@ import api.utils.Pair;
 
 import java.util.*;
 
+import static java.lang.Math.*;
+
 /**
+ * The Class representing a Levenshtein Automata.
  * Created by Tim on 3/9/2016.
  */
 public class LevenshteinAutomata {
+
+    private static int ldWeight = 6; //default value
 
     /**
      * Calculates the score for this state-pair.<br>
@@ -22,10 +27,7 @@ public class LevenshteinAutomata {
     public static int getScore(Pair<Element, State> state, int w) {
         int score = state.getLeft().getWeight();
         int distance = state.getRight().getDistance(w);
-        if(distance <= 0){
-            int i = 0;
-        }
-        return score / (distance + 1);
+        return (int) (score / (pow(distance, ldWeight)));
     }
     /**
      * Intersects the dictionary tree with a (simulated) Levenhstein automata.
@@ -49,7 +51,7 @@ public class LevenshteinAutomata {
      * @param laf the factory for simulating Levenshtein automata
      * @param word the (possibly corrupted) input word
      * @param n the amount of results
-     * @return {@code n} strings similar to {@code word}, or less if there arn't that many results.
+     * @return {@code n} strings similar to {@code word}, or less if there aren't that many results.
      */
     public static List<String> intersectN(Root tree, LevenshteinAutomataFactory laf, String word, int n) {
         int w = word.length();
@@ -74,5 +76,9 @@ public class LevenshteinAutomata {
             }
         }
         return result;
+    }
+
+    public static void setLdWeight(int ldWeight) {
+        LevenshteinAutomata.ldWeight = ldWeight;
     }
 }

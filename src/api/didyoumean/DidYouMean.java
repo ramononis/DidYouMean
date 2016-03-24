@@ -105,5 +105,16 @@ public class DidYouMean {
         return tree;
     }
 
-
+    /**
+     * Sets the LD weight of the data structures that this DidYouMean manages.
+     * @param weight The new LD weight.
+     * @throws IllegalArgumentException if weight is negative.
+     */
+    public void setLdWeight(int weight){
+        if(weight < 0){
+            throw new IllegalArgumentException("Tried to set a negative LD-weight.");
+        }
+        getTree().setLdWeight(weight);
+        LevenshteinAutomata.setLdWeight(weight);
+    }
 }

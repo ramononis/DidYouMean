@@ -18,7 +18,7 @@ import java.util.List;
 public class Controller {
     private final AutoCompleter ac;
     private final DidYouMean dym;
-    private final int DEFAULT_LD_WEIGHT = 6;
+    public final int DEFAULT_LD_WEIGHT = 6;
 
     /**
      * Initializes a new Controller

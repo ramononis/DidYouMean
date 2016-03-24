@@ -13,7 +13,7 @@ import static java.util.Collections.max;
  * in order to provide simulation of Levenshtein automata, able to calculate Levenshtein distance(up to a given maximum)
  * of a word W in linear time in |W|.<p>
  *
- * After providing the {@link #getInit() initial state}, succesive states can be determine in constant time.<p>
+ * After providing the {@link #getInit() initial state}, successive states can be determine in constant time.<p>
  *
  * The approach used in this class is based on:<br>
  * <i>Fast string correction with Levenshtein automata (KU Schulz {@literal &} S Mihov, 2002)</i><br>

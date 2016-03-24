@@ -123,6 +123,13 @@ public class BKTreeTest {
     }
 
     @Test
+    public void testGetSetLDWeight(){
+        assertThat("getLdWeight() should be equal to the default LD value (6)", tree.getLdWeight(), is(6));
+        tree.setLdWeight(10);
+        assertThat("setLdWeight() should set the value to the given setting.", tree.getLdWeight(), is(10));
+    }
+
+    @Test
     public void testBuildTree() {
         Map<String, Integer> data = new ConcurrentHashMap<>();
         data.put("setup", 10);
