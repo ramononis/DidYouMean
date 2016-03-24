@@ -4,9 +4,13 @@ import api.database.CSVControl;
 import org.junit.Before;
 import org.junit.Test;
 
+import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.*;
+
 /**
- * A test class for the api.controller.Controller class.
- * Created by Tim on 23-3-2016.
+ * Tests the Controller
+ *
+ * @author Tim
  */
 public class ControllerTest {
     Controller ct;
@@ -18,6 +22,7 @@ public class ControllerTest {
 
     @Test
     public void getAdvancedTopN() throws Exception {
-
+        assertThat(ct.getAdvancedTopN(5, ""), is(new String[]{"five,six", "four", "inch\"", "three", "two"}));
+        assertThat(ct.getAdvancedTopN(2,"foir"), is(new String[]{"four"}));
     }
 }
