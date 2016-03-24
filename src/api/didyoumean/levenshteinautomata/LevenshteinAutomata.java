@@ -38,8 +38,8 @@ public class LevenshteinAutomata {
      * @param ldWeight The weight of the LD.
      * @return A string similar to {@code word}, or an empty string if no result could be found
      */
-    public static String intersect(Root tree, LevenshteinAutomataFactory laf, String word, int weight) {
-        List<String> result = intersectN(tree, laf, word, 1, weight);
+    public static String intersect(Root tree, LevenshteinAutomataFactory laf, String word, int ldWeight) {
+        List<String> result = intersectN(tree, laf, word, 1, ldWeight);
         return result.size() == 0 ? "" : result.get(0);
     }
 
