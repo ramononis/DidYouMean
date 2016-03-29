@@ -1,6 +1,5 @@
 package api.didyoumean;
 
-import api.controller.Controller;
 import api.database.IDBControl;
 import api.didyoumean.bktree.BKTree;
 import api.didyoumean.levenshteinautomata.LevenshteinAutomata;

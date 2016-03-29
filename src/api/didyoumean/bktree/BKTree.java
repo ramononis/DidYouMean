@@ -111,7 +111,7 @@ public class BKTree {
     }
 
     /**
-     * If the current tree does not contain this word: Adds a new {@code Node} to this tree with word {@Code word}
+     * If the current tree does not contain this word: Adds a new {@code Node} to this tree with word {@code word}
      * and weight {@code weight}. If the current tree does contain a word, changes the weight to the given {@code word}.
      * @param word The word which should be added or changed.
      * @param weight The weight corresponding to the word
