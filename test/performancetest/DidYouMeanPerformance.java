@@ -20,9 +20,9 @@ public class DidYouMeanPerformance {
         dym.setMethod(DYM.LEVENSHTEIN);
         String lev = testNTimes(dym, s, n);
         if (!bk.equals(lev)) {
-            System.out.println("BKTree: " + bk + " , Levenshtein: " + lev);
+            System.out.printf("BKTree: '%s' , Levenshtein: '%s'%n", bk, lev);
         } else {
-            System.out.println("Suggestion: " + bk);
+            System.out.printf("Suggestion: '%s'%n", bk);
         }
     }
 
@@ -35,7 +35,7 @@ public class DidYouMeanPerformance {
         }
         time -= System.currentTimeMillis();
         time *= -1;
-        System.out.println(dym.getMethod() + " " + s + " " + n + " times. " + time + " ms");
+        System.out.printf("%11s '%s' %d times. %7d ms%n", dym.getMethod(), s, n, time);
         return result;
     }
 }
