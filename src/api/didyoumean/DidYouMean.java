@@ -13,16 +13,12 @@ import java.util.List;
  * Created by Tim on 3/9/2016.
  */
 public class DidYouMean {
+    public static final int MAX_DISTANCE = 3;
     private IDBControl databaseController;
     private BKTree tree;
-
     private int ldWeight;
-
-
-
     private DYM method;
     private Root root;
-    public static final int MAX_DISTANCE = 3;
     private LevenshteinAutomataFactory laf;
 
     /**
@@ -93,15 +89,6 @@ public class DidYouMean {
     }
 
     /**
-     * Sets the current DYM method of this class.
-     *
-     * @param method The new DYM method of this class.
-     */
-    public void setMethod(DYM method) {
-        this.method = method;
-    }
-
-    /**
      * Returns the current main tree of this class.
      *
      * @return The current tree of this class.
@@ -110,21 +97,7 @@ public class DidYouMean {
         return tree;
     }
 
-
-    /**
-     * Changes the current {@code ldWeight} to another value. Higher values mean that words with a small LD to a search term
-     * get more priority compared to words that have a bigger LD.
-     *
-     * @throws IllegalArgumentException if weight is negative.
-     */
-    public void setLdWeight(int weight){
-        if(weight < 0){
-            throw new IllegalArgumentException("Tried to set a negative LD-weight.");
-        }
-        this.ldWeight = weight;
-    }
-
-    public void learn(String word, int weight){
+    public void learn(String word, int weight) {
         tree.addOrSet(word, weight);
     }
 
@@ -136,11 +109,33 @@ public class DidYouMean {
     }
 
     /**
+     * Sets the current DYM method of this class.
+     *
+     * @param method The new DYM method of this class.
+     */
+    public void setMethod(DYM method) {
+        this.method = method;
+    }
+
+    /**
      * Returns the current {@code ldWeight}.
      *
      * @return the current {@code ldWeight}.
      */
     public int getLdWeight() {
         return ldWeight;
+    }
+
+    /**
+     * Changes the current {@code ldWeight} to another value. Higher values mean that words with a small LD to a search term
+     * get more priority compared to words that have a bigger LD.
+     *
+     * @throws IllegalArgumentException if weight is negative.
+     */
+    public void setLdWeight(int weight) {
+        if (weight < 0) {
+            throw new IllegalArgumentException("Tried to set a negative LD-weight.");
+        }
+        this.ldWeight = weight;
     }
 }

@@ -3,6 +3,7 @@ package api.utils;
 
 /**
  * A simple immutable class for 2-tuples.
+ *
  * @param <L> the first class
  * @param <R> the second class
  */
@@ -11,6 +12,7 @@ public class Pair<L, R> {
     private final L left;
     private final R right;
     private transient int hash;
+
     public Pair(L left, R right) {
         this.left = left;
         this.right = right;

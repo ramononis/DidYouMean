@@ -13,10 +13,9 @@ import api.didyoumean.DidYouMean;
  * @author Tim
  */
 public class Controller {
+    private static final int DEFAULT_LD_WEIGHT = 6;
     private final AutoCompleter ac;
     private final DidYouMean dym;
-
-    private static final int DEFAULT_LD_WEIGHT = 6;
 
     /**
      * Initializes a new Controller
@@ -42,7 +41,7 @@ public class Controller {
         String[] r = getTopN(n, searchterm);
         if (r.length < n) {
             String d = getDYM(searchterm);
-            if(!d.equals("")) {
+            if (!d.equals("")) {
                 String[] rnew = new String[n];
                 System.arraycopy(r, 0, rnew, 0, r.length);
                 rnew[r.length] = d;
@@ -50,9 +49,9 @@ public class Controller {
                 int j = r.length + 1; //number of items in rnew
                 if (j < n) {
                     String[] r2 = getTopN(n - (r.length), d);
-                    for (int i = 0; i < r2.length; i++) {
-                        if (j < n && !r2[i].equals(d)) {
-                            rnew[j] = r2[i];
+                    for (String aR2 : r2) {
+                        if (j < n && !aR2.equals(d)) {
+                            rnew[j] = aR2;
                             j++;
                         }
                     }

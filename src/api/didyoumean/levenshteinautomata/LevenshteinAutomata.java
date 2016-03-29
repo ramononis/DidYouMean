@@ -7,7 +7,7 @@ import api.utils.Pair;
 
 import java.util.*;
 
-import static java.lang.Math.*;
+import static java.lang.Math.pow;
 
 /**
  * The Class representing a Levenshtein Automata.
@@ -18,23 +18,26 @@ public class LevenshteinAutomata {
     /**
      * Calculates the score for this state-pair.<br>
      * The current calculation is: query weight / (Lev. distance + 1)
-     * @param state the current state-pair
-     * @param w the length of the input word
+     *
+     * @param state    the current state-pair
+     * @param w        the length of the input word
      * @param ldWeight The weight of the LD.
      * @return the score for this pair
      */
     public static int getScore(Pair<Element, State> state, int w, int ldWeight) {
         int score = state.getLeft().getWeight();
-        int distance = state.getRight().getDistance(w);
+        int distance = state.getLeft().isLeaf() ? state.getRight().getDistance(w) : state.getRight().getMinEdits();
         return (int) (score / (pow(distance, ldWeight)));
     }
+
     /**
      * Intersects the dictionary tree with a (simulated) Levenhstein automata.
      * Returns the best string by {@link #getScore score} that satisfies the given maximal Levenshtein
      * distance in {@code laf}.
-     * @param tree the dictionary tree to search in
-     * @param laf the factory for simulating Levenshtein automata
-     * @param word the (possibly corrupted) input word
+     *
+     * @param tree     the dictionary tree to search in
+     * @param laf      the factory for simulating Levenshtein automata
+     * @param word     the (possibly corrupted) input word
      * @param ldWeight The weight of the LD.
      * @return A string similar to {@code word}, or an empty string if no result could be found
      */
@@ -47,22 +50,25 @@ public class LevenshteinAutomata {
      * Intersects the dictionary tree with a (simulated) Levenhstein automata.
      * Returns the top {@code n} strings sorted by {@link #getScore score} that satisfy the given maximal Levenshtein
      * distance in {@code laf}.
-     * @param tree the dictionary tree to search in
-     * @param laf the factory for simulating Levenshtein automata
-     * @param word the (possibly corrupted) input word
-     * @param n the amount of results
+     *
+     * @param tree     the dictionary tree to search in
+     * @param laf      the factory for simulating Levenshtein automata
+     * @param word     the (possibly corrupted) input word
+     * @param n        the amount of results
      * @param ldWeight The weight of the LD.
      * @return {@code n} strings similar to {@code word}, or less if there aren't that many results.
      */
     public static List<String> intersectN(Root tree, LevenshteinAutomataFactory laf, String word, int n, int ldWeight) {
         int w = word.length();
         List<String> result = new ArrayList<>(n);
-        PriorityQueue<Pair<Element, State>> queue = new PriorityQueue<>((p1, p2) -> getScore(p2, w, ldWeight) - getScore(p1, w, ldWeight));
-        queue.add(new Pair<>(tree, laf.getInit()));
-        Pair<Element, State> state;
+        PriorityQueue<Pair<Element, Pair<State, Integer>>> queue = new PriorityQueue<>(
+                (p1, p2) -> p2.getRight().getRight() - p1.getRight().getRight());
+
+        queue.add(new Pair<>(tree, new Pair<>(laf.getInit(), Integer.MAX_VALUE)));
+        Pair<Element, Pair<State, Integer>> state;
         while ((state = queue.poll()) != null && result.size() < n) {
             Element e = state.getLeft();
-            State s = state.getRight();
+            State s = state.getRight().getLeft();
             if (e.isLeaf()) {
                 if (s.isAcceptingState(w)) {
                     result.add(e.getWord().replace("\0", ""));
@@ -71,7 +77,7 @@ public class LevenshteinAutomata {
                 for (Element child : e.getChildren()) {
                     State out = child.isLeaf() ? s : s.outState(child.getLetter(), word);
                     if (out != null) {
-                        queue.add(new Pair<>(child, out));
+                        queue.add(new Pair<>(child, new Pair<>(out, getScore(new Pair<>(child, out), w, ldWeight))));
                     }
                 }
             }

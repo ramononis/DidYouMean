@@ -18,10 +18,8 @@ import java.awt.event.MouseEvent;
  * @author Tim
  */
 public class GUI {
-    private static final int NSUGGESTIONS = 5;
-
     public static final String[] FILENAMES = {"./csv/Data1.csv", "./csv/Data2.csv", "./csv/Data3.csv", "./csv/Data4.csv"};
-
+    private static final int NSUGGESTIONS = 5;
     private Controller CT;
 
     private JFrame frame;
@@ -99,7 +97,7 @@ public class GUI {
         c.gridx = 3;
         listpane.add(radiopane, c);
 
-        radiopane.setLayout(new GridLayout(3,1));
+        radiopane.setLayout(new GridLayout(3, 1));
         radiopane.add(new JLabel("Select DYM method"));
         radiopane.add(BK);
         radiopane.add(LA);
@@ -177,6 +175,15 @@ public class GUI {
     }
 
     /**
+     * Initializes the program.
+     *
+     * @param args should be empty.
+     */
+    public static void main(String[] args) {
+        new GUI();
+    }
+
+    /**
      * Searches for the word that is currently in the searchbar.
      *
      * @param query the {@link String} that is currently in the searchbar
@@ -194,15 +201,6 @@ public class GUI {
         outputList = newoutput;
         output.setListData(outputList);
         frame.setTitle("Did you mean");
-    }
-
-    /**
-     * Initializes the program.
-     *
-     * @param args should be empty.
-     */
-    public static void main(String[] args) {
-        new GUI();
     }
 }
 

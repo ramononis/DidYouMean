@@ -15,8 +15,8 @@ public abstract class Element {
     public final static char TERM = '\0';
 
     private final char letter;
-    private int weight;
     private final Node parent;
+    private int weight;
 
     /**
      * Initializes a new Element.

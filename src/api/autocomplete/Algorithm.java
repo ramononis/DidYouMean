@@ -1,6 +1,7 @@
 package api.autocomplete;
 
-import api.tree.*;
+import api.tree.Element;
+import api.tree.Root;
 
 import java.util.*;
 

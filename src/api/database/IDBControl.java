@@ -9,11 +9,16 @@ import java.util.Map;
  */
 public interface IDBControl {
     /**
-     * Used to get the data from the api.database.
+     * Calculates the weight that a search term should have.
+     * This weight is calculated as the number of times a search term has been used multiplied by the percentage that that search term was successful.
      *
-     * @return a HashMap with the search term (null-terminated String) as key and the weight (int) as the value.
+     * @param n the number of times the search term is used.
+     * @param p the percentage of successful uses of this search term.
+     * @return appropriate weight for the search term.
      */
-    Map<String, Integer> getData();
+    static int calcWeight(int n, double p) {
+        return (int) (n * p);
+    }
 
 //    static HashMap<String, Integer> optionize(HashMap<String, Integer> singleData) { // TODO: check if scores are still realistic after this
 //        HashMap<String, Integer> optionizedData = new HashMap<>();
@@ -30,15 +35,10 @@ public interface IDBControl {
 //    }
 
     /**
-     * Calculates the weight that a search term should have.
-     * This weight is calculated as the number of times a search term has been used multiplied by the percentage that that search term was successful.
+     * Used to get the data from the api.database.
      *
-     * @param n the number of times the search term is used.
-     * @param p the percentage of successful uses of this search term.
-     * @return appropriate weight for the search term.
+     * @return a HashMap with the search term (null-terminated String) as key and the weight (int) as the value.
      */
-    static int calcWeight(int n, double p) {
-        return (int) (n * p);
-    }
+    Map<String, Integer> getData();
 
 }

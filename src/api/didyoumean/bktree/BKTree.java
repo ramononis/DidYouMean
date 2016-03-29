@@ -3,7 +3,10 @@ package api.didyoumean.bktree;
 import api.didyoumean.DidYouMean;
 import api.utils.Pair;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import static java.lang.Math.min;
@@ -15,33 +18,6 @@ import static java.lang.Math.min;
  */
 public class BKTree {
     private static Node root;
-
-
-    /**
-     * Builds a new api.tree given a list of words and data to fill nodes with. Nodes contain
-     * the scores of a word.
-     *
-     * @param data The data (word, score) the api.tree should contain.
-     * @throws IllegalArgumentException if data is null.
-     */
-    public void buildTree(Map<String, Integer> data) {
-        if (data == null) {
-            throw new IllegalArgumentException("Tried to make a api.tree with a datamap that is null.");
-        }
-        Set<String> set = data.keySet();
-        List<String> list = new ArrayList<>();
-        list.addAll(set);
-        root = new Node(list.get(0), data.get(list.get(0)));
-        for (String s : list) {
-            if (list.indexOf(s) != 0) {
-                int score = 0;
-                if (data.keySet().contains(s)) {
-                    score = data.get(s);
-                }
-                root.addChild(new Node(s, score));
-            }
-        }
-    }
 
     /**
      * Calculates the Levenshtein Distance between 2 words.
@@ -76,6 +52,32 @@ public class BKTree {
     }
 
     /**
+     * Builds a new api.tree given a list of words and data to fill nodes with. Nodes contain
+     * the scores of a word.
+     *
+     * @param data The data (word, score) the api.tree should contain.
+     * @throws IllegalArgumentException if data is null.
+     */
+    public void buildTree(Map<String, Integer> data) {
+        if (data == null) {
+            throw new IllegalArgumentException("Tried to make a api.tree with a datamap that is null.");
+        }
+        Set<String> set = data.keySet();
+        List<String> list = new ArrayList<>();
+        list.addAll(set);
+        root = new Node(list.get(0), data.get(list.get(0)));
+        for (String s : list) {
+            if (list.indexOf(s) != 0) {
+                int score = 0;
+                if (data.keySet().contains(s)) {
+                    score = data.get(s);
+                }
+                root.addChild(new Node(s, score));
+            }
+        }
+    }
+
+    /**
      * Gets a 'did-you-mean' suggestion for a word.
      *
      * @param word     The word the user searched for.
@@ -91,8 +93,8 @@ public class BKTree {
     /**
      * Gets a list of n 'did-you-mean' suggestions for a word.
      *
-     * @param word The word the user searched for.
-     * @param n    The maximum number of suggestions to return.
+     * @param word     The word the user searched for.
+     * @param n        The maximum number of suggestions to return.
      * @param ldWeight The weight of the LD.
      * @return A list with at most n words the user probably meant when searching for {@code word}.
      * Sorted from most likely to least likely. May include {@code word}, if so this will be the first one.
@@ -113,21 +115,22 @@ public class BKTree {
     /**
      * If the current tree does not contain this word: Adds a new {@code Node} to this tree with word {@code word}
      * and weight {@code weight}. If the current tree does contain a word, changes the weight to the given {@code word}.
-     * @param word The word which should be added or changed.
+     *
+     * @param word   The word which should be added or changed.
      * @param weight The weight corresponding to the word
      * @throws IllegalArgumentException if {@code word} is {@code null}, or {@code weight} is negative.
      */
-    public synchronized void addOrSet(String word, int weight){
-        if(word == null){
+    public synchronized void addOrSet(String word, int weight) {
+        if (word == null) {
             throw new IllegalArgumentException("Parameter word is null in BKTree.addOrSet.");
         }
-        if(weight < 0){
+        if (weight < 0) {
             throw new IllegalArgumentException("Parameter weight is negative in BKTree.addOrSet.");
         }
         Node wordNode = getRoot().getWordInChildren(word);
-        if(wordNode != null){
+        if (wordNode != null) {
             wordNode.setScore(weight);
-        }else{
+        } else {
             getRoot().addChild(new Node(word, weight));
         }
     }

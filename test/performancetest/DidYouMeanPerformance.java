@@ -3,32 +3,39 @@ package performancetest;
 import api.database.CSVControl;
 import api.didyoumean.DYM;
 import api.didyoumean.DidYouMean;
-import api.didyoumean.bktree.BKTree;
 import gui.GUI;
 
-/**
- * Created by ramon on 29-3-2016.
- */
+import java.util.Arrays;
+
 public class DidYouMeanPerformance {
     public static void main(String[] args) {
         DidYouMean dym = new DidYouMean(new CSVControl(GUI.FILENAMES), DYM.BKTREE, 6);
-        testString(dym, "akku 12v", 1000);
-        testString(dym, "batterij", 1000);
+        String[] testStrings = {"akku 12v", "batterij", "akkuclem", "06345", "9182732874", "rukschakelar", "suka", "asdkjhasdkjhf"};
+        Arrays.stream(testStrings).forEach(s -> testString(dym, s, 1000));
     }
+
     private static void testString(DidYouMean dym, String s, int n) {
         dym.setMethod(DYM.BKTREE);
-        testNTimes(dym, s, n);
+        String bk = testNTimes(dym, s, n);
         dym.setMethod(DYM.LEVENSHTEIN);
-        testNTimes(dym, s, n);
+        String lev = testNTimes(dym, s, n);
+        if (!bk.equals(lev)) {
+            System.out.println("BKTree: " + bk + " , Levenshtein: " + lev);
+        } else {
+            System.out.println("Suggestion: " + bk);
+        }
     }
-    private static void testNTimes(DidYouMean dym, String s, int n) {
+
+    private static String testNTimes(DidYouMean dym, String s, int n) {
         long time = System.currentTimeMillis();
         int i = 0;
-        while(i++ < n) {
-            dym.getDYM(s);
+        String result = "";
+        while (i++ < n) {
+            result = dym.getDYM(s);
         }
         time -= System.currentTimeMillis();
         time *= -1;
         System.out.println(dym.getMethod() + " " + s + " " + n + " times. " + time + " ms");
+        return result;
     }
 }

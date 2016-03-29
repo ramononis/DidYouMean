@@ -11,31 +11,32 @@ import static api.didyoumean.bktree.BKTree.calculateDistance;
  * The Class representing a Node in a BKtree.
  * Created by Yannick on 10-3-2016.
  */
-public class Node
-{
+public class Node {
     private String name;
     private Map<Integer, Node> children;
     private int score;
 
     /**
      * Creates a new Node with a certain word. Has no children and a score of 0.
+     *
      * @param word The word corresponding to this Node.
      */
-    public Node(String word){
+    public Node(String word) {
         this(word, 0);
     }
 
     /**
      * Creates a new Node with a certain word and score. Has no children.
-     * @param word The word corresponding to this Node.
+     *
+     * @param word  The word corresponding to this Node.
      * @param score The score this Node should have.
      * @throws IllegalArgumentException if {@code word} is {@code null} or {@code score} is negative.
      */
-    public Node(String word, int score){
-        if(word == null){
+    public Node(String word, int score) {
+        if (word == null) {
             throw new IllegalArgumentException("Tried to make a Node with a null String.");
         }
-        if(score < 0){
+        if (score < 0) {
             throw new IllegalArgumentException("Tried to give a negative score to a Node.");
         }
         this.name = word;
@@ -45,52 +46,56 @@ public class Node
 
     /**
      * Adds a new child to this node.
+     *
      * @param child The Node that this Node should be the parent of.
      * @throws IllegalArgumentException if {@code child} is null.
      */
-    protected void addChild(Node child){
-        if(child == null){
+    protected void addChild(Node child) {
+        if (child == null) {
             throw new IllegalArgumentException("Given Node is null in Node.addChild");
         }
-        int distance = calculateDistance(child.getName(),name);
-        if(children.get(distance)!=null){
+        int distance = calculateDistance(child.getName(), name);
+        if (children.get(distance) != null) {
             children.get(distance).addChild(child);
+        } else {
+            children.put(distance, child);
         }
-        else{
-            children.put(distance,child);
-        }
-    }
-
-    /**
-     * Changes the score of this Node.
-     * @param score The new score of this Node.
-     */
-    public void setScore(int score){
-        this.score = score;
     }
 
     /**
      * Returns the word of this Node.
+     *
      * @return The word of this Node.
      */
-    public String getName(){
+    public String getName() {
         return name;
     }
 
     /**
      * Returns the children of this node.
+     *
      * @return The children of this node.
      */
-    public Map<Integer, Node> getChildren(){
+    public Map<Integer, Node> getChildren() {
         return children;
     }
 
     /**
      * Returns the score of this Node.
+     *
      * @return the score of this Node.
      */
     public int getScore() {
         return score;
+    }
+
+    /**
+     * Changes the score of this Node.
+     *
+     * @param score The new score of this Node.
+     */
+    public void setScore(int score) {
+        this.score = score;
     }
 
     /**
@@ -122,16 +127,17 @@ public class Node
     /**
      * Gets the Node {@code node} such that node.getName().equals(word) somewhere in its tree.
      * Returns {@code null} if there is no such node.
+     *
      * @param word The word to be checked.
      * @return The node that corresponds to the given word, or null if there is no such Node.
      */
-    public Node getWordInChildren(String word){
-        for(Node node : getChildren().values()){
-            if(node.getName().equals(word)){
+    public Node getWordInChildren(String word) {
+        for (Node node : getChildren().values()) {
+            if (node.getName().equals(word)) {
                 return node;
             }
             Node childNode = node.getWordInChildren(word);
-            if(childNode != null){
+            if (childNode != null) {
                 return childNode;
             }
         }
@@ -139,15 +145,15 @@ public class Node
     }
 
     @Override
-    public boolean equals(Object o){
-        if(o instanceof Node){
+    public boolean equals(Object o) {
+        if (o instanceof Node) {
             return ((Node) o).getName().equals(getName());
-        }else{
+        } else {
             return super.equals(o);
         }
     }
 
-    public String toString(){
+    public String toString() {
         return getName() + " (" + getScore() + ")";
     }
 }

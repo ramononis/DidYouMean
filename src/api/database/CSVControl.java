@@ -94,7 +94,7 @@ public class CSVControl implements IDBControl {
 
         for (String line : rawData) {
             String[] splitLine = line.split(SPLITTER);
-            if(splitLine.length == 7) filteredData.add(new String[]{splitLine[0], splitLine[1], splitLine[4]});
+            if (splitLine.length == 7) filteredData.add(new String[]{splitLine[0], splitLine[1], splitLine[4]});
             else skipped++;
         }
 
@@ -113,7 +113,7 @@ public class CSVControl implements IDBControl {
         String line;
         Set<String> rawData = new HashSet<>();
 
-        try (BufferedReader br = new BufferedReader(new FileReader(path))){
+        try (BufferedReader br = new BufferedReader(new FileReader(path))) {
             while (null != (line = br.readLine())) {
                 rawData.add(line);
             }

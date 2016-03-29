@@ -6,19 +6,19 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import static java.util.Collections.max;
+import static java.util.Collections.min;
 
 /**
  * A class for simulating a Levenshtein automata.<br>
  * The Levenshtein automata factory(LAF) precalculates a parametric list of states and a transition table
  * in order to provide simulation of Levenshtein automata, able to calculate Levenshtein distance(up to a given maximum)
  * of a word W in linear time in |W|.<p>
- *
+ * <p>
  * After providing the {@link #getInit() initial state}, successive states can be determine in constant time.<p>
- *
+ * <p>
  * The approach used in this class is based on:<br>
  * <i>Fast string correction with Levenshtein automata (KU Schulz {@literal &} S Mihov, 2002)</i><br>
  * Definitions that are being referred to are from this paper.
- *
  *
  * @author Ramon Onis
  * @see <a href="http://goo.gl/v28nA8">Fast string correction with Levenshtein automata</a>
@@ -44,24 +44,25 @@ public class LevenshteinAutomataFactory {
     private boolean reduced = false;
 
     /**
-     * Return the universal initial state of any word with any length.
-     * @return the initial state of any Levenshtein automata for the given max distance.
-     */
-    public State getInit() {
-        return new StateWrapper(new Pair<>(initState, 0));
-    }
-
-
-    /**
      * Initializes a new {@link LevenshteinAutomataFactory} using a given maximal distance.<br>
      * Upon initialisation the precalculations are done which, depending on {@code n}, take a lot of time.<br>
      * Note that memory usage grows extremely fast when increasing {@code n}. It is not recommended to use values
      * greater than 4.
+     *
      * @param n The maximal distance that the simulated automata accept.
      */
     public LevenshteinAutomataFactory(int n) {
         maxN = n;
         precalculate();
+    }
+
+    /**
+     * Return the universal initial state of any word with any length.
+     *
+     * @return the initial state of any Levenshtein automata for the given max distance.
+     */
+    public State getInit() {
+        return new StateWrapper(new Pair<>(initState, 0));
     }
 
     /**
@@ -91,6 +92,7 @@ public class LevenshteinAutomataFactory {
             pState.o = o;
             pState.hash = pState.hashCode();
             pState.maxBase = pState.maxBaseOffset();
+            pState.minEdits = pState.getMinEdits();
         }
 
         transitionTables.values().forEach(t -> t.reduce(stateReductions));
@@ -98,6 +100,7 @@ public class LevenshteinAutomataFactory {
         initState.hash = initState.hashCode();
         initState.positions.clear();
         initState.maxBase = initState.maxBaseOffset();
+        initState.minEdits = initState.getMinEdits();
         pStates.forEach(p -> p.positions.clear());
         pStates.clear();
         reduced = true;
@@ -138,8 +141,9 @@ public class LevenshteinAutomataFactory {
 
     /**
      * Recursively calcualtes the set of possible parametric states.
+     *
      * @param state the base state to add in more positions
-     * @param ps the remaining positions to add
+     * @param ps    the remaining positions to add
      * @return a {@link Set} of possible parametric states
      */
     private Set<ParametricState> calculateParametricStates(ParametricState state, List<ParametricPosition> ps) {
@@ -165,6 +169,7 @@ public class LevenshteinAutomataFactory {
     /**
      * A helper function to create a set of positions in a convenient way.<br>
      * Every element in {@code data} is interpreted as: [index offset, number of edits]
+     *
      * @param data A array containing arrays of size 2.
      * @return A set of parametric positions with offsets/edits according to {@code data}.
      * @throws IllegalArgumentException if data contains a element without length 2.
@@ -184,6 +189,7 @@ public class LevenshteinAutomataFactory {
     /**
      * Returns all possible characteristic vectors with length {@code l}.<br>
      * Note that this results in {@code 2^l} results.
+     *
      * @param l The length of the vectors
      * @return All possible vectors with length {@code l}.
      */
@@ -208,6 +214,7 @@ public class LevenshteinAutomataFactory {
 
         /**
          * Initializes a new state.
+         *
          * @param s the parametric state, along with an index defining this state.
          */
         StateWrapper(Pair<ParametricState, Integer> s) {
@@ -216,6 +223,7 @@ public class LevenshteinAutomataFactory {
 
         /**
          * Gets the Levenshtein distance corresponding to this state and a given word length
+         *
          * @param w the length of the wordt corresponding to the Levenshtein-automata
          * @return The calculated Levenshtein distance.
          */
@@ -224,8 +232,14 @@ public class LevenshteinAutomataFactory {
             return w - state.getRight() - state.getLeft().maxBaseOffset();
         }
 
+        @Override
+        public int getMinEdits() {
+            return state.getLeft().getMinEdits();
+        }
+
         /**
          * Indicates whether or not this is a accepting state.
+         *
          * @param w The length of the word of the DFA
          * @return {@code true} if accepting, otherwise {@code} false
          */
@@ -237,6 +251,7 @@ public class LevenshteinAutomataFactory {
 
         /**
          * Determines(in near constant time) the next state, given a symbol and the word of the simulated automata.
+         *
          * @param c the next symbol
          * @param w the word length
          * @return The next state, or {@code null} if this transition results in a failure state.
@@ -268,6 +283,7 @@ public class LevenshteinAutomataFactory {
         int hash;
         Object o;
         int maxBase;
+        int minEdits;
 
         /**
          * Creates a empty state.
@@ -278,6 +294,7 @@ public class LevenshteinAutomataFactory {
 
         /**
          * Creates a states with positions {@code ps}.
+         *
          * @param ps The positions to include.
          */
         private ParametricState(Set<ParametricPosition> ps) {
@@ -288,8 +305,9 @@ public class LevenshteinAutomataFactory {
          * Creates a states with positions {@code ps}.<br>
          * If {@code isChecked} is false, the positions are only added
          * if they are not subsumed by any other position in {@code ps}.
+         *
          * @param parametricPositions The positions to include
-         * @param isChecked If {@code true}, the positions are only added if they are not subsumed by others.
+         * @param isChecked           If {@code true}, the positions are only added if they are not subsumed by others.
          */
         public ParametricState(Set<ParametricPosition> parametricPositions, boolean isChecked) {
             if (!isChecked) {
@@ -307,6 +325,7 @@ public class LevenshteinAutomataFactory {
         /**
          * Adds a position to this state.<br>
          * Note that it is not checked if this position is subsumed by this state.
+         *
          * @param p The position to add
          */
         void addPosition(ParametricPosition p) {
@@ -336,6 +355,7 @@ public class LevenshteinAutomataFactory {
 
         /**
          * Shifts the whole state to the left so that {@code minOffset} equals {@code 0}.
+         *
          * @return The resulting state after the shift.
          */
         ParametricState shiftToLeft() {
@@ -351,6 +371,7 @@ public class LevenshteinAutomataFactory {
 
         /**
          * Checks whether or not the position {@code p} is subsumed by a position in this state.
+         *
          * @param p the position to check.
          * @return True if {@code p} is subsumed by a position in this state.
          */
@@ -365,10 +386,11 @@ public class LevenshteinAutomataFactory {
 
         /**
          * Returns the maximal possible base position(see 4.0.18) for this state.
+         *
          * @return the maximal possible base position.
          */
         int maxBaseOffset() {
-            if(reduced) {
+            if (reduced) {
                 return maxBase;
             }
             if (positions.isEmpty()) {
@@ -452,7 +474,8 @@ public class LevenshteinAutomataFactory {
 
         /**
          * Applies a characteristic vector to this state, given the offset of this state relative to the word length.
-         * @param v the vector to apply.
+         *
+         * @param v          the vector to apply.
          * @param wordOffset Offset relative to the word length.
          * @return the resulting state.
          */
@@ -464,6 +487,16 @@ public class LevenshteinAutomataFactory {
 
         public boolean isEmpty() {
             return positions.isEmpty();
+        }
+
+        public int getMinEdits() {
+            if (reduced) {
+                return minEdits;
+            }
+            if (positions.isEmpty()) {
+                return Integer.MAX_VALUE;
+            }
+            return min(positions).edits;
         }
     }
 
@@ -479,6 +512,7 @@ public class LevenshteinAutomataFactory {
 
         /**
          * Creates a new parametric position.
+         *
          * @param i it's index offset
          * @param e it's amount of edits
          */
@@ -503,6 +537,7 @@ public class LevenshteinAutomataFactory {
         /**
          * Generates the subsumption triangle for this position(see 4.0.15).<br>
          * Note that, contrary to the referred definition, this method includes this position in the result.
+         *
          * @return The subusumption triangle, plus this position, sorted by amount of edits.
          */
         List<ParametricPosition> subsumptionTriangle() {
@@ -536,7 +571,8 @@ public class LevenshteinAutomataFactory {
          * Applies a vector to this position. <br>
          * Specifically, it applies a elementary transition(as defined in 4.0.24 and specified in table 4.1) to assign
          * a state to this position/vector.<br>
-         * @param v the vector to apply
+         *
+         * @param v      the vector to apply
          * @param offset the offset of the containing {@link ParametricState} relative to the word length.
          * @return the assigned state, in the form of a {@link Set} of positions.
          */
@@ -590,6 +626,7 @@ public class LevenshteinAutomataFactory {
 
         /**
          * Constructs a transition table for a given vector length
+         *
          * @param l the given vector length.
          */
         TransitionTable(int l) {
@@ -598,6 +635,7 @@ public class LevenshteinAutomataFactory {
 
         /**
          * Reduces the states in this table.
+         *
          * @param mapping object mapping to be used.
          */
         void reduce(Map<ParametricState, Object> mapping) {
@@ -606,13 +644,15 @@ public class LevenshteinAutomataFactory {
                 pState.o = mapping.get(pState);
                 pState.hash = pState.hashCode();
                 pState.maxBase = pState.maxBaseOffset();
+                pState.minEdits = pState.getMinEdits();
                 pState.positions.clear();
             }
         }
 
         /**
          * Applies the transition function to retrieve the next state.
-         * @param s The previous state
+         *
+         * @param s  The previous state
          * @param cv the vector to apply
          * @return the next state
          */
@@ -626,6 +666,7 @@ public class LevenshteinAutomataFactory {
 
         /**
          * Constructs this transtition table
+         *
          * @param l the length of characteristic vector to include
          */
         void constructTable(int l) {
@@ -658,6 +699,7 @@ public class LevenshteinAutomataFactory {
         /**
          * Creates the characteristic vector for a given string and character.<br>
          * According to 4.0.10, the resulting instance represents χ(x,w).
+         *
          * @param x the char to use
          * @param w the string to use
          */
@@ -667,6 +709,7 @@ public class LevenshteinAutomataFactory {
 
         /**
          * Creates a vector with a given value.
+         *
          * @param v the given value
          */
         CharacteristicVector(Boolean[] v) {

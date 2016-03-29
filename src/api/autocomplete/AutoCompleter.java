@@ -1,7 +1,7 @@
 package api.autocomplete;
 
-import api.tree.Root;
 import api.database.IDBControl;
+import api.tree.Root;
 
 import java.util.List;
 import java.util.Map;
@@ -74,6 +74,7 @@ public class AutoCompleter {
 
     /**
      * Sets the DB.
+     *
      * @param idb the IDBControl that should be used now.
      */
     public void setDB(IDBControl idb) {
