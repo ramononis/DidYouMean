@@ -123,7 +123,7 @@ public class BKTreeTest {
     }
 
     @Test
-    public void testBuildTreeAndAddOrSet() {
+    public void testBuildTreeAndAddOrIncrement() {
         Map<String, Integer> data = new ConcurrentHashMap<>();
         data.put("setup", 10);
         data.put("setup1", 30);
@@ -132,26 +132,26 @@ public class BKTreeTest {
         tree.buildTree(data);
 
         assertThat(verifyTree(tree.getRoot()), equalTo(data));
-        tree.addOrSet("setup3", 75);
-        assertThat(tree.getRoot().getWordInChildren("setup3").getScore(), is(75));
-        tree.addOrSet("newWord", 33);
+        tree.addOrIncrement("setup3", 75);
+        assertThat(tree.getRoot().getWordInChildren("setup3").getScore(), is(175));
+        tree.addOrIncrement("newWord", 33);
         assertThat(tree.getRoot().getWordInChildren("newWord").getScore(), is(33));
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void testAddOrSetIllegalArg1(){
-        tree.addOrSet(null, 30);
+    public void testAddOrSetIllegalArg1() {
+        tree.addOrIncrement(null, 30);
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void testAddOrSetIllegalArg2(){
-        tree.addOrSet("new", -110);
+    public void testAddOrSetIllegalArg2() {
+        tree.addOrIncrement("new", -110);
     }
 
     private Map<String, Integer> verifyTree(Node n) {
         Map<String, Integer> result = new HashMap<>();
 
-        for(Map.Entry<Integer, Node> c : n.getChildren().entrySet()) {
+        for (Map.Entry<Integer, Node> c : n.getChildren().entrySet()) {
             assertThat("Levenshtein distance", calculateDistance(n.getName(), c.getValue().getName()), is(c.getKey()));
             result.putAll(verifyTree(c.getValue()));
         }

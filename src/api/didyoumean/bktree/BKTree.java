@@ -114,22 +114,22 @@ public class BKTree {
 
     /**
      * If the current tree does not contain this word: Adds a new {@code Node} to this tree with word {@code word}
-     * and weight {@code weight}. If the current tree does contain a word, changes the weight to the given {@code word}.
+     * and weight {@code weight}. If the current tree does contain the given {@code word}, the weight is incremented with the given amount.
      *
      * @param word   The word which should be added or changed.
-     * @param weight The weight corresponding to the word
+     * @param weight The amount the weight of the word will be incremented.
      * @throws IllegalArgumentException if {@code word} is {@code null}, or {@code weight} is negative.
      */
-    public synchronized void addOrSet(String word, int weight) {
+    public synchronized void addOrIncrement(String word, int weight) {
         if (word == null) {
-            throw new IllegalArgumentException("Parameter word is null in BKTree.addOrSet.");
+            throw new IllegalArgumentException("Parameter word is null in BKTree.addOrIncrement.");
         }
         if (weight < 0) {
-            throw new IllegalArgumentException("Parameter weight is negative in BKTree.addOrSet.");
+            throw new IllegalArgumentException("Parameter weight is negative in BKTree.addOrIncrement.");
         }
         Node wordNode = getRoot().getWordInChildren(word);
         if (wordNode != null) {
-            wordNode.setScore(weight);
+            wordNode.setScore(wordNode.getScore() + weight);
         } else {
             getRoot().addChild(new Node(word, weight));
         }

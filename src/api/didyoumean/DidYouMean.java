@@ -19,7 +19,7 @@ public class DidYouMean {
     private BKTree tree;
     private int ldWeight;
     private DYM method;
-    private Root root;
+    private Root root; //trie for Levenshtein Automata
     private LevenshteinAutomataFactory laf;
 
     /**
@@ -102,8 +102,16 @@ public class DidYouMean {
         return tree;
     }
 
+
+    /**
+     * Learns a word: adds the keyword to both trees if it doesn't exist yet, or increments the weight if it already exists.
+     *
+     * @param word   the keyword that should be learned.
+     * @param weight the amount the weight of the keyword will be incremented.
+     */
     public void learn(String word, int weight) {
-        tree.addOrSet(word, weight);
+        tree.addOrIncrement(word, weight);
+        root.addOrIncrementWord(word, weight);
     }
 
     /**

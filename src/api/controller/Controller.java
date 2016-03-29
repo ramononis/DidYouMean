@@ -82,7 +82,8 @@ public class Controller {
     }
 
     /**
-     * Calls {@link AutoCompleter#learn(String, int)}
+     * Calls {@link AutoCompleter#learn(String, int)} and {@Link DidYouMean#learn(String, int)}.
+     * Learns a keyword: adds the keyword to the tree if it doesn't exist yet, or increments the weight if it already exists.
      *
      * @param keyword the keyword that should be learned.
      * @param weight  the amount the weight of the keyword will be incremented.
