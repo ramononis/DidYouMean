@@ -18,9 +18,12 @@ public class DidYouMean {
     private BKTree tree;
 
     private int ldWeight;
+
+
+
     private DYM method;
     private Root root;
-    private static final int MAX_DISTANCE = 3;
+    public static final int MAX_DISTANCE = 3;
     private LevenshteinAutomataFactory laf;
 
     /**
@@ -120,6 +123,13 @@ public class DidYouMean {
             throw new IllegalArgumentException("Tried to set a negative LD-weight.");
         }
         this.ldWeight = weight;
+    }
+
+    /**
+     * Returns the DYM method
+     */
+    public DYM getMethod() {
+        return method;
     }
 
     /**

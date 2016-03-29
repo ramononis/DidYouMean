@@ -1,5 +1,6 @@
 package api.didyoumean.bktree;
 
+import api.didyoumean.DidYouMean;
 import api.utils.Pair;
 
 import java.util.*;
@@ -15,7 +16,6 @@ import static java.lang.Math.min;
 public class BKTree {
     private static Node root;
 
-    public static final int MAX_ERROR_RANGE = 3;
 
     /**
      * Builds a new api.tree given a list of words and data to fill nodes with. Nodes contain
@@ -102,7 +102,7 @@ public class BKTree {
         if (word == null) {
             throw new IllegalArgumentException("Null word in BKTree.getDYM");
         }
-        return getRoot().searchTreeForNodes(word.toLowerCase(), MAX_ERROR_RANGE).entrySet().parallelStream()
+        return getRoot().searchTreeForNodes(word.toLowerCase(), DidYouMean.MAX_DISTANCE).entrySet().parallelStream()
                 .map(e -> new Pair<>(e.getKey().getScore() / Math.pow(e.getValue(), ldWeight), e.getKey()))
                 .sorted((p1, p2) -> p2.getLeft().compareTo(p1.getLeft()))
                 .limit(n)

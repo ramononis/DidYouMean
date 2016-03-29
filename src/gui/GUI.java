@@ -20,7 +20,7 @@ import java.awt.event.MouseEvent;
 public class GUI {
     private static final int NSUGGESTIONS = 5;
 
-    private static final String[] FILENAMES = {"./csv/Data1.csv", "./csv/Data2.csv", "./csv/Data3.csv", "./csv/Data4.csv"};
+    public static final String[] FILENAMES = {"./csv/Data1.csv", "./csv/Data2.csv", "./csv/Data3.csv", "./csv/Data4.csv"};
 
     private Controller CT;
 

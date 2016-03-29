@@ -5,9 +5,6 @@ import api.database.IDBControl;
 import api.didyoumean.DYM;
 import api.didyoumean.DidYouMean;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * Main api.controller of the API.
@@ -45,22 +42,24 @@ public class Controller {
         String[] r = getTopN(n, searchterm);
         if (r.length < n) {
             String d = getDYM(searchterm);
-            String[] rnew = new String[n];
-            System.arraycopy(r, 0, rnew, 0, r.length);
-            rnew[r.length] = d;
+            if(!d.equals("")) {
+                String[] rnew = new String[n];
+                System.arraycopy(r, 0, rnew, 0, r.length);
+                rnew[r.length] = d;
 
-            int j = r.length + 1;
-            if (r.length < n - 1) {
-                String[] r2 = getTopN(n - (r.length), d);
-                for (int i = 0; i < r2.length; i++) {
-                    if (r.length + i < n && !r2[i].equals(d)) {
-                        rnew[j] = r2[i];
-                        j++;
+                int j = r.length + 1; //number of items in rnew
+                if (j < n) {
+                    String[] r2 = getTopN(n - (r.length), d);
+                    for (int i = 0; i < r2.length; i++) {
+                        if (j < n && !r2[i].equals(d)) {
+                            rnew[j] = r2[i];
+                            j++;
+                        }
                     }
                 }
+                r = new String[j];
+                System.arraycopy(rnew, 0, r, 0, j);
             }
-            r = new String[j];
-            System.arraycopy(rnew, 0, r, 0, j);
         }
         return r;
     }

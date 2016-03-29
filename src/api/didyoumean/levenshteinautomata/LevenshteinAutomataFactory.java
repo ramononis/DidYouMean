@@ -76,7 +76,7 @@ public class LevenshteinAutomataFactory {
 
     /**
      * Reduces the information that is stored in {@link ParametricState}.<br>
-     * Specifically, {@link ParametricState#positions} is cleared as it is redundant after the transition tables
+     * Specifically, {@link ParametricState#positions positions} is cleared as it is redundant after the transition tables
      * are computed.
      * Before clearing, information that is needed afterwards is calculated and stored(hashCode, maxBaseIndex)<br>
      * To keep {@link Object#equals(Object) equals()} correct, each {@link ParametricState} is given a {@link Object}
