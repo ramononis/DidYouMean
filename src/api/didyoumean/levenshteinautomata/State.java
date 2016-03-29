@@ -1,5 +1,10 @@
 package api.didyoumean.levenshteinautomata;
 
+/**
+ * Models state in a DFA emulation for Levenshtein Automata.
+ *
+ * @author Tim Blok, Frans van Dijk, Yannick Mijsters, Ramon Onis, Tim Sonderen; University of Twente
+ */
 public abstract class State {
 
     /**
@@ -31,6 +36,7 @@ public abstract class State {
 
     /**
      * Returns the minimal Levenshtein distance possible, starting from this state.
+     *
      * @return the lowest Levenshtein distance possible.
      */
     public abstract int getMinEdits();

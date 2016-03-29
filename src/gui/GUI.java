@@ -15,7 +15,7 @@ import java.awt.event.MouseEvent;
 /**
  * Displays a GUI and requests suggestions from AutoCompleter class. Also contains the main function to start the program.
  *
- * @author Tim
+ * @author Tim Blok, Frans van Dijk, Yannick Mijsters, Ramon Onis, Tim Sonderen; University of Twente
  */
 public class GUI {
     public static final String[] FILENAMES = {"./csv/Data1.csv", "./csv/Data2.csv", "./csv/Data3.csv", "./csv/Data4.csv"};

@@ -14,7 +14,7 @@ import static api.autocomplete.Algorithm.getTopKeywords;
  * The AutoCompleter class uses IDBControl,
  * a tree (made of Elements) and several private functions to give the suggested completions.
  *
- * @author Tim
+ * @author Tim Blok, Frans van Dijk, Yannick Mijsters, Ramon Onis, Tim Sonderen; University of Twente
  */
 public class AutoCompleter {
     private IDBControl DB;

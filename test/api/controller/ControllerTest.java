@@ -10,7 +10,7 @@ import static org.junit.Assert.*;
 /**
  * Tests the Controller
  *
- * @author Tim
+ * @author Tim Blok, Frans van Dijk, Yannick Mijsters, Ramon Onis, Tim Sonderen; University of Twente
  */
 public class ControllerTest {
     private Controller ct;
@@ -23,6 +23,6 @@ public class ControllerTest {
     @Test
     public void getAdvancedTopN() throws Exception {
         assertThat(ct.getAdvancedTopN(5, ""), is(new String[]{"five,six", "four", "inch\"", "three", "two"}));
-        assertThat(ct.getAdvancedTopN(2,"foir"), is(new String[]{"four"}));
+        assertThat(ct.getAdvancedTopN(2, "foir"), is(new String[]{"four"}));
     }
 }

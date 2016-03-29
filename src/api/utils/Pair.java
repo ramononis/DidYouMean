@@ -6,6 +6,7 @@ package api.utils;
  *
  * @param <L> the first class
  * @param <R> the second class
+ * @author Tim Blok, Frans van Dijk, Yannick Mijsters, Ramon Onis, Tim Sonderen; University of Twente
  */
 public class Pair<L, R> {
 

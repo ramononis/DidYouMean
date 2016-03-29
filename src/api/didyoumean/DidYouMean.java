@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * The main class that holds all the information about the BK-trees and Levenshtein Automata.
  *
- * @author Tim
+ * @author Tim Blok, Frans van Dijk, Yannick Mijsters, Ramon Onis, Tim Sonderen; University of Twente
  */
 public class DidYouMean {
     public static final int MAX_DISTANCE = 3;
@@ -47,8 +47,8 @@ public class DidYouMean {
             databaseController.getData().entrySet().forEach(
                     entry -> root.addOrIncrementWord(entry.getKey(), entry.getValue())
             );
-        laf = new LevenshteinAutomataFactory(MAX_DISTANCE);
-        getTree().buildTree(databaseController.getData());
+            laf = new LevenshteinAutomataFactory(MAX_DISTANCE);
+            getTree().buildTree(databaseController.getData());
         } catch (IOException e) {
             e.printStackTrace();
         }

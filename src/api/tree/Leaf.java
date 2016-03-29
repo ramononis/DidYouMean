@@ -3,7 +3,7 @@ package api.tree;
 /**
  * This class models a leaf in the api.tree.
  *
- * @author Frans
+ * @author Tim Blok, Frans van Dijk, Yannick Mijsters, Ramon Onis, Tim Sonderen; University of Twente
  */
 public class Leaf extends Element {
 

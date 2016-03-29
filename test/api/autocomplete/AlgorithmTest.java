@@ -18,8 +18,8 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 /**
  * Tests the auto complete algorithm functions
- * 
- * @author Frans
+ *
+ * @author Tim Blok, Frans van Dijk, Yannick Mijsters, Ramon Onis, Tim Sonderen; University of Twente
  */
 public class AlgorithmTest {
 

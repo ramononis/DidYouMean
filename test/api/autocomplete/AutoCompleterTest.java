@@ -10,7 +10,7 @@ import static org.junit.Assert.assertThat;
 /**
  * A test class for the api.autocomplete.AutoCompleter class.
  *
- * @author Tim
+ * @author Tim Blok, Frans van Dijk, Yannick Mijsters, Ramon Onis, Tim Sonderen; University of Twente
  */
 public class AutoCompleterTest {
 
@@ -22,7 +22,9 @@ public class AutoCompleterTest {
         assertThat(AC.getTopN(7, ""), is(new String[]{"NR1", "NR2", "NR3", "NR4", "NR5", "NR6", "NR7"}));
 
         AC.setDB(this::generateData2);
-        assertThat(AC.getTopN(7, ""), anyOf(is(new String[]{"NR2", "NR123", "NR3", "NR4", "NR567", "NR6", "NR7"}), is(new String[]{"NR123", "NR2", "NR3", "NR4", "NR567", "NR6", "NR7"})));
+        assertThat(AC.getTopN(7, ""), anyOf(
+                is(new String[]{"NR2", "NR123", "NR3", "NR4", "NR567", "NR6", "NR7"}),
+                is(new String[]{"NR123", "NR2", "NR3", "NR4", "NR567", "NR6", "NR7"})));
 
         AC.setDB(this::generateData3);
         assertThat(AC.getTopN(10, ""), is(new String[]{"accu", "accuboor", "ac motor", "12v motor", "12v motor groen"}));

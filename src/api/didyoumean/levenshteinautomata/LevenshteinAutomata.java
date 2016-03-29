@@ -12,7 +12,7 @@ import static java.lang.Math.pow;
 /**
  * The Class representing a Levenshtein Automata.
  *
- * @author Tim
+ * @author Tim Blok, Frans van Dijk, Yannick Mijsters, Ramon Onis, Tim Sonderen; University of Twente
  */
 public class LevenshteinAutomata {
 

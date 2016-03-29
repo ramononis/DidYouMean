@@ -10,9 +10,9 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 /**
- * Tests the CSVControl using the blackbox bethod.
+ * Tests the CSVControl using the blackbox method.
  *
- * @author Tim
+ * @author Tim Blok, Frans van Dijk, Yannick Mijsters, Ramon Onis, Tim Sonderen; University of Twente
  */
 public class CSVControlTest {
     private CSVControl c;

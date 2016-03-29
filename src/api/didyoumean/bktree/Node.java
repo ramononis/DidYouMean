@@ -8,9 +8,9 @@ import java.util.concurrent.ConcurrentHashMap;
 import static api.didyoumean.bktree.BKTree.calculateDistance;
 
 /**
- * The Class representing a Node in a BKtree.
+ * The Class representing a Node in a BKTree.
  *
- * @author Tim Yannick
+ * @author Tim Blok, Frans van Dijk, Yannick Mijsters, Ramon Onis, Tim Sonderen; University of Twente
  */
 public class Node {
     private String name;

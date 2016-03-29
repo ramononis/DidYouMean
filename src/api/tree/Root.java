@@ -4,7 +4,7 @@ package api.tree;
  * This class models the root of the api.tree.
  * The Root is a {@link Node} with no parent and no letter.
  *
- * @author Frans
+ * @author Tim Blok, Frans van Dijk, Yannick Mijsters, Ramon Onis, Tim Sonderen; University of Twente
  */
 public class Root extends Node {
 

@@ -10,7 +10,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 /**
  * Tests all api.tree classes
  *
- * @author Frans
+ * @author Tim Blok, Frans van Dijk, Yannick Mijsters, Ramon Onis, Tim Sonderen; University of Twente
  */
 public class TreeTest {
 

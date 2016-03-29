@@ -10,7 +10,7 @@ import api.didyoumean.DidYouMean;
  * Main api.controller of the API.
  * Contains all accessable functions of AutoCompleter and DidYouMean.
  *
- * @author Tim
+ * @author Tim Blok, Frans van Dijk, Yannick Mijsters, Ramon Onis, Tim Sonderen; University of Twente
  */
 public class Controller {
     private static final int DEFAULT_LD_WEIGHT = 6;

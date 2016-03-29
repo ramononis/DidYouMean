@@ -13,7 +13,7 @@ import java.util.Set;
  * Search Term,Total Unique Searches,Results Pageviews / Search,% Search Exits,% Search Refinements,Time after Search,Average Search Depth.
  * These CSV files are edited in such a way that only the actual data is left. the comments are out, as well as the names of the columns and the day index, total unique searches part.
  *
- * @author Tim
+ * @author Tim Blok, Frans van Dijk, Yannick Mijsters, Ramon Onis, Tim Sonderen; University of Twente
  */
 public class CSVControl implements IDBControl {
     private String[] paths;
@@ -48,7 +48,8 @@ public class CSVControl implements IDBControl {
     /**
      * Processes the data provided by {@link #filter(Set)}.
      *
-     * @param filteredData a set of string arrays which have a length of 3. Of the array the first element is the search term, the second the number of times it was searched and the third the percentage of search refinements.
+     * @param filteredData a set of string arrays which have a length of 3. Of the array the first element is the search term,
+     *                     the second the number of times it was searched and the third the percentage of search refinements.
      * @return a {@link Map Map} with the search term (null-terminated string) as key and its weight as value.
      */
     private Map<String, Integer> process(Set<String[]> filteredData) {

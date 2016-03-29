@@ -6,7 +6,7 @@ import java.util.Set;
 /**
  * This abstract class models the elementary basis of the api.tree.
  *
- * @author Frans
+ * @author Tim Blok, Frans van Dijk, Yannick Mijsters, Ramon Onis, Tim Sonderen; University of Twente
  */
 public abstract class Element {
     /**

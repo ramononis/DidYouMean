@@ -6,7 +6,7 @@ import java.util.Map;
 /**
  * Interface for api.database control classes. Interacts with some type of api.database.
  *
- * @author Tim
+ * @author Tim Blok, Frans van Dijk, Yannick Mijsters, Ramon Onis, Tim Sonderen; University of Twente
  */
 public interface IDBControl {
     /**

@@ -7,6 +7,11 @@ import gui.GUI;
 
 import java.util.Arrays;
 
+/**
+ * Test the performance of the two Did-You-Mean implementations.
+ *
+ * @author Tim Blok, Frans van Dijk, Yannick Mijsters, Ramon Onis, Tim Sonderen; University of Twente
+ */
 public class DidYouMeanPerformance {
     public static void main(String[] args) {
         DidYouMean dym = new DidYouMean(new CSVControl(GUI.FILENAMES), DYM.BKTREE, 6);

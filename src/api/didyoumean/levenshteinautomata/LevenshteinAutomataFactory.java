@@ -20,7 +20,7 @@ import static java.util.Collections.min;
  * <i>Fast string correction with Levenshtein automata (KU Schulz {@literal &} S Mihov, 2002)</i><br>
  * Definitions that are being referred to are from this paper.
  *
- * @author Ramon Onis
+ * @author Tim Blok, Frans van Dijk, Yannick Mijsters, Ramon Onis, Tim Sonderen; University of Twente
  * @see <a href="http://goo.gl/v28nA8">Fast string correction with Levenshtein automata</a>
  */
 public class LevenshteinAutomataFactory {
@@ -291,7 +291,6 @@ public class LevenshteinAutomataFactory {
         ParametricState() {
             positions = new HashSet<>();
         }
-
 
 
         /**

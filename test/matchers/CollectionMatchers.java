@@ -14,7 +14,7 @@ import static org.hamcrest.CoreMatchers.equalTo;
 /**
  * Contains hamcrest matchers for matching some collection properties
  *
- * @author Frans
+ * @author Tim Blok, Frans van Dijk, Yannick Mijsters, Ramon Onis, Tim Sonderen; University of Twente
  */
 public final class CollectionMatchers {
 
