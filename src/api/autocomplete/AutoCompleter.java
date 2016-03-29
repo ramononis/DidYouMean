@@ -3,6 +3,7 @@ package api.autocomplete;
 import api.database.IDBControl;
 import api.tree.Root;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -41,7 +42,12 @@ public class AutoCompleter {
      * and uses {@link Root#addOrIncrementWord(String, int)} to make a tree of this data.
      */
     private void makeTree() {
-        Map<String, Integer> data = DB.getData();
+        Map<String, Integer> data = null;
+        try {
+            data = DB.getData();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         tree = new Root();
 
         if (data == null) {

@@ -31,7 +31,7 @@ public class AlgorithmTest {
     Set<Element> set12;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         root1 = new Root();
         root2 = new Root();
 

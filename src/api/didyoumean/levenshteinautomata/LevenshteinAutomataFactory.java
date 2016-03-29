@@ -292,14 +292,7 @@ public class LevenshteinAutomataFactory {
             positions = new HashSet<>();
         }
 
-        /**
-         * Creates a states with positions {@code ps}.
-         *
-         * @param ps The positions to include.
-         */
-        private ParametricState(Set<ParametricPosition> ps) {
-            this(ps, true);
-        }
+
 
         /**
          * Creates a states with positions {@code ps}.<br>

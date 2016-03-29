@@ -33,7 +33,7 @@ public class CSVControl implements IDBControl {
      * @return a Hashmap with the search term as key and its weight as value.
      */
     @Override
-    public Map<String, Integer> getData() {
+    public Map<String, Integer> getData() throws IOException {
         Set<String> rawData = new HashSet<>();
 
         for (String file : paths) {
@@ -107,17 +107,15 @@ public class CSVControl implements IDBControl {
      *
      * @param path the path to the CSV file that should be read.
      * @return a set of strings where each string is one line of the CSV file.
+     * @throws IOException if reading the file raisen an exception
      */
-    private Set<String> readCSV(String path) {
+    private Set<String> readCSV(String path) throws IOException {
         String line;
         Set<String> rawData = new HashSet<>();
 
-        try (BufferedReader br = new BufferedReader(new FileReader(path))) {
-            while (null != (line = br.readLine())) {
-                rawData.add(line);
-            }
-        } catch (IOException e) {
-            System.out.println("File not found!");
+        BufferedReader br = new BufferedReader(new FileReader(path));
+        while (null != (line = br.readLine())) {
+            rawData.add(line);
         }
         return rawData;
     }

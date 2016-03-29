@@ -3,6 +3,7 @@ package api.database;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.io.FileNotFoundException;
 import java.util.Map;
 
 import static org.hamcrest.CoreMatchers.is;
@@ -23,11 +24,14 @@ public class CSVControlTest {
         deadc = new CSVControl(new String[]{"nope"});
     }
 
+    @Test(expected = FileNotFoundException.class)
+    public void testBadFile() throws Exception {
+        deadc.getData();
+    }
+
     @Test
     public void testGetData() throws Exception {
-        deadc.getData(); // should print file not found.
-
-        Map<String,Integer> testData = c.getData();
+        Map<String, Integer> testData = c.getData();
 
         assertThat(testData.size(), is(8)); // skips everything it shouldn't/can't parse
 

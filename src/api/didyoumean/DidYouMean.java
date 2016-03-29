@@ -6,6 +6,7 @@ import api.didyoumean.levenshteinautomata.LevenshteinAutomata;
 import api.didyoumean.levenshteinautomata.LevenshteinAutomataFactory;
 import api.tree.Root;
 
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -36,16 +37,20 @@ public class DidYouMean {
     }
 
     /**
-     * Gets the data from the api.database, and saves it in this Class.
-     * Also creates a new api.tree from the data (takes a few seconds).
+     * Gets the data from the database, and saves it in this Class.
+     * Also creates a new tree from the data (takes a few seconds).
      */
     private void setup() {
         root = new Root();
-        databaseController.getData().entrySet().forEach(
-                entry -> root.addOrIncrementWord(entry.getKey(), entry.getValue())
-        );
+        try {
+            databaseController.getData().entrySet().forEach(
+                    entry -> root.addOrIncrementWord(entry.getKey(), entry.getValue())
+            );
         laf = new LevenshteinAutomataFactory(MAX_DISTANCE);
         getTree().buildTree(databaseController.getData());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**

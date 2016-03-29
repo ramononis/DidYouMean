@@ -13,7 +13,7 @@ import static org.junit.Assert.*;
  * @author Tim
  */
 public class ControllerTest {
-    Controller ct;
+    private Controller ct;
 
     @Before
     public void setUp() throws Exception {
