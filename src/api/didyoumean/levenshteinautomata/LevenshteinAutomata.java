@@ -24,7 +24,7 @@ public class LevenshteinAutomata {
      * @param ldWeight The weight of the LD.
      * @return the score for this pair
      */
-    public static int getScore(Pair<Element, State> state, int w, int ldWeight) {
+    private static int getScore(Pair<Element, State> state, int w, int ldWeight) {
         int score = state.getLeft().getWeight();
         int distance = state.getLeft().isLeaf() ? state.getRight().getDistance(w) : state.getRight().getMinEdits();
         return (int) (score / (pow(distance, ldWeight)));

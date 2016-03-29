@@ -29,5 +29,9 @@ public abstract class State {
     public abstract int getDistance(int w);
 
 
+    /**
+     * Returns the minimal Levenshtein distance possible, starting from this state.
+     * @return the lowest Levenshtein distance possible.
+     */
     public abstract int getMinEdits();
 }

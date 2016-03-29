@@ -16,10 +16,10 @@ public final class Algorithm {
     }
 
     /**
-     * Recursively searches for the {@link String}-value of the node with the highest weight in {@code ns}(including their subtrees).
+     * Recursively searches for the {@link String}-value of the node with the highest weight in {@code ns} (including their subtrees).
      *
      * @param ns The subtrees to search in.
-     * @return The {@link String} corresponding to the value of {@link Element#getWord} getWord of the highest weighed element.
+     * @return The {@link String} corresponding to the value of {@link Element#getWord getWord} of the highest weighed element.
      */
     public static String maxNode(Set<Element> ns) {
         String result;
@@ -83,7 +83,7 @@ public final class Algorithm {
                 if (keyword.startsWith(word)) {
                     searchNodes.remove(e);
                     searchNodes.addAll(excludeKeyword(e, keyword.replaceFirst(word, "")));
-                    break; //i'm sorry, don't kill me for using break...
+                    break;
                 }
             }
         }

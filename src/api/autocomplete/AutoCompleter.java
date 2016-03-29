@@ -9,8 +9,9 @@ import java.util.Map;
 import static api.autocomplete.Algorithm.getTopKeywords;
 
 /**
- * Main class for auto-completion. The GUI has an instance of this class and requests suggested completions.
- * The AutoCompleter class uses IDBControl, a api.tree (made of Elements) and several private functions to give the suggested completions.
+ * Main class for auto-completion.
+ * The AutoCompleter class uses IDBControl,
+ * a tree (made of Elements) and several private functions to give the suggested completions.
  *
  * @author Tim
  */
@@ -21,7 +22,7 @@ public class AutoCompleter {
     /**
      * Initializes new AutoCompleter
      *
-     * @param idb the api.database control.
+     * @param idb the database control.
      */
     public AutoCompleter(IDBControl idb) {
         this.DB = idb;
@@ -29,7 +30,7 @@ public class AutoCompleter {
     }
 
     /**
-     * Rebuilds the api.tree from scratch, also putting in any new data from the api.database control.
+     * Rebuilds the tree from scratch, also putting in any new data from the database control.
      */
     public void resetTree() {
         makeTree();
@@ -37,7 +38,7 @@ public class AutoCompleter {
 
     /**
      * Gets data from {@link IDBControl#getData()}, creates a new {@link Root}
-     * and uses {@link Root#addOrIncrementWord(String, int)} to make a api.tree of this data.
+     * and uses {@link Root#addOrIncrementWord(String, int)} to make a tree of this data.
      */
     private void makeTree() {
         Map<String, Integer> data = DB.getData();
@@ -51,7 +52,7 @@ public class AutoCompleter {
     }
 
     /**
-     * Learns a keyword: adds the keyword to the api.tree if it doesn't exist yet, or increments the weight if it already exists.
+     * Learns a keyword: adds the keyword to the tree if it doesn't exist yet, or increments the weight if it already exists.
      *
      * @param keyword the keyword that should be learned.
      * @param weight  the amount the weight of the keyword will be incremented.

@@ -39,7 +39,7 @@ public class DidYouMean {
      * Gets the data from the api.database, and saves it in this Class.
      * Also creates a new api.tree from the data (takes a few seconds).
      */
-    public void setup() {
+    private void setup() {
         root = new Root();
         databaseController.getData().entrySet().forEach(
                 entry -> root.addOrIncrementWord(entry.getKey(), entry.getValue())
@@ -93,7 +93,7 @@ public class DidYouMean {
      *
      * @return The current tree of this class.
      */
-    public BKTree getTree() {
+    private BKTree getTree() {
         return tree;
     }
 
