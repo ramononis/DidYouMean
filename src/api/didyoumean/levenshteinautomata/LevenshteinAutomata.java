@@ -11,7 +11,8 @@ import static java.lang.Math.pow;
 
 /**
  * The Class representing a Levenshtein Automata.
- * Created by Tim on 3/9/2016.
+ *
+ * @author Tim
  */
 public class LevenshteinAutomata {
 

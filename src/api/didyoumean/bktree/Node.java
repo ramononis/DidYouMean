@@ -9,7 +9,8 @@ import static api.didyoumean.bktree.BKTree.calculateDistance;
 
 /**
  * The Class representing a Node in a BKtree.
- * Created by Yannick on 10-3-2016.
+ *
+ * @author Tim Yannick
  */
 public class Node {
     private String name;

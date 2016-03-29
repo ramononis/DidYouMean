@@ -11,7 +11,8 @@ import java.util.List;
 
 /**
  * The main class that holds all the information about the BK-trees and Levenshtein Automata.
- * Created by Tim on 3/9/2016.
+ *
+ * @author Tim
  */
 public class DidYouMean {
     public static final int MAX_DISTANCE = 3;

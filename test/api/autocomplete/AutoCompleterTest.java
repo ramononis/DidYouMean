@@ -9,7 +9,8 @@ import static org.junit.Assert.assertThat;
 
 /**
  * A test class for the api.autocomplete.AutoCompleter class.
- * Created by Tim on 15-3-2016.
+ *
+ * @author Tim
  */
 public class AutoCompleterTest {
 
@@ -24,12 +25,12 @@ public class AutoCompleterTest {
         assertThat(AC.getTopN(7, ""), anyOf(is(new String[]{"NR2", "NR123", "NR3", "NR4", "NR567", "NR6", "NR7"}), is(new String[]{"NR123", "NR2", "NR3", "NR4", "NR567", "NR6", "NR7"})));
 
         AC.setDB(this::generateData3);
-        assertThat(AC.getTopN(10,""), is(new String[]{"accu", "accuboor", "ac motor", "12v motor", "12v motor groen"}));
-        assertThat(AC.getTopN(10,"ac"), is(new String[]{"accu", "accuboor", "ac motor"}));
-        assertThat(AC.getTopN(10,"motor"), is(new String[]{}));
-        assertThat(AC.getTopN(10,"12v motor"), is(new String[]{"12v motor", "12v motor groen"}));
+        assertThat(AC.getTopN(10, ""), is(new String[]{"accu", "accuboor", "ac motor", "12v motor", "12v motor groen"}));
+        assertThat(AC.getTopN(10, "ac"), is(new String[]{"accu", "accuboor", "ac motor"}));
+        assertThat(AC.getTopN(10, "motor"), is(new String[]{}));
+        assertThat(AC.getTopN(10, "12v motor"), is(new String[]{"12v motor", "12v motor groen"}));
         AC.learn("12v motor blauw", 1);
-        assertThat(AC.getTopN(10,"12v motor"), is(new String[]{"12v motor", "12v motor groen", "12v motor blauw"}));
+        assertThat(AC.getTopN(10, "12v motor"), is(new String[]{"12v motor", "12v motor groen", "12v motor blauw"}));
     }
 
     private Map<String, Integer> generateData1() { // standard

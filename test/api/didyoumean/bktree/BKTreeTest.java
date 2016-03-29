@@ -15,7 +15,8 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 /**
  * The Class that tests everything in the bktree package.
- * Created by Tim on 3/21/2016.
+ *
+ * @author Tim
  */
 public class BKTreeTest {
 

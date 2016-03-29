@@ -14,7 +14,8 @@ import static java.lang.Math.min;
 
 /**
  * The Class that handles all the logic behind its own api.tree. One class corresponds to one api.tree.
- * Created by Yannick on 10-3-2016.
+ *
+ * @author Yannick
  */
 public class BKTree {
     private static Node root;
