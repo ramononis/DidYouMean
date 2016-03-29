@@ -1,7 +1,5 @@
 package api.autocomplete;
 
-import api.database.CSVCStub;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -14,30 +12,18 @@ import static org.junit.Assert.assertThat;
  * Created by Tim on 15-3-2016.
  */
 public class AutoCompleterTest {
-    CSVCStub DD;
-    AutoCompleter AC;
-
-    @org.junit.Before
-    public void setUp() throws Exception {
-        DD = new CSVCStub();
-    }
 
     @org.junit.Test
     public void testGetTopN() throws Exception {
-        DD.setData(null);
-        AC = new AutoCompleter(DD);
+        AutoCompleter AC = new AutoCompleter(() -> null);
         assertThat(AC.getTopN(5, "").length, is(0));
-
-        DD.setData(generateData1());
-        AC.resetTree();
+        AC.setDB(this::generateData1);
         assertThat(AC.getTopN(7, ""), is(new String[]{"NR1", "NR2", "NR3", "NR4", "NR5", "NR6", "NR7"}));
 
-        DD.setData(generateData2());
-        AC.resetTree();
+        AC.setDB(this::generateData2);
         assertThat(AC.getTopN(7, ""), anyOf(is(new String[]{"NR2", "NR123", "NR3", "NR4", "NR567", "NR6", "NR7"}), is(new String[]{"NR123", "NR2", "NR3", "NR4", "NR567", "NR6", "NR7"})));
 
-        DD.setData(generateData3());
-        AC.resetTree();
+        AC.setDB(this::generateData3);
         assertThat(AC.getTopN(10,""), is(new String[]{"accu", "accuboor", "ac motor", "12v motor", "12v motor groen"}));
         assertThat(AC.getTopN(10,"ac"), is(new String[]{"accu", "accuboor", "ac motor"}));
         assertThat(AC.getTopN(10,"motor"), is(new String[]{}));

@@ -33,7 +33,6 @@ public class CSVControl implements IDBControl {
      * @return a Hashmap with the search term as key and its weight as value.
      */
     @Override
-
     public Map<String, Integer> getData() {
         Set<String> rawData = new HashSet<>();
 
@@ -50,7 +49,7 @@ public class CSVControl implements IDBControl {
      * Processes the data provided by {@link #filter(Set)}.
      *
      * @param filteredData a set of string arrays which have a length of 3. Of the array the first element is the search term, the second the number of times it was searched and the third the percentage of search refinements.
-     * @return a {@link Map Map&lt;String, Integer&gt;} with the search term (null-terminated string) as key and its weight as value.
+     * @return a {@link Map Map} with the search term (null-terminated string) as key and its weight as value.
      */
     private Map<String, Integer> process(Set<String[]> filteredData) {
         Map<String, Integer> data = new HashMap<>();

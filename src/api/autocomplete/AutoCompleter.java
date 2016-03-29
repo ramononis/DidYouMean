@@ -74,11 +74,12 @@ public class AutoCompleter {
     }
 
     /**
-     * Sets the DB.
+     * Sets the DB and resets the tree.
      *
      * @param idb the IDBControl that should be used now.
      */
     public void setDB(IDBControl idb) {
         this.DB = idb;
+        resetTree();
     }
 }
