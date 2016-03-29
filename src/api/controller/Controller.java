@@ -90,6 +90,7 @@ public class Controller {
      */
     public void learn(String keyword, int weight) {
         ac.learn(keyword, weight);
+        dym.learn(keyword, weight);
     }
 
     // dym functions

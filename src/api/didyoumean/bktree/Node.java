@@ -62,6 +62,14 @@ public class Node
     }
 
     /**
+     * Changes the score of this Node.
+     * @param score The new score of this Node.
+     */
+    public void setScore(int score){
+        this.score = score;
+    }
+
+    /**
      * Returns the word of this Node.
      * @return The word of this Node.
      */
@@ -109,6 +117,25 @@ public class Node
                 .filter(n -> Math.abs(calculateDistance(n.getName(), getName()) - distance) <= errorRange)
                 .forEach(n -> result.putAll(n.searchTreeForNodes(term, errorRange)));
         return result;
+    }
+
+    /**
+     * Gets the Node {@code node} such that node.getName().equals(word) somewhere in its tree.
+     * Returns {@code null} if there is no such node.
+     * @param word The word to be checked.
+     * @return The node that corresponds to the given word, or null if there is no such Node.
+     */
+    public Node getWordInChildren(String word){
+        for(Node node : getChildren().values()){
+            if(node.getName().equals(word)){
+                return node;
+            }
+            Node childNode = node.getWordInChildren(word);
+            if(childNode != null){
+                return childNode;
+            }
+        }
+        return null;
     }
 
     @Override

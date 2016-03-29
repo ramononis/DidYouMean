@@ -111,6 +111,28 @@ public class BKTree {
     }
 
     /**
+     * If the current tree does not contain this word: Adds a new {@code Node} to this tree with word {@Code word}
+     * and weight {@code weight}. If the current tree does contain a word, changes the weight to the given {@code word}.
+     * @param word The word which should be added or changed.
+     * @param weight The weight corresponding to the word
+     * @throws IllegalArgumentException if {@code word} is {@code null}, or {@code weight} is negative.
+     */
+    public synchronized void addOrSet(String word, int weight){
+        if(word == null){
+            throw new IllegalArgumentException("Parameter word is null in BKTree.addOrSet.");
+        }
+        if(weight < 0){
+            throw new IllegalArgumentException("Parameter weight is negative in BKTree.addOrSet.");
+        }
+        Node wordNode = getRoot().getWordInChildren(word);
+        if(wordNode != null){
+            wordNode.setScore(weight);
+        }else{
+            getRoot().addChild(new Node(word, weight));
+        }
+    }
+
+    /**
      * Gets the root of this api.tree.
      *
      * @return The root of this api.tree.

@@ -125,6 +125,10 @@ public class DidYouMean {
         this.ldWeight = weight;
     }
 
+    public void learn(String word, int weight){
+        tree.addOrSet(word, weight);
+    }
+
     /**
      * Returns the DYM method
      */
