@@ -23,7 +23,7 @@ public class Controller {
      * @param dbController the dbController that should be used.
      */
     public Controller(IDBControl dbController) {
-        dym = new DidYouMean(dbController, api.didyoumean.DYM.BKTREE, DEFAULT_LD_WEIGHT);
+        dym = new DidYouMean(dbController, DYM.BKTREE, DEFAULT_LD_WEIGHT);
         ac = new AutoCompleter(dbController);
     }
 
@@ -82,7 +82,7 @@ public class Controller {
     }
 
     /**
-     * Calls {@link AutoCompleter#learn(String, int)} and {@Link DidYouMean#learn(String, int)}.
+     * Calls {@link AutoCompleter#learn(String, int)} and {@link DidYouMean#learn(String, int)}.
      * Learns a keyword: adds the keyword to the tree if it doesn't exist yet, or increments the weight if it already exists.
      *
      * @param keyword the keyword that should be learned.

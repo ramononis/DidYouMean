@@ -39,7 +39,7 @@ public interface IDBControl {
      * Used to get the data from the api.database.
      *
      * @return a HashMap with the search term (null-terminated String) as key and the weight (int) as the value.
-     * @throws if reading the data raised an exception
+     * @throws IOException if reading the data raised an exception
      */
     Map<String, Integer> getData() throws IOException;
 

@@ -28,6 +28,7 @@ public class DidYouMean {
      *
      * @param idbControl The controller which connects to the database.
      * @param method     The method the DYM should be getting its values with.
+     * @param ldWeight   The Levenshtein Distance weight to be used.
      */
     public DidYouMean(IDBControl idbControl, DYM method, int ldWeight) {
         this.databaseController = idbControl;
@@ -117,6 +118,7 @@ public class DidYouMean {
 
     /**
      * Returns the DYM method
+     * @return the DYM method current used
      */
     public DYM getMethod() {
         return method;
@@ -144,6 +146,7 @@ public class DidYouMean {
      * Changes the current {@code ldWeight} to another value. Higher values mean that words with a small LD to a search term
      * get more priority compared to words that have a bigger LD.
      *
+     * @param weight the weight to be set
      * @throws IllegalArgumentException if weight is negative.
      */
     public void setLdWeight(int weight) {

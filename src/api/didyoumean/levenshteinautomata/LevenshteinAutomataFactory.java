@@ -12,10 +12,10 @@ import static java.util.Collections.min;
  * A class for simulating a Levenshtein automata.<br>
  * The Levenshtein automata factory(LAF) precalculates a parametric list of states and a transition table
  * in order to provide simulation of Levenshtein automata, able to calculate Levenshtein distance(up to a given maximum)
- * of a word W in linear time in |W|.<p>
- * <p>
- * After providing the {@link #getInit() initial state}, successive states can be determine in constant time.<p>
- * <p>
+ * of a word W in linear time in |W|.<br>
+ * <br>
+ * After providing the {@link #getInit() initial state}, successive states can be determine in constant time.<br>
+ * <br>
  * The approach used in this class is based on:<br>
  * <i>Fast string correction with Levenshtein automata (KU Schulz {@literal &} S Mihov, 2002)</i><br>
  * Definitions that are being referred to are from this paper.
@@ -326,7 +326,8 @@ public class LevenshteinAutomataFactory {
 
 
         /**
-         * Calculates the biggest offset in this state.
+         * Calculates the biggest offset of all position in this state.
+         * @return the biggest offset in this state.
          */
         int maxOffset() {
             if (positions.isEmpty()) {
@@ -336,7 +337,8 @@ public class LevenshteinAutomataFactory {
         }
 
         /**
-         * Calculates the biggest offset in this state.
+         * Calculates the smallest offset of all positions in this state.
+         * @return the smallest offset in this state.
          */
         int minOffset() {
             if (positions.isEmpty()) {
@@ -713,6 +715,8 @@ public class LevenshteinAutomataFactory {
          * Starting at the specified starting index, this method returns the value {@code j}
          * in the notation(as specified in 4.0.24): &lt;b<sub>k</sub>, b<sub>k+1</sub>...&gt; : j, or 0 if this vector
          * doesn't contain a 1.
+         * @param k The index to start looking at
+         * @return The index of the first occurence of a 1, starting at k, or -1 if it could not be found.
          */
         int minimalIndex(int k) {
             for (int i = k; i < value.length; i++) {
