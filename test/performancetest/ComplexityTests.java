@@ -95,52 +95,50 @@ public class ComplexityTests {
         System.out.println("Space complexity tests"); // ######## Space complexity tests;
 
         System.out.println("Open java mission control and keep track of the heap");
-        System.out.println("Please type how much KB the heap currently is and press enter.");
-        int startsize = Integer.parseInt(String.valueOf(in.readLine()));
-
+        int startsize;
         int endsize;
         int deltasize;
 
         System.out.println("\tInitializations"); // ######## Initializations
 
-        System.out.println("\tPress enter to start the next test.");
-        in.readLine();
+        System.out.println("\tPlease enter the size of the heap in MB start value.");
+        startsize = Integer.parseInt(String.valueOf(in.readLine()));
         ac = new AutoCompleter(dbc);
-        System.out.println("\t\tPlease type how much KB the heap currently is and press enter.");
+        System.out.println("\t\tPlease type how much MB the heap currently is and press enter.");
         endsize = Integer.parseInt(String.valueOf(in.readLine()));
         ac = null;
         deltasize = endsize - startsize;
-        System.out.println("\t\tAC: " + deltasize + " KB");
+        System.out.println("\t\tAC: " + deltasize + " MB");
 
-        System.out.println("\tPress enter to start the next test.");
-        in.readLine();
+        System.out.println("\tPlease enter the size of the heap in MB start value.");
+        startsize = Integer.parseInt(String.valueOf(in.readLine()));
         dymBK = new BKTree();
-        System.out.println("\t\tPlease type how much KB the heap currently is and press enter.");
+        System.out.println("\t\tPlease type how much MB the heap currently is and press enter.");
         endsize = Integer.parseInt(String.valueOf(in.readLine()));
         dymBK = null;
         deltasize = endsize - startsize;
-        System.out.println("\t\tBK Tree: " + deltasize + " KB");
+        System.out.println("\t\tBK Tree: " + deltasize + " MB");
 
-        System.out.println("\tPress enter to start the next test.");
-        in.readLine();
+        System.out.println("\tPlease enter the size of the heap in MB start value.");
+        startsize = Integer.parseInt(String.valueOf(in.readLine()));
         laf = new LevenshteinAutomataFactory(3);
-        System.out.println("\t\tPlease type how much KB the heap currently is and press enter.");
+        System.out.println("\t\tPlease type how much MB the heap currently is and press enter.");
         endsize = Integer.parseInt(String.valueOf(in.readLine()));
         laf = null;
         deltasize = endsize - startsize;
-        System.out.println("\t\tLevenshtein automata factory: " + deltasize + " KB");
+        System.out.println("\t\tLevenshtein automata factory: " + deltasize + " MB");
 
-        System.out.println("\tPress enter to start the next test.");
-        in.readLine();
+        System.out.println("\tPlease enter the size of the heap in MB start value.");
+        startsize = Integer.parseInt(String.valueOf(in.readLine()));
         dymLS = new Root();
         for (Map.Entry e : dbc.getData().entrySet()) {
             dymLS.addOrIncrementWord(String.valueOf(e.getKey()), (int) e.getValue());
         }
-        System.out.println("\t\tPlease type how much KB the heap currently is and press enter.");
+        System.out.println("\t\tPlease type how much MB the heap currently is and press enter.");
         endsize = Integer.parseInt(String.valueOf(in.readLine()));
         dymLS = null;
         deltasize = endsize - startsize;
-        System.out.println("\t\tDYM LSA: " + deltasize + " KB");
+        System.out.println("\t\tDYM LSA: " + deltasize + " MB");
 
         System.out.println("============================================");
     }
