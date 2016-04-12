@@ -72,13 +72,13 @@ public class ComplexityTests {
         System.out.println("\t\tAC (5 suggestions, empty string): " + delta + " milliseconds");
 
         start = System.currentTimeMillis();
-        dym0BK.getDYM("4634773");
+        dym0BK.getDYM("batt");
         end = System.currentTimeMillis();
         delta = end - start;
         System.out.println("\t\tDYM BKTree (\"4634773\"): " + delta + " milliseconds");
 
         start = System.currentTimeMillis();
-        dym0LS.getDYM("4634773");
+        dym0LS.getDYM("batt");
         end = System.currentTimeMillis();
         delta = end - start;
         System.out.println("\t\tDYM LSA (\"4634773\"): " + delta + " milliseconds");
@@ -90,6 +90,8 @@ public class ComplexityTests {
         System.gc();
 
         System.out.println("============================================");
+
+        System.exit(0); // ####################################################################################################
 
         BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
 
