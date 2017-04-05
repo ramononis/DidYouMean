@@ -1,4 +1,4 @@
-package la;
+package la.sanitycheck;
 
 import java.io.IOException;
 import java.io.Writer;

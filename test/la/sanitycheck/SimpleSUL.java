@@ -1,4 +1,4 @@
-package la;
+package la.sanitycheck;
 
 import de.learnlib.api.SUL;
 import de.learnlib.api.SULException;
