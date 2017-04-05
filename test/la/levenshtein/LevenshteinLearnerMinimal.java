@@ -2,6 +2,8 @@ package la.levenshtein;
 
 import basiclearner.util.UserEQOracle;
 import com.google.common.collect.Lists;
+import de.learnlib.acex.analyzers.AcexAnalyzers;
+import de.learnlib.algorithms.kv.mealy.KearnsVaziraniMealy;
 import de.learnlib.algorithms.lstargeneric.ce.ObservationTableCEXHandlers;
 import de.learnlib.algorithms.lstargeneric.closing.ClosingStrategies;
 import de.learnlib.algorithms.lstargeneric.mealy.ExtensibleLStarMealy;
@@ -66,13 +68,7 @@ public class LevenshteinLearnerMinimal {
 
         // Choosing a learning algorithm
         LearningAlgorithm<MealyMachine<?, String, ?, String>, String, Word<String>> learner
-                = new ExtensibleLStarMealy<>(
-                inputAlphabet, // Input Alphabet
-                sulOracle,  // SUL membership oracle
-                Lists.newArrayList(),
-                ObservationTableCEXHandlers.CLASSIC_LSTAR,
-                ClosingStrategies.CLOSE_SHORTEST
-        );
+                = new KearnsVaziraniMealy<String, String>(inputAlphabet, sulOracle, false, AcexAnalyzers.LINEAR_FWD);
 
 
         // Setup of the experiment.
