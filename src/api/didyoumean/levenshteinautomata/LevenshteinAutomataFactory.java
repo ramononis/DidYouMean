@@ -72,7 +72,7 @@ public class LevenshteinAutomataFactory {
         calculateParametricStates();
         calculateFinalStates();
         calculateTransitionTables();
-        reduceStates();//skip line this to make debugging easier
+        //reduceStates();//skip line this to make debugging easier
     }
 
     /**

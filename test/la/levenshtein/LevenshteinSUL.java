@@ -11,7 +11,7 @@ import de.learnlib.api.SULException;
  * See the SUL interface for more info:
  * https://github.com/LearnLib/learnlib/blob/develop/core/src/main/java/de/learnlib/api/SUL.java
  */
-public class LevenshteinSUL implements SUL<Character, String> {
+public class LevenshteinSUL implements SUL<String, String> {
 
 
     private final int distance;
@@ -36,11 +36,11 @@ public class LevenshteinSUL implements SUL<Character, String> {
     }
 
     @Override
-    public String step(Character input) throws SULException {
+    public String step(String input) throws SULException {
         if (state == null) {
             return "fail";
         }
-        state = state.outState(input, word);
+        state = state.outState(input.charAt(0), word);
         if (state == null) {
             return "fail";
         } else if (state.isAcceptingState(word.length())) {
