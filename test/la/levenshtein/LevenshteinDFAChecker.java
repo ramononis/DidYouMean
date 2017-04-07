@@ -22,11 +22,11 @@ public class LevenshteinDFAChecker {
         w.chars().forEach(i -> alphabet.add(""+((char) i)));
     }
 
-    public void check(MealyMachine<Integer, String, ?, String> result) {
+    public <S> void check(MealyMachine<S, String, ?, String> result) {
         explore("", result.getInitialState(), result);
     }
 
-    private void explore(String w, Integer state, MealyMachine<Integer, String, ?, String> dfa) {
+    private <S> void  explore(String w, S state, MealyMachine<S, String, ?, String> dfa) {
         for (String i : alphabet) {
             String o = dfa.getOutput(state, i);
             String newW = w + i;
@@ -37,7 +37,7 @@ public class LevenshteinDFAChecker {
                 Assert.assertTrue("output: " + o + ", word: " + newW, o.equals("success"));
             }
             if (!o.equals("fail")) {
-                Integer nextState = dfa.getSuccessor(state, i);
+                S nextState = dfa.getSuccessor(state, i);
                 explore(newW, nextState, dfa);
             }
         }

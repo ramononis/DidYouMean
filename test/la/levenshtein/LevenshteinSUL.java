@@ -20,19 +20,20 @@ public class LevenshteinSUL implements SUL<String, String> {
     private State state;
 
     public LevenshteinSUL(String w, int d) {
+        factory = new LevenshteinAutomataFactory(d);
         word = w;
         distance = d;
     }
 
     @Override
     public void pre() {
-        factory = new LevenshteinAutomataFactory(distance);
+
         state = factory.getInit();
     }
 
     @Override
     public void post() {
-        factory = null;
+
     }
 
     @Override

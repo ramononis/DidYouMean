@@ -4,6 +4,9 @@ import java.io.IOException;
 import java.io.Writer;
 import java.util.Random;
 
+import de.learnlib.algorithms.ttt.mealy.TTTLearnerMealy;
+import de.learnlib.counterexamples.LocalSuffixFinders;
+import de.learnlib.eqtests.basic.WpMethodEQOracle;
 import net.automatalib.automata.transout.MealyMachine;
 import net.automatalib.commons.dotutil.DOT;
 import net.automatalib.util.graphs.dot.GraphDOT;
@@ -48,25 +51,11 @@ public class SimpleLearnerMinimal {
 
         // Choosing the EQ oracle
         EquivalenceOracle<MealyMachine<?, String, ?, String>, String, Word<String>> eqOracle
-                = new RandomWalkEQOracle<>(
-                0.05, // reset SUL w/ this probability before a step
-                10000, // max steps (overall)
-                true,  // reset step count after counterexample
-                new Random(123456L), // make results reproducible
-                sul    // system under learning
-        );
-
+                = new WpMethodEQOracle.MealyWpMethodEQOracle<>(2, sulOracle);
 
         // Choosing a learning algorithm
         LearningAlgorithm<MealyMachine<?, String, ?, String>, String, Word<String>> learner
-                = new ExtensibleLStarMealy<>(
-                inputAlphabet, // Input Alphabet
-                sulOracle,  // SUL membership oracle
-                Lists.newArrayList(),
-                ObservationTableCEXHandlers.CLASSIC_LSTAR,
-                ClosingStrategies.CLOSE_SHORTEST
-        );
-
+                = new TTTLearnerMealy<String, String>(inputAlphabet, sulOracle, LocalSuffixFinders.FIND_LINEAR);
 
         // Setup of the experiment.
         MealyExperiment<String, String> experiment

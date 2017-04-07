@@ -72,7 +72,7 @@ public class LevenshteinAutomataFactory {
         calculateParametricStates();
         calculateFinalStates();
         calculateTransitionTables();
-        reduceStates();//skip line this to make debugging easier
+        //reduceStates();//skip line this to make debugging easier
     }
 
     /**
@@ -584,7 +584,7 @@ public class LevenshteinAutomataFactory {
                     } else if (j == 0 || (j - 1 + e > maxN)) {
                         result.addAll(constructPositions(new int[][]{{i, e + 1}, {i + 1, e + 1}}));
                     } else {
-                        result.addAll(constructPositions(new int[][]{{i, e + 1}, {i + 1, e + 1}, {i + j, e + j - 1}}));
+                            result.addAll(constructPositions(new int[][]{{i, e + 1}, {i + 1, e + 1}, {i + j, e + j - 1}}));
                     }
                 } else if (offset == -1) {
                     if (j == 1) {
