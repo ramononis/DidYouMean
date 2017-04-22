@@ -6,6 +6,9 @@ import api.utils.Pair;
 import de.learnlib.api.SUL;
 import de.learnlib.api.SULException;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * A wrapper class for a Wolf-goat-cabbage implementation
  * See the SUL interface for more info:
@@ -16,11 +19,11 @@ public class LevenshteinSUL implements SUL<String, String> {
 
     private final int distance;
     private final String word;
-    private LevenshteinAutomataFactory factory;
+    private final static Map<Integer, LevenshteinAutomataFactory> factory = new HashMap<>();
     private State state;
 
     public LevenshteinSUL(String w, int d) {
-        factory = new LevenshteinAutomataFactory(d);
+        factory.computeIfAbsent(d, k -> new LevenshteinAutomataFactory(d));
         word = w;
         distance = d;
     }
@@ -28,7 +31,7 @@ public class LevenshteinSUL implements SUL<String, String> {
     @Override
     public void pre() {
 
-        state = factory.getInit();
+        state = factory.get(distance).getInit();
     }
 
     @Override

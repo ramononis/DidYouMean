@@ -1,31 +1,24 @@
 package la.sanitycheck;
 
-import java.io.IOException;
-import java.io.Writer;
-import java.util.Random;
-
+import com.google.common.collect.ImmutableSet;
 import de.learnlib.algorithms.ttt.mealy.TTTLearnerMealy;
+import de.learnlib.api.EquivalenceOracle;
+import de.learnlib.api.LearningAlgorithm;
+import de.learnlib.api.MembershipOracle;
+import de.learnlib.api.SUL;
 import de.learnlib.counterexamples.LocalSuffixFinders;
 import de.learnlib.eqtests.basic.WpMethodEQOracle;
+import de.learnlib.experiments.Experiment.MealyExperiment;
+import de.learnlib.oracles.SULOracle;
 import net.automatalib.automata.transout.MealyMachine;
 import net.automatalib.commons.dotutil.DOT;
 import net.automatalib.util.graphs.dot.GraphDOT;
 import net.automatalib.words.Alphabet;
 import net.automatalib.words.Word;
 import net.automatalib.words.impl.SimpleAlphabet;
-import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Lists;
 
-import de.learnlib.algorithms.lstargeneric.ce.ObservationTableCEXHandlers;
-import de.learnlib.algorithms.lstargeneric.closing.ClosingStrategies;
-import de.learnlib.algorithms.lstargeneric.mealy.ExtensibleLStarMealy;
-import de.learnlib.api.EquivalenceOracle;
-import de.learnlib.api.LearningAlgorithm;
-import de.learnlib.api.MembershipOracle;
-import de.learnlib.api.SUL;
-import de.learnlib.eqtests.basic.mealy.RandomWalkEQOracle;
-import de.learnlib.experiments.Experiment.MealyExperiment;
-import de.learnlib.oracles.SULOracle;
+import java.io.IOException;
+import java.io.Writer;
 
 /**
  * Minimal example of using learnlib to learn the FSM/Mealy Machine of a SUL (System-Under-Learning).

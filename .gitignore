@@ -11,3 +11,5 @@ doc/
 test-out/
 csv/*
 src/META-INF/
+
+target/
