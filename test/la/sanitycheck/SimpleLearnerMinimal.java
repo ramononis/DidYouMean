@@ -1,6 +1,7 @@
 package la.sanitycheck;
 
 import com.google.common.collect.ImmutableSet;
+import de.learnlib.acex.analyzers.AcexAnalyzers;
 import de.learnlib.algorithms.ttt.mealy.TTTLearnerMealy;
 import de.learnlib.api.EquivalenceOracle;
 import de.learnlib.api.LearningAlgorithm;
@@ -48,7 +49,7 @@ public class SimpleLearnerMinimal {
 
         // Choosing a learning algorithm
         LearningAlgorithm<MealyMachine<?, String, ?, String>, String, Word<String>> learner
-                = new TTTLearnerMealy<String, String>(inputAlphabet, sulOracle, LocalSuffixFinders.FIND_LINEAR);
+                = new TTTLearnerMealy<String, String>(inputAlphabet, sulOracle, AcexAnalyzers.LINEAR_FWD);
 
         // Setup of the experiment.
         MealyExperiment<String, String> experiment

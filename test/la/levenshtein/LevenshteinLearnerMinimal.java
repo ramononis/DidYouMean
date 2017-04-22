@@ -1,65 +1,62 @@
 package la.levenshtein;
 
-import basiclearner.util.UserEQOracle;
-import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Lists;
 import de.learnlib.acex.analyzers.AcexAnalyzers;
-import de.learnlib.algorithms.kv.mealy.KearnsVaziraniMealy;
-import de.learnlib.algorithms.lstargeneric.ce.ObservationTableCEXHandlers;
-import de.learnlib.algorithms.lstargeneric.closing.ClosingStrategies;
-import de.learnlib.algorithms.lstargeneric.mealy.ExtensibleLStarMealy;
 import de.learnlib.algorithms.ttt.mealy.TTTLearnerMealy;
 import de.learnlib.api.EquivalenceOracle;
 import de.learnlib.api.LearningAlgorithm;
 import de.learnlib.api.MembershipOracle;
 import de.learnlib.api.SUL;
-import de.learnlib.counterexamples.LocalSuffixFinders;
-import de.learnlib.eqtests.basic.WMethodEQOracle;
 import de.learnlib.eqtests.basic.WpMethodEQOracle;
-import de.learnlib.eqtests.basic.mealy.RandomWalkEQOracle;
 import de.learnlib.experiments.Experiment.MealyExperiment;
 import de.learnlib.oracles.ResetCounterSUL;
 import de.learnlib.oracles.SULOracle;
 import de.learnlib.oracles.SymbolCounterSUL;
 import net.automatalib.automata.transout.MealyMachine;
-import net.automatalib.commons.dotutil.DOT;
-import net.automatalib.util.graphs.dot.GraphDOT;
 import net.automatalib.words.Alphabet;
 import net.automatalib.words.Word;
 import net.automatalib.words.impl.Alphabets;
-import net.automatalib.words.impl.SimpleAlphabet;
-
-import java.io.File;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.Writer;
-import java.util.*;
-
-import nl.utwente.fmt.etfexporter.ETF;
 import org.junit.Test;
 
-import javax.annotation.concurrent.Immutable;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.Set;
 
 /**
  * Minimal example of using learnlib to learn the FSM/Mealy Machine of a SUL (System-Under-Learning).
  */
 public class LevenshteinLearnerMinimal {
-    //*****************//
-    // SUL information //
-    //*****************//
-    // Defines the input alphabet.
-    private Alphabet<String> inputAlphabet;
 
     @Test
-    public void test() throws IOException {
-        String word = "the quick brown fox jumps over the lazy dog";
-        int distance = 1;
-        Set<String> letters = new HashSet<>();
-        for (char c : word.toCharArray()) {
-            letters.add("" + c);
+    public void testDifferentChars() {
+        LinkedList<String> strings = new LinkedList<>();
+        String string = "the quick brown fox jumps over a lazy dog";
+        char start = 'a';
+        char end = 'z';
+        strings.add(string);
+        while(start <= end) {
+            string = string.replace(end, ' ');
+            strings.addFirst(string);
+            end--;
         }
+        System.out.println(strings.toString());
+        for(String s : strings) {
+            long[] result = test(s, 1);
+            System.out.println(s);
+            System.out.printf("States: %s, Symbols: %s, Resets: %s", result[0], result[1], result[2]);
+        }
+    }
+
+    /**
+     * @param word input word
+     * @param distance max edit distance
+     * @return {states, symbols, resets}
+     */
+    @SuppressWarnings("unchecked")
+    public long[] test(String word, int distance) {
+        Set<String> letters = new HashSet<>();
+        word.chars().forEach(i -> letters.add("" + ((char) i)));
         letters.add("*");
-        inputAlphabet = Alphabets.fromCollection(letters);
+        Alphabet<String> inputAlphabet = Alphabets.fromCollection(letters);
 
         // Define the System Under Learning.
         SUL<String, String> sul = new LevenshteinSUL(word, distance);
@@ -87,7 +84,8 @@ public class LevenshteinLearnerMinimal {
 
         // Choosing a learning algorithm
         LearningAlgorithm<MealyMachine<?, String, ?, String>, String, Word<String>> learner
-                    = new ExtensibleLStarMealy<String, String>(inputAlphabet, sulOracle, Lists.<Word<String>>newArrayList(), ObservationTableCEXHandlers.CLASSIC_LSTAR, ClosingStrategies.CLOSE_SHORTEST);
+                = new TTTLearnerMealy<>(inputAlphabet, sulOracle, AcexAnalyzers.LINEAR_FWD);
+        // = new ExtensibleLStarMealy<>(inputAlphabet, sulOracle, Lists.<Word<String>>newArrayList(), ObservationTableCEXHandlers.CLASSIC_LSTAR, ClosingStrategies.CLOSE_SHORTEST);
 
         // Setup of the experiment.
         MealyExperiment<String, String> experiment
@@ -107,18 +105,11 @@ public class LevenshteinLearnerMinimal {
 
         System.out.println("States: " + result.size());
 
-        System.out.println(symbolCounterSUL.getStatisticalData().toString());
-        System.out.println(resetCounterSUL.getStatisticalData().toString());
+        long symbols = symbolCounterSUL.getStatisticalData().getCount();
+        long resets = resetCounterSUL.getStatisticalData().getCount();
         System.out.println(experiment.getRounds());
-        if (true) {
-            Writer w = DOT.createDotWriter(true);
-            GraphDOT.write(result, inputAlphabet, w);
-            w.close();
-        }
-        ETF.export(result, inputAlphabet, new PrintWriter(new File("result.etf")));
-
         new LevenshteinDFAChecker(word, distance).check(result);
-        System.out.println("DFA CHECKER SUCCESFULL");
+        return new long[]{result.size(), symbols, resets};
     }
 
 
